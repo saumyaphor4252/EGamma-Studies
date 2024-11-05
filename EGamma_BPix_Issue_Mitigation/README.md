@@ -74,8 +74,15 @@ Now check that the output file from above can be used as input to the TnP Produc
 edmDumpEventContent /eos/cms/store/data/Run2024G/EGamma0/RAW-RECO/ZElectron-PromptReco-v1/000/385/443/00000/f9934f4e-60de-4ef6-a48a-77b7e1b07ebf.root
 ```
 
-# Set up
+# Condor Submission set up
 ```
-cmsDriver.py  --conditions 140X_dataRun3_HLT_v3 --data --datatier RECO --era Run3 --eventcontent RECO --filein file:/eos/cms/store/data/Run2024G/EGamma0/RAW-RECO/ZElectron-PromptReco-v1/000/385/443/00000/f9934f4e-60de-4ef6-a48a-77b7e1b07ebf.root --fileout file:stepHLT.root --no_exec -n 200 --process MYHLT --python_filename hlt_ReRun_Config.py --scenario pp --step HLT:GRun
-
+# Use the dasFileQuery script to control the number of files/events in the dataset you want to run on
+# dasgoclient --query "file dataset=/EGamma0/Run2024G-ZElectron-PromptReco-v1/RAW-RECO | grep file.name,file.nevents" --limit 1425 | awk '{sum += $2} END {print sum}'
+python3 dasFileQuery.py
+# This will create the List_cff.py file with the list of input files to be used.
+voms-proxy-init --valid 100:00
+cp /tmp/x509up_u<999999> /afs/cern.ch/user/s/ssaumya/private/x509up_u<999999>
+python3 cmsCondor.py hlt_ReRun_Config.py /afs/cern.ch/work/s/ssaumya/private/Egamma/EGM_Bpix/CMSSW_14_0_15/src/ /eos/cms/store/group/phys_egamma/ssaumya/EGM_BPix_Fix/HLTstep_RECO_RootFiles/ -n 10 -q workday -p /afs/cern.ch/user/s/ssaumya/private/x509up_u<999999>
+# -n 10 --> 10 files per job, 145 jobs created in this case
+./sub_total.jobb
 ```
