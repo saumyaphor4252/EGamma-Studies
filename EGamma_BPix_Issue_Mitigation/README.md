@@ -85,4 +85,8 @@ cp /tmp/x509up_u<999999> /afs/cern.ch/user/s/ssaumya/private/x509up_u<999999>
 python3 cmsCondor.py hlt_ReRun_Config.py /afs/cern.ch/work/s/ssaumya/private/Egamma/EGM_Bpix/CMSSW_14_0_15/src/ /eos/cms/store/group/phys_egamma/ssaumya/EGM_BPix_Fix/HLTstep_RECO_RootFiles/ -n 10 -q workday -p /afs/cern.ch/user/s/ssaumya/private/x509up_u<999999>
 # -n 10 --> 10 files per job, 145 jobs created in this case
 ./sub_total.jobb
+# For PAT step
+# Update the cmsCondor.py accordingly for input and output 
+## L49-L66, L72-73, L121-124
+python3 cmsCondor.py makeMini_cfg.py /afs/cern.ch/work/s/ssaumya/private/Egamma/EGM_Bpix/CMSSW_14_0_15/src/ /eos/cms/store/group/phys_egamma/ssaumya/EGM_BPix_Fix/PATstep_MINIAOD_RootFiles/ -n 5 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u<999999>
 ```

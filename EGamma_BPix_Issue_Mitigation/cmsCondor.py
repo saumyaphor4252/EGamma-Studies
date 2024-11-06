@@ -2,6 +2,7 @@
 import os, sys, re, pprint, string, imp
 from optparse import OptionParser
 import FWCore.ParameterSet.Config as cms
+import glob
 
 import time
 import datetime
@@ -45,16 +46,31 @@ cfo = imp.load_source("pycfg", cfgFileName, handle)
 process = cfo.process
 handle.close()
 
-from List_cff import inputFiles
+# Input Source
+## From cff file via DAS
+#from List_cff import inputFiles
+#process.source = cms.Source("PoolSource",
+#                            fileNames = cms.untracked.vstring(inputFiles)
+#)
+
+## From local eos area
+dirName = "/eos/cms/store/group/phys_egamma/ssaumya/EGM_BPix_Fix/HLTstep_RECO_RootFiles/"
+fList = filter(os.path.isfile, glob.glob(dirName + "*.root"))
+fileList = []
+for f in fList:
+    fs = str(f).replace("/eos/","file:/eos/")
+    fileList.append(fs)
+print(fileList)
 process.source = cms.Source("PoolSource",
-                            fileNames = cms.untracked.vstring(inputFiles)
+    fileNames = cms.untracked.vstring(fileList)
 )
 
 process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(-1)
 )
 
-process.RECOoutput.fileName = "stepHLT_RECO.root"
+#process.RECOoutput.fileName = "stepHLT_RECO.root"
+process.MINIAODoutput.fileName = "stepPAT_MINIAOD.root"
 
 # keep track of the original source
 fullSource = process.source.clone()
@@ -82,7 +98,6 @@ k=0
 loop_mark = opts.nPerJob
 #make job scripts
 for i in range(0, nJobs):
-    #print 'total: %d/%d  ;  %.1f %% processed '%(j,my_sum,(100*float(j)/float(my_sum)))
 
     jobDir = MYDIR+'/Jobs/Job_%s/'%str(i)
     os.system('mkdir -p %s'%jobDir)
@@ -94,7 +109,6 @@ for i in range(0, nJobs):
         tmp_job.write("export X509_USER_PROXY=$1\n")
         tmp_job.write("voms-proxy-info -all\n")
         tmp_job.write("voms-proxy-info -all -file $1\n")
-    #tmp_job.write("ulimit -v 7000000\n")
     tmp_job.write("cd $TMPDIR\n")
     tmp_job.write("mkdir Job_%s\n"%str(i))
     tmp_job.write("cd Job_%s\n"%str(i))
@@ -104,8 +118,10 @@ for i in range(0, nJobs):
     tmp_job.write("cp -f %s* .\n"%(jobDir))
     tmp_job.write("cmsRun cmsDriver_conf.py\n")
     tmp_job.write("echo 'sending the file back'\n")
-    tmp_job.write("cp stepHLT_RECO.root %s/stepHLT_RECO_%s.root\n"%(remoteDir, str(i)))
-    tmp_job.write("rm stepHLT_RECO.root\n")
+#    tmp_job.write("cp stepHLT_RECO.root %s/stepHLT_RECO_%s.root\n"%(remoteDir, str(i)))
+#    tmp_job.write("rm stepHLT_RECO.root\n")
+    tmp_job.write("cp stepPAT_MINIAOD.root %s/stepPAT_MINIAOD_%s.root\n"%(remoteDir, str(i)))
+    tmp_job.write("rm stepPAT_MINIAOD.root\n")
     tmp_job.close()
     os.system("chmod +x %s"%(jobDir+tmp_jobname))
 
