@@ -20,6 +20,12 @@ process.load('HLTrigger.Configuration.HLT_GRun_cff')
 process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
+# Load the GRun menu
+from HLTrigger.Configuration.HLT_GRun_cff import *
+# Modify parameters
+process.HLTPSetTrajectoryBuilderForGsfElectrons.maxCand = cms.int32( 5 )
+process.hltEleSeedsTrackingRegions.RegionPSet.originRadius = cms.double( 0.05 )
+
 process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(200),
     output = cms.optional.untracked.allowed(cms.int32,cms.PSet)

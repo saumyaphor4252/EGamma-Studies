@@ -27,17 +27,13 @@ Re-run HLT step
 ```
 cmsDriver.py  --conditions 140X_dataRun3_HLT_v3 --data --datatier RECO --era Run3 --eventcontent RECO --filein file:/eos/cms/store/data/Run2024G/EGamma0/RAW-RECO/ZElectron-PromptReco-v1/000/385/443/00000/f9934f4e-60de-4ef6-a48a-77b7e1b07ebf.root --fileout file:hltOutput_RECO.root --no_exec -n 200 --process MYHLT --python_filename hlt_ReRun_Config.py --scenario pp --step HLT:GRun
 ```
-This will create the config file to be used. Update the config manually to change the required `maxCand` and `OriginRadius` values by adding:
+This will create the config file to be used. Update the config manually to change the required `maxCand` and `OriginRadius` values by adding eitin this config file or directly in cmsCondor submission script:
 ```
-process.HLTPSetTrajectoryBuilderForGsfElectrons = cms.PSet(
-    maxCand = cms.int32(5),
-)
-
-process.hltEleSeedsTrackingRegions = cms.EDProducer( "TrackingRegionsFromSuperClustersEDProducer",
-    RegionPSet = cms.PSet(
-            originRadius = cms.double(0.2),
-    )        
-)
+# Load the GRun menu
+from HLTrigger.Configuration.HLT_GRun_cff import *
+# Modify parameters
+process.HLTPSetTrajectoryBuilderForGsfElectrons.maxCand = cms.int32( 5 )
+process.hltEleSeedsTrackingRegions.RegionPSet.originRadius = cms.double( 0.05 )
 ```
 Now run the configuration file
 ```
@@ -82,11 +78,14 @@ python3 dasFileQuery.py
 # This will create the List_cff.py file with the list of input files to be used.
 voms-proxy-init --valid 100:00
 cp /tmp/x509up_u<999999> /afs/cern.ch/user/s/ssaumya/private/x509up_u<999999>
-python3 cmsCondor.py hlt_ReRun_Config.py /afs/cern.ch/work/s/ssaumya/private/Egamma/EGM_Bpix/CMSSW_14_0_15/src/ /eos/cms/store/group/phys_egamma/ssaumya/EGM_BPix_Fix/HLTstep_RECO_RootFiles/ -n 10 -q workday -p /afs/cern.ch/user/s/ssaumya/private/x509up_u<999999>
+# For HLT step
+# Update the cmsCondor.py accordingly for input and output, and the change needed in hltConfiguration
+## L49-L53 for configuration modification, L55-L72 for input source, L75 for events, L78-79 and L127-130 for output file name
+python3 cmsCondor.py hlt_ReRun_Config.py /afs/cern.ch/work/s/ssaumya/private/Egamma/EGM_Bpix/CMSSW_14_0_15/src/ /eos/cms/store/group/phys_egamma/ssaumya/EGM_BPix_Fix/HLTstep_RECO_RootFiles/ -n 10 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u<999999>
 # -n 10 --> 10 files per job, 145 jobs created in this case
 ./sub_total.jobb
 # For PAT step
-# Update the cmsCondor.py accordingly for input and output 
-## L49-L66, L72-73, L121-124
+# Update the cmsCondor.py accordingly for input and output, and the change needed in hltConfiguration  
+## L49-L53 for configuration modification, L55-L72 for input source, L75 for events, L78-79 and L127-130 for output file name
 python3 cmsCondor.py makeMini_cfg.py /afs/cern.ch/work/s/ssaumya/private/Egamma/EGM_Bpix/CMSSW_14_0_15/src/ /eos/cms/store/group/phys_egamma/ssaumya/EGM_BPix_Fix/PATstep_MINIAOD_RootFiles/ -n 5 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u<999999>
 ```
