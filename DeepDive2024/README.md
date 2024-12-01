@@ -71,7 +71,7 @@ python3 cmsCondor.py hlt_ReRun_Config.py /afs/cern.ch/work/s/ssaumya/private/Ega
 
 # Update the cmsCondor.py accordingly for input and output, and the change needed in hltConfiguration  
 ## L49-L53 for configuration modification, L55-L72 for input source, L75 for events, L78-79 and L127-130 for output file name
-python3 cmsCondor.py makeMini_cfg.py /afs/cern.ch/work/s/ssaumya/private/Egamma/EGM_Bpix/CMSSW_14_0_15/src/ /eos/cms/store/group/phys_egamma/ssaumya/EGM_BPix_Fix/PATstep_MINIAOD_RootFiles/ -n 5 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u<999999>
+python3 cmsCondor.py makeMini_cfg.py /afs/cern.ch/work/s/ssaumya/private/Egamma/CMSSW_14_0_15/src/ /eos/cms/store/group/phys_egamma/ssaumya/DeepDive/PATstep_MINIAOD_RootFiles/ -n 5 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u<999999>
 ```
 
 ### Make the ntuples
