@@ -58,14 +58,41 @@ python3 dasFileQuery.py
 # This will create the List_cff.py file with the list of input files to be used.
 voms-proxy-init --valid 100:00
 cp /tmp/x509up_u<999999> /afs/cern.ch/user/s/ssaumya/private/x509up_u<999999>
-# For HLT step
+
+#### For HLT step ####
 # Update the cmsCondor.py accordingly for input and output, and the change needed in hltConfiguration
-## L49-L53 for configuration modification, L55-L72 for input source, L75 for events, L78-79 and L127-130 for output file name
+# L49-L53 for configuration modification, L55-L72 for input source, L75 for events, L78-79 and L127-130 for output file name
 python3 cmsCondor.py hlt_ReRun_Config.py /afs/cern.ch/work/s/ssaumya/private/Egamma/EGM_Bpix/CMSSW_14_2_1/src/ /eos/cms/store/group/phys_egamma/ssaumya/EGM_BPix_Fix/10thFeb/HLTstep_RECO_RootFiles_Suggestion1 -n 10 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184
-# -n 10 --> 10 files per job, 145 jobs created in this case
+# -n 10 --> 10 files per job, 149 jobs created in this case
 ./sub_total.jobb
-# For PAT step
+
+#### For PAT step ####
 # Update the cmsCondor.py accordingly for input and output, and the change needed in hltConfiguration  
-## L49-L53 for configuration modification, L55-L72 for input source, L75 for events, L78-79 and L127-130 for output file name
+# L49-L53 for configuration modification, L55-L72 for input source, L75 for events, L78-79 and L127-130 for output file name
 python3 cmsCondor.py makeMini_cfg.py /afs/cern.ch/work/s/ssaumya/private/Egamma/EGM_Bpix/CMSSW_14_0_15/src/ /eos/cms/store/group/phys_egamma/ssaumya/EGM_BPix_Fix/PATstep_MINIAOD_RootFiles/ -n 5 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u<999999>
+./sub_total.jobb
+```
+
+### Make the ntuples
+Set up inside `CMSSW_14_2_1/src`
+```
+git clone -b Private_MINIAOD_2024_Data git@github.com:saumyaphor4252/EgammaAnalysis-TnPTreeProducer.git EgammaAnalysis/TnPTreeProducer
+scram b -j8
+cd EgammaAnalysis/TnPTreeProducer/crab/
+
+vi tnpCrabSubmit_PrivateMINIAOD.py
+# Update the file tnpCrabSubmit_PrivateMINIAOD.py as per needs for input, output files and storage folder
+python3 tnpCrabSubmit_PrivateMINIAOD.py # This will create a file crab_submit_Private_MINIAOD.py
+crab submit crab_submit_Private_MINIAOD.py # This will submit the jobs
+```
+
+### Run Iason's tool for plotting
+```
+ssh -o ServerAliveInterval=10 ssaumya@lxplus9.cern.ch -L8777:localhost:8777
+cd /afs/cern.ch/user/s/ssaumya/Egamma/egamma-tnp/
+source egmtnpenv/bin/activate
+jupyter lab --no-browser --port 8777
+
+# Code Repo: https://github.com/saumyaphor4252/egamma-tnp/tree/2024_Studies
+# Notebook Template: Winter24Checks.ipynb, Wniter24_DataMC_Checks.ipynb
 ```
