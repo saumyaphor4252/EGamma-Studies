@@ -1,4 +1,4 @@
-# Relevant Links
+## Relevant Links
 - The baseline for these studies has to be the mkFit+CA tuning (as recommended by TSG)
 - From Tracking: the latest recipe for `15_0_X` cycle
 https://docs.google.com/document/d/1bX-ckRcYcMqfykcWAbIPfkCCwkpheywtNW981OP-r80/edit?tab=t.0#heading=h.mw406pivxy4q
@@ -29,7 +29,7 @@ git cherry-pick d73d7272d66e7c702a615557bc4ced4ba8766019
 git cherry-pick 622039de51b5cac83fa72fa901990e1eeeb9b8d0
 scram b -j 10
 ```
-### Run the HLT step
+## Run the HLT step
 ```
 ### hltGetConfiguration
 hltGetConfiguration /dev/CMSSW_14_2_0/GRun/V12 --output minimal --data --process MYHLT --type GRun --globaltag 141X_dataRun3_HLT_v2 --max-events 100 --unprescale --eras Run3_2024 --customise HLTrigger/Configuration/customize_CAPixelOnlyRetune.customize_CAPixelOnlyRetuneSameEff,RecoTracker/MkFit/customizeHLTIter0ToMkFit.customizeHLTIter0ToMkFit --cff > "${CMSSW_BASE}"/src/HLTrigger/Configuration/python/HLT_2024I_cff.py
@@ -45,7 +45,7 @@ python3 dasFileQuery.py # Update the dataset manually used here if not already; 
 # This will generate List_cff.py with files list
 
 ### Submit on condor
-python3 cmsCondor.py hlt_ReRun_Config.py /afs/cern.ch/work/s/ssaumya/private/Egamma/L1_min_Cluster_Charge/CMSSW_14_2_2/src /eos/cms/store/group/phys_egamma/ssaumya/L1_min_Cluster_Charge/HLTstep_RECO_RootFiles_Reference/ -n 10 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184
+python3 cmsCondor.py hlt_ReRun_Config.py /afs/cern.ch/work/s/ssaumya/private/Egamma/L1_min_Cluster_Charge/CMSSW_14_2_2/src /eos/cms/store/group/phys_egamma/ssaumya/L1_min_Cluster_Charge/HLTstep_RECO_RootFiles_Reference/ -n 10 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u<9999>
 # Format for above command: python3 cmsCondor.py <config_file> <CMSSW_Area> <Output_Files_Area> -n <number_of_files_per_job> -q <flavour> -p <voms_proxy_area>
 ./sub_total.jobb
 ```
@@ -59,9 +59,15 @@ process.hltSiPixelClustersSerialSync.clusterThreshold_layer1 = 2000
 process.hltSiPixelClustersRegForDisplaced.ClusterThreshold_L1 = 2000
 ```
  
-### Run the PAT step to create miniAOD (Common for Reference and Target)
+## Run the PAT step to create miniAOD (Common for Reference and Target)
 ```
 cmsDriver.py stepMINI -s PAT --conditions 140X_dataRun3_Prompt_v3 --datatier MINIAOD -n 200 --eventcontent MINIAOD --python_filename makeMini_cfg.py --geometry DB:Extended --era Run3_2024 --filein file:hltOutput_RECO.root --fileout file:stepMINI.root --hltProcess MYHLT
+
+#### For condor submission ####
+# Update the cmsCondor.py accordingly for input and output, and the change needed in hltConfiguration  
+# L49-L53 for configuration modification, L55-L72 for input source, L75 for events, L78-79 and L127-130 for output file name
+python3 cmsCondor.py makeMini_cfg.py /afs/cern.ch/work/s/ssaumya/private/Egamma/L1_min_Cluster_Charge/CMSSW_15_0_0/src/PAT_Step/ /eos/cms/store/group/phys_egamma/ssaumya/L1_min_Cluster_Charge/PATstep_MINIAOD_RootFiles_Reference/ -n 1 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u<9999>
+./sub_total.jobb
 ```
 
 ### Make the ntuples
