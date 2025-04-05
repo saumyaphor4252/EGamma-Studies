@@ -1,5 +1,5 @@
 ## Relevant Links
-- https://its.cern.ch/jira/browse/CMSHLT-3749
+- https://its.cern.ch/jira/browse/CMSHLT-3479
 - Results: https://indico.cern.ch/event/1527098/contributions/6425132/subcontributions/539022/attachments/3043138/5376302/EGM_FineTuning.pdf
 
 ### Set up the rucio rules for the files/blocks as per required minimally for the testing
