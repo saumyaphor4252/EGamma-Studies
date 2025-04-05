@@ -49,7 +49,6 @@ python3 cmsCondor.py hlt_ReRun_Config_Reference.py /afs/cern.ch/work/s/ssaumya/p
 
 For Target, update the target menu and repeat above commands as follows:
 ```
-
 hltGetConfiguration /users/missirol/test/dev/CMSSW_15_0_0/CMSHLT_3479/Test01/GRun/V2 --output minimal --data --process MYHLT --type GRun --globaltag 150X_dataRun3_HLT_v1 --max-events 100 --unprescale --eras Run3_2024 --cff > "${CMSSW_BASE}"/src/HLTrigger/Configuration/python/HLT_2024I_Target_cff.py
 
 cmsDriver.py --conditions 150X_dataRun3_HLT_v1 --data --datatier RECO --era Run3_2024 --eventcontent RECO --filein file:/eos/cms/store/data/Run2024I/EGamma1/RAW-RECO/ZElectron-PromptReco-v1/000/386/509/00000/fc9479a6-fffe-4e2a-94b7-3eea7f245216.root --fileout file:hltOutput_RECO_Target.root --no_exec -n 100 --process MYHLT --python_filename hlt_ReRun_Config_Target.py --scenario pp --step HLT:2024I_Target
@@ -86,9 +85,9 @@ crab submit crab_submit_Private_MINIAOD.py # This will submit the jobs
 
 ### Run Iason's tool for plotting
 
-If you running the tool for the first time see also https://github.com/saumyaphor4252/egamma-tnp/tree/2024_Studies 
+See also https://github.com/saumyaphor4252/egamma-tnp/tree/2024_Studies 
 
-## First time setup
+#### First time setup
 If you running the tool for the first time: 
 ```
 ssh ssaumya@lxplus9.cern.ch -L8787:localhost:8787
@@ -106,7 +105,7 @@ pip install . --no-cache-dir
 jupyter lab --no-browser --port 8787
 ```
 
-## After initial set-up 
+#### After initial set-up 
 Once the set-up is done, once can use the below commands from next time:
 ```
 ssh -o ServerAliveInterval=10 ssaumya@lxplus9.cern.ch -L8787:localhost:8787
