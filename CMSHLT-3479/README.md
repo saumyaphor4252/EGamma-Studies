@@ -85,12 +85,35 @@ crab submit crab_submit_Private_MINIAOD.py # This will submit the jobs
 ```
 
 ### Run Iason's tool for plotting
-```
-ssh -o ServerAliveInterval=10 ssaumya@lxplus9.cern.ch -L8777:localhost:8777
-cd /afs/cern.ch/user/s/ssaumya/Egamma/egamma-tnp/
-source egmtnpenv/bin/activate
-jupyter lab --no-browser --port 8777
 
-# Code used: https://github.com/saumyaphor4252/egamma-tnp/tree/2024_Studies
-# Notebook templates: Winter24Checks.ipynb, Wniter24_DataMC_Checks.ipynb
+If you running the tool for the first time see also https://github.com/saumyaphor4252/egamma-tnp/tree/2024_Studies 
+
+## First time setup
+If you running the tool for the first time: 
+```
+ssh ssaumya@lxplus9.cern.ch -L8787:localhost:8787
+cd /afs/cern.ch/work/s/ssaumya/private/Egamma/IasonTool/
+git clone -b 2024_Studies git@github.com:saumyaphor4252/egamma-tnp.git
+cd egamma-tnp/
+python3 -m venv egmtnpenv
+source egmtnpenv/bin/activate
+pip install jupyter
+pip install ipython
+pip install ipykernel
+ipython kernel install --user --name=egmtnpenv
+python -m ipykernel install --user --name=egmtnpenv
+pip install . --no-cache-dir
+jupyter lab --no-browser --port 8787
+```
+
+## After initial set-up 
+Once the set-up is done, once can use the below commands from next time:
+```
+ssh -o ServerAliveInterval=10 ssaumya@lxplus9.cern.ch -L8787:localhost:8787
+cd /afs/cern.ch/work/s/ssaumya/private/Egamma/IasonTool/egamma-tnp/
+source egmtnpenv/bin/activate
+jupyter lab --no-browser --port 8787
+
+# Code/Branch used: https://github.com/saumyaphor4252/egamma-tnp/tree/2024_Studies
+# Notebook template: https://github.com/saumyaphor4252/egamma-tnp/blob/2024_Studies/SpikeKiller_FineTuning.ipynb
 ```
