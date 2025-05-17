@@ -16,7 +16,7 @@ rucio add-rule cms:/EGamma1/Run2024I-ZElectron-PromptReco-v1/RAW-RECO#dce53cd5-6
 dce6129136304cc19b0b975be42ddc35
 ```
 
-## CMSSW set-up
+### CMSSW set-up
 ```
 cmsrel CMSSW_15_0_5; cd CMSSW_15_0_5/src; cmsenv
 git cms-merge-topic cms-tsg-storm:devel_customizeHLTfor2025Studies_from_CMSSW_15_0_3
@@ -25,7 +25,7 @@ scram b -j 10
 ```
 
 ### Run the HLT step
-#### Reference
+##### Reference
 ```
 ### hltGetConfiguration
 hltGetConfiguration /dev/CMSSW_15_0_0/GRun/V60 --output minimal --data --process MYHLT --type GRun --globaltag 150X_dataRun3_HLT_v1 --max-events 100 --unprescale --eras Run3_2024  --customise HLTrigger/Configuration/customizeHLTfor2025Studies.customizeHLTfor2024L1TMenu,HLTrigger/Configuration/customizeHLTfor2025Studies.customizeHLTfor2024L1TMenu --cff > "${CMSSW_BASE}"/src/HLTrigger/Configuration/python/HLT_2024I_Reference_cff.py
@@ -40,7 +40,7 @@ cmsRun hlt_ReRun_Config_Reference.py
 python3 cmsCondor.py hlt_ReRun_Config_Reference.py /afs/cern.ch/work/s/ssaumya/private/Egamma/CA_Tuning/28thApril/CMSSW_15_0_5/src/HLT_Reference/ /eos/cms/store/group/phys_egamma/ssaumya/CATuning_mkFit/OnlyCA_6thMay2025/HLTstep_RECO_RootFiles_Reference/ -n 10 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184
 ```
 
-#### Target
+##### Target
 
 ```
 ### hltGetConfiguration
