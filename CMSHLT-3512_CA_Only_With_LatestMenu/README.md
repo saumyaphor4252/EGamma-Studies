@@ -1,3 +1,9 @@
+## Relevant Links
+- JIRA : https://its.cern.ch/jira/browse/CMSHLT-3512
+- From Tracking: the latest recipe for `15_0_X` cycle
+	- https://docs.google.com/document/d/1bX-ckRcYcMqfykcWAbIPfkCCwkpheywtNW981OP-r80/edit?tab=t.0#heading=h.j303vu7f1fcc
+	- Under the paragraph "CA pixel-only (patatrack) re-tuning starting from a 2025 menu"
+
 ### Set up the rucio rules for the files/blocks as per required minimally for the testing
 ```
 rucio add-rule cms:/EGamma1/Run2024I-ZElectron-PromptReco-v1/RAW-RECO#4a2f0c6d-e420-4818-9bef-7d6d05b5fe1a 1 T2_CH_CERN --lifetime 1296000 --comment "For urgent TSG EGM Deep Dive studies"
@@ -10,65 +16,53 @@ rucio add-rule cms:/EGamma1/Run2024I-ZElectron-PromptReco-v1/RAW-RECO#dce53cd5-6
 dce6129136304cc19b0b975be42ddc35
 ```
 
-## Target set-up
+## CMSSW set-up
 ```
-cmsrel CMSSW_14_2_1
-cd CMSSW_14_2_1/src
-cmsenv
-git cms-merge-topic mmasciov:142X_hltPixelAutoTuning
-git cms-merge-topic mmasciov:142X_mkFitForHLT
-git clone https://github.com/cms-data/RecoTracker-MkFit.git RecoTracker/MkFit/data
+cmsrel CMSSW_15_0_5; cd CMSSW_15_0_5/src; cmsenv
+git cms-merge-topic cms-tsg-storm:devel_customizeHLTfor2025Studies_from_CMSSW_15_0_3
+git cms-merge-topic elusian:1501_newCAtuning
 scram b -j 10
 ```
+
 ### Run the HLT step
+#### Reference
 ```
 ### hltGetConfiguration
-hltGetConfiguration /dev/CMSSW_14_2_0/GRun/V11 --path HLTriggerFirstPath,HLT_Ele30_WPTight_Gsf_v11,HLT_Ele32_WPTight_Gsf_v25,HLT_Ele115_CaloIdVT_GsfTrkIdT_v25,HLT_Ele135_CaloIdVT_GsfTrkIdT_v18,HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v29,HLT_DoubleEle33_CaloIdL_MW_v28,HLTriggerFinalPath --output minimal --data --process MYHLT --type GRun --globaltag 141X_dataRun3_HLT_v2 --max-events 100 --unprescale --eras Run3 --customise HLTrigger/Configuration/customize_CAPixelOnlyRetune.customize_CAPixelOnlyRetune,RecoTracker/MkFit/customizeHLTIter0ToMkFit.customizeHLTIter0ToMkFit --cff > "${CMSSW_BASE}"/src/HLTrigger/Configuration/python/HLT_2024I_cff.py
+hltGetConfiguration /dev/CMSSW_15_0_0/GRun/V60 --output minimal --data --process MYHLT --type GRun --globaltag 150X_dataRun3_HLT_v1 --max-events 100 --unprescale --eras Run3_2024  --customise HLTrigger/Configuration/customizeHLTfor2025Studies.customizeHLTfor2024L1TMenu,HLTrigger/Configuration/customizeHLTfor2025Studies.customizeHLTfor2024L1TMenu --cff > "${CMSSW_BASE}"/src/HLTrigger/Configuration/python/HLT_2024I_Reference_cff.py
 
 ### Re-run HLT step
-cmsDriver.py --conditions 141X_dataRun3_HLT_v2 --data --datatier RECO --era Run3 --eventcontent RECO --filein file:/eos/cms/store/data/Run2024I/EGamma1/RAW-RECO/ZElectron-PromptReco-v1/000/386/509/00000/fc9479a6-fffe-4e2a-94b7-3eea7f245216.root --fileout file:hltOutput_RECO.root --no_exec -n 100 --process MYHLT --python_filename hlt_ReRun_Config.py --scenario pp --step HLT:2024I
+cmsDriver.py --conditions 150X_dataRun3_HLT_v1 --data --datatier RECO --era Run3_2024 --eventcontent RECO --filein file:/eos/cms/store/data/Run2024I/EGamma1/RAW-RECO/ZElectron-PromptReco-v1/000/386/509/00000/fc9479a6-fffe-4e2a-94b7-3eea7f245216.root --fileout file:hltOutput_RECO_Reference.root -n 100 --process MYHLT --python_filename hlt_ReRun_Config_Reference.py --scenario pp --step HLT:2024I_Reference
 
 ### Now run the configuration file for local testing
-cmsRun hlt_ReRun_Config.py
+cmsRun hlt_ReRun_Config_Reference.py
 
 ### Submit on condor
-python3 cmsCondor.py hlt_ReRun_Config.py /afs/cern.ch/work/s/ssaumya/private/Egamma/CA_Tuning/CA+mkFit/CMSSW_14_2_1/src /eos/cms/store/group/phys_egamma/ssaumya/CATuning_mkFit/HLTstep_RECO_RootFiles_Target/ -n 10 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184
+python3 cmsCondor.py hlt_ReRun_Config_Reference.py /afs/cern.ch/work/s/ssaumya/private/Egamma/CA_Tuning/28thApril/CMSSW_15_0_5/src/HLT_Reference/ /eos/cms/store/group/phys_egamma/ssaumya/CATuning_mkFit/OnlyCA_6thMay2025/HLTstep_RECO_RootFiles_Reference/ -n 10 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184
+```
+
+#### Target
+
+```
+### hltGetConfiguration
+hltGetConfiguration /dev/CMSSW_15_0_0/GRun/V60 --output minimal --data --process MYHLT --type GRun --globaltag 150X_dataRun3_HLT_v1 --max-events 100 --unprescale --eras Run3_2024  --customise HLTrigger/Configuration/customizeHLTfor2025Studies.customizeHLTfor2024L1TMenu,HLTrigger/Configuration/customizeHLTfor2025Studies.customizeHLTfor2024L1TMenu,RecoTracker/MkFit/customizeHLTIter0ToMkFit.customizeHLTforTrackingIter0CKF --cff > "${CMSSW_BASE}"/src/HLTrigger/Configuration/python/HLT_2024I_Target_cff.py
+
+### Re-run HLT step
+cmsDriver.py --conditions 150X_dataRun3_HLT_v1 --data --datatier RECO --era Run3_2024 --eventcontent RECO --filein file:/eos/cms/store/data/Run2024I/EGamma1/RAW-RECO/ZElectron-PromptReco-v1/000/386/509/00000/fc9479a6-fffe-4e2a-94b7-3eea7f245216.root --fileout file:hltOutput_RECO_Target.root -n 100 --process MYHLT --python_filename hlt_ReRun_Config_Target.py --scenario pp --step HLT:2024I_Target
+
+### Now run the configuration file for local testing
+cmsRun hlt_ReRun_Config_Target.py
+
+### Submit on condor
+python3 cmsCondor.py hlt_ReRun_Config_Target.py /afs/cern.ch/work/s/ssaumya/private/Egamma/CA_Tuning/28thApril/CMSSW_15_0_5/src/HLT_Target/ /eos/cms/store/group/phys_egamma/ssaumya/CATuning_mkFit/OnlyCA_6thMay2025/HLTstep_RECO_RootFiles_Target/ -n 10 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184
 ```
  
 ### Run the PAT step to create miniAOD
 ```
-cmsDriver.py stepMINI -s PAT --conditions 140X_dataRun3_Prompt_v3 --datatier MINIAOD -n 200 --eventcontent MINIAOD --python_filename makeMini_cfg.py --geometry DB:Extended --era Run3_2024 --filein file:hltOutput_RECO.root --fileout file:stepMINI.root --hltProcess MYHLT
-```
-## Reference set-up
-```
-cmsrel CMSSW_14_2_1
-cd CMSSW_14_2_1/src
-cmsenv
-git cms-addpkg HLTrigger/Configuration
-scram b -j 10
-```
-### Run the HLT step
-```
-### hltGetConfiguration
-hltGetConfiguration /dev/CMSSW_14_2_0/GRun/V11 --path HLTriggerFirstPath,HLT_Ele30_WPTight_Gsf_v11,HLT_Ele32_WPTight_Gsf_v25,HLT_Ele115_CaloIdVT_GsfTrkIdT_v25,HLT_Ele135_CaloIdVT_GsfTrkIdT_v18,HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v29,HLT_DoubleEle33_CaloIdL_MW_v28,HLTriggerFinalPath --output minimal --data --process MYHLT --type GRun --globaltag 141X_dataRun3_HLT_v2 --max-events 100 --unprescale --eras Run3 --cff > "${CMSSW_BASE}"/src/HLTrigger/Configuration/python/HLT_2024I_cff.py
-
-### Re-run HLT step
-cmsDriver.py --conditions 141X_dataRun3_HLT_v2 --data --datatier RECO --era Run3 --eventcontent RECO --filein file:/eos/cms/store/data/Run2024I/EGamma1/RAW-RECO/ZElectron-PromptReco-v1/000/386/509/00000/fc9479a6-fffe-4e2a-94b7-3eea7f245216.root --fileout file:hltOutput_RECO.root --no_exec -n 100 --process MYHLT --python_filename hlt_ReRun_Config.py --scenario pp --step HLT:2024I
-
-### Now run the configuration file for local testing
-cmsRun hlt_ReRun_Config.py
-
-### Submit on condor
-python3 cmsCondor.py hlt_ReRun_Config.py /afs/cern.ch/work/s/ssaumya/private/Egamma/CA_Tuning/CA+mkFit/Reference/CMSSW_14_2_1/src /eos/cms/store/group/phys_egamma/ssaumya/CATuning_mkFit/HLTstep_RECO_RootFiles_Reference/ -n 10 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184
+cmsDriver.py stepMINI -s PAT --conditions 150X_dataRun3_Prompt_v1 --datatier MINIAOD -n 100 --eventcontent MINIAOD --python_filename makeMini_cfg.py --geometry DB:Extended --era Run3_2024 --filein file:hltOutput_RECO.root --fileout file:stepMINI.root --hltProcess MYHLT
 ```
  
-### Run the PAT step to create miniAOD
-```
-cmsDriver.py stepMINI -s PAT --conditions 140X_dataRun3_Prompt_v3 --datatier MINIAOD -n 200 --eventcontent MINIAOD --python_filename makeMini_cfg.py --geometry DB:Extended --era Run3_2024 --filein file:hltOutput_RECO.root --fileout file:stepMINI.root --hltProcess MYHLT
-```
-
 ### Make the ntuples
-Set up inside `CMSSW_14_0_15/src`
+Set up inside `CMSSW_X_Y_Z/src`
 ```
 git clone -b Private_MINIAOD_2024_Data git@github.com:saumyaphor4252/EgammaAnalysis-TnPTreeProducer.git EgammaAnalysis/TnPTreeProducer
 scram b -j8
@@ -88,6 +82,6 @@ source egmtnpenv/bin/activate
 jupyter lab --no-browser --port 8777
 
 # Code used: https://github.com/saumyaphor4252/egamma-tnp/tree/2024_Studies
-# Notebook used: Winter24Checks.ipynb, Wniter24_DataMC_Checks.ipynb
+# Notebook Template: Winter24Checks.ipynb, Wniter24_DataMC_Checks.ipynb
 ```
 
