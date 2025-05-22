@@ -1,3 +1,6 @@
+## Relevant Links
+- CMSHLT-3399: https://its.cern.ch/jira/browse/CMSHLT-3399
+
 ### Set up the rucio rules if needed for the files/blocks as per required minimally 
 ```
 rucio add-rule cms:/EGamma1/Run2024I-ZElectron-PromptReco-v1/RAW-RECO#4a2f0c6d-e420-4818-9bef-7d6d05b5fe1a 1 T2_CH_CERN --lifetime 1296000 --comment "For important EGM-HLT studies"
@@ -92,6 +95,16 @@ Now run the configuration file for local testing
 ```
 cmsRun L1-HLT_re-emu.py
 ```
+
+For testing Laurent's fine tuning impact for the efficiency loss, use hltGetConfiguration command 
+```
+hltGetConfiguration /users/ssaumya/Test/CMSHLT-3399/Target/V4 --output minimal --data --process MYHLT --type GRun --globaltag 140X_dataRun3_HLT_v3 --max-events 100 --unprescale --eras Run3_2024 --cff > "${CMSSW_BASE}"/src/HLTrigger/Configuration/python/HLT_2024I_LaurentFineTuning_cff.py
+```
+Here `/users/ssaumya/Test/CMSHLT-3399/Target/V4` is the menu config with Laurent's propsed changes for Ele30 Tight WP (CMSHLT-3471) compare to reference menu `/dev/CMSSW_14_0_0/GRun/V169`. Update the cmsCondor.py/L1-HLT_re-emu.py as follows, and run as usual.
+```
+#from HLTrigger.Configuration.HLT_GRun_cff import *
+from HLTrigger.Configuration.HLT_2024I_LaurentFineTuning_cff import *
+```
  
 ### Config for PAT step set-up from the re-HLT output file
 ```
@@ -112,18 +125,18 @@ cp /tmp/x509up_u<999999> /afs/cern.ch/user/s/ssaumya/private/x509up_u<999999>
 
 # Update the cmsCondor.py accordingly for input and output, and the change needed in hltConfiguration
 ## L49-L63 for configuration modification of the HLT step, L65-L82 for input source, L85 for events, L90-92 and L140-143 for output file name
-python3 cmsCondor.py L1-HLT_re-emu.py /afs/cern.ch/work/s/ssaumya/private/Egamma/SpikeKiller/CMSSW_14_0_13/src/ /eos/cms/store/group/phys_egamma/ssaumya/2025_SpikeKiller/HLTstep_RECO_RootFiles_Reference/ -n 10 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u<999999>
+python3 cmsCondor.py L1-HLT_re-emu.py /afs/cern.ch/work/s/ssaumya/private/Egamma/SpikeKiller/14thApril/CMSSW_14_0_13/src/HLT_Reference/ /eos/cms/store/group/phys_egamma/ssaumya/2025_SpikeKiller/HLTstep_RECO_RootFiles_Reference/ -n 10 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u<999999> 
 # -n 10 --> 10 files per job, 41 jobs created in this case
 ./sub_total.jobb
 
 ##### For PAT step #####
 
 # Update the cmsCondor.py accordingly for input and output, and the change needed in hltConfiguration  
-python3 cmsCondor.py makeMini_cfg.py /afs/cern.ch/work/s/ssaumya/private/Egamma/SpikeKiller/CMSSW_14_0_13/src/ /eos/cms/store/group/phys_egamma/ssaumya/2025_SpikeKiller/PATstep_MINIAOD_RootFiles_Reference/ -n 5 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u<999999>
+python3 cmsCondor.py makeMini_cfg.py /afs/cern.ch/work/s/ssaumya/private/Egamma/SpikeKiller/14thApril/CMSSW_14_0_13/src/PAT_Reference/ /eos/cms/store/group/phys_egamma/ssaumya/2025_SpikeKiller/PATstep_MINIAOD_RootFiles_Reference/ -n 1 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u<999999>
 ```
 
 ### Make the ntuples
-Set up inside `CMSSW_14_0_1333rc`
+Set up inside `CMSSW_14_0_13/src`
 ```
 git clone -b Private_MINIAOD_2024_Data git@github.com:saumyaphor4252/EgammaAnalysis-TnPTreeProducer.git EgammaAnalysis/TnPTreeProducer
 scram b -j8
@@ -138,10 +151,10 @@ crab submit crab_submit_Private_MINIAOD.py # This will submit the jobs
 ### Run Iason's tool for plotting
 ```
 ssh -o ServerAliveInterval=10 ssaumya@lxplus9.cern.ch -L8777:localhost:8777
-cd /afs/cern.ch/user/s/ssaumya/Egamma/egamma-tnp/
+cd /afs/cern.ch/work/s/ssaumya/private/Egamma/IasonTool/egamma-tnp/
 source egmtnpenv/bin/activate
 jupyter lab --no-browser --port 8777
 
 # Code used: https://github.com/saumyaphor4252/egamma-tnp/tree/2024_Studies
-# Notebook used: Winter24Checks.ipynb, Wniter24_DataMC_Checks.ipynb
+# Notebook templates: Winter24Checks.ipynb, Wniter24_DataMC_Checks.ipynb
 ```
