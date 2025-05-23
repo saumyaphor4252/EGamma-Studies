@@ -1,0 +1,8 @@
+Path (w/ version number), Path,  Groups,  Type,  Total Count,  Total Rate (Hz),  Pure Count,  Pure Rate (Hz)
+Total Misc, Total Misc,  ,  , 3463, 344.17
+HLT_Ele30_WPTight_Gsf_v13, HLT_Ele30_WPTight_Gsf_v,  ,  , 2865, 284.73, 301, 29.91
+HLT_Ele32_WPTight_Gsf_v27, HLT_Ele32_WPTight_Gsf_v,  ,  , 2558, 254.22, 0, 0.0
+HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v31, HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v,  ,  , 501, 49.79, 331, 32.9
+HLT_Ele115_CaloIdVT_GsfTrkIdT_v27, HLT_Ele115_CaloIdVT_GsfTrkIdT_v,  ,  , 241, 23.95, 89, 8.85
+HLT_DoubleEle33_CaloIdL_MW_v30, HLT_DoubleEle33_CaloIdL_MW_v,  ,  , 160, 15.9, 62, 6.16
+HLT_Ele135_CaloIdVT_GsfTrkIdT_v20, HLT_Ele135_CaloIdVT_GsfTrkIdT_v,  ,  , 126, 12.52, 0, 0.0
