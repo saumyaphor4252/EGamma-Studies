@@ -28,7 +28,7 @@ scram b -j 10
 ##### Target
 ```
 ### hltGetConfiguration
-hltGetConfiguration /cdaq/physics/Run2025/2e34/v1.1.2/HLT/V6 --output minimal --data --process MYHLT --type GRun --globaltag 150X_dataRun3_HLT_v1 --max-events 100 --unprescale --eras Run3_2025  --customise RecoTracker.MkFit.customizeHLTALLMkFit.customizeHLTDoubletRecoveryToMkFit --cff > "${CMSSW_BASE}"/src/HLTrigger/Configuration/python/HLT_2025C_Run392925_Target_cff.py
+hltGetConfiguration adg:/cdaq/physics/Run2025/2e34/v1.1.2/HLT/V6 --output minimal --data --process MYHLT --globaltag 150X_dataRun3_HLT_v1 --max-events 100 --unprescale --eras Run3_2025  --customise RecoTracker/MkFit/customizeHLTALLMkFit.customizeHLTDoubletRecoveryToMkFit --cff > "${CMSSW_BASE}"/src/HLTrigger/Configuration/python/HLT_2025C_Run392925_Target_cff.py
 
 ### Re-run HLT step
 cmsDriver.py --conditions 150X_dataRun3_HLT_v1 --data --datatier RECO --era Run3_2025 --eventcontent RECO --filein file:/eos/cms/store/data/Run2025C/EGamma0/RAW-RECO/ZElectron-PromptReco-v1/000/392/925/00000/f58a4205-664d-4edb-972d-e1bfc3d95300.root --fileout file:hltOutput_RECO_Target.root -n 100 --process MYHLT --python_filename hlt_ReRun_Config_Target.py --scenario pp --step HLT:2025C_Run392925_Target
@@ -43,6 +43,17 @@ python3 cmsCondor.py hlt_ReRun_Config_Target.py /afs/cern.ch/work/s/ssaumya/priv
 ##### Reference
 
 ```
+### hltGetConfiguration
+hltGetConfiguration adg:/cdaq/physics/Run2025/2e34/v1.1.2/HLT/V6 --output minimal --data --process MYHLT --globaltag 150X_dataRun3_HLT_v1 --max-events 100 --unprescale --eras Run3_2025 --cff > "${CMSSW_BASE}"/src/HLTrigger/Configuration/python/HLT_2025C_Run392925_Reference_cff.py
+
+### Re-run HLT step
+cmsDriver.py --conditions 150X_dataRun3_HLT_v1 --data --datatier RECO --era Run3_2025 --eventcontent RECO --filein file:/eos/cms/store/data/Run2025C/EGamma0/RAW-RECO/ZElectron-PromptReco-v1/000/392/925/00000/f58a4205-664d-4edb-972d-e1bfc3d95300.root --fileout file:hltOutput_RECO_Target.root -n 100 --process MYHLT --python_filename hlt_ReRun_Config_Reference.py --scenario pp --step HLT:2025C_Run392925_Reference
+
+### Now run the configuration file for local testing
+cmsRun hlt_ReRun_Config_Reference.py
+
+### Submit on condor
+python3 cmsCondor.py hlt_ReRun_Config_Reference.py /afs/cern.ch/work/s/ssaumya/private/Egamma/2025_CMSHLT-3566/CMSSW_15_0_7/src/HLT_Target/ /eos/cms/store/group/phys_egamma/ssaumya/2025_CMSHLT-3566/HLTstep_RECO_RootFiles_Target/ -n 10 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184
 ```
  
 ### Run the PAT step to create miniAOD
