@@ -1,0 +1,1000 @@
+   25  cd /afs/cern.ch/user/s/ssaumya/
+   26  ls
+   27  cd Egamma/
+   28  ls
+   29  cd ..
+   30  ls
+   31  cd Projects/
+   32  ls
+   33  cd ..
+   34  ls
+   35  pw
+   36  pwd
+   37  cd /afs/cern.ch/work/s/ssaumya/private/Egamma/Tracker_EOR3_Scenarios/22May_2025/CMSSW_14_0_9/src/
+   38  ls
+   39  cmsenv
+   40  edmDumpEventContent /eos/cms/store/group/phys_egamma/ssaumya/TrackerStudies/EOR3/hlt_0.root > hlt.txt
+   41  vi hlt.txt
+   42  ls
+   43  vi hlt.txt 
+   44  root /eos/cms/store/group/phys_egamma/ssaumya/TrackerStudies/EOR3/hlt_0.root
+   45  edmDumpEventContent /eos/cms/store/group/phys_egamma/ssaumya/TrackerStudies/Reference/hlt_0.root > hlt.txt
+   46  vi hlt.txt 
+   47  root /eos/cms/store/group/phys_egamma/ssaumya/TrackerStudies/Reference/hlt_0.root
+   48  vi CheckROOTFile.py
+   49  python3 CheckROOTFile.py
+   50  ls
+   51  vi tree_structure.txt 
+   52  vi CheckROOTFile.py
+   53  python3 CheckROOTFile.py
+   54  ls
+   55  vi tree_structure.txt 
+   56  vi CheckROOTFile.py
+   57  python3 CheckROOTFile.py
+   58  vi CheckROOTFile.py
+   59  python3 CheckROOTFile.py
+   60  vi CheckROOTFile.py
+   61  vi CheckROOTFile.c
+   62  vi CheckROOTFile.C
+   63  .x CheckROOTFile.C
+   64  gcc CheckROOTFile.C 
+   65  vi CheckROOTFile.C
+   66  cat CheckROOTFile.C
+   67  vi CheckROOTFile.C
+   68  gcc CheckROOTFile.C 
+   69  vi CheckROOTFile.C
+   70  gcc CheckROOTFile.C 
+   71  vi CheckROOTFile.C
+   72  gcc CheckROOTFile.C 
+   73  vi CheckROOTFile.C
+   74  gcc CheckROOTFile.C  -o CheckROOTFile
+   75  root-config --version
+   76  g++ CheckROOTFile.C $(root-config --cflags --libs) -o CheckROOTFile
+   77  ls
+   78  ./CheckROOTFile 
+   79  ls -lart
+   80  vi tree_structure.txt
+   81  ls
+   82  vi hlt.txt 
+   83  pwd
+   84  ls
+   85  cd EGTools/
+   86  ls
+   87  cd TrigTools/
+   88  ls
+   89  cd test
+   90  ls
+   91  vi cmsCondorData.py 
+   92  vi hlt_config_Reference.py 
+   93  ls /store/relval/CMSSW_14_0_9/RelValZEE_14/GEN-SIM-DIGI-RAW/PU_140X_mcRun3_2024_realistic_v14_RV245_2024-v1/2580000/739d9b40-a53f-424d-91d0-22ba9167dc9a.root
+   94  ls /eos/cms/store/relval/CMSSW_14_0_9/RelValZEE_14/GEN-SIM-DIGI-RAW/PU_140X_mcRun3_2024_realistic_v14_RV245_2024-v1/2580000/739d9b40-a53f-424d-91d0-22ba9167dc9a.root
+   95  edmDumpEventContent /eos/cms/store/relval/CMSSW_14_0_9/RelValZEE_14/GEN-SIM-DIGI-RAW/PU_140X_mcRun3_2024_realistic_v14_RV245_2024-v1/2580000/739d9b40-a53f-424d-91d0-22ba9167dc9a.root > MINIAOD_Content.out
+   96  vi MINIAOD_Content.out 
+   97  pwd
+   98  ls
+   99  mkdir Reference
+  100  ls
+  101  cd Reference/
+  102  ls
+  103  cmsenv
+  104  pwd
+  105  ls
+  106  ls ../
+  107  cp ../cmsCondorData.py .
+  108  voms-proxy-init
+  109  ls
+  110  hltGetConfiguration /dev/CMSSW_14_0_0/GRun/V156 --path HLTriggerFirstPath,HLT_Ele30_WPTight_Gsf_v9,HLT_Ele32_WPTight_Gsf_v23,HLT_Ele115_CaloIdVT_GsfTrkIdT_v23,HLT_Ele135_CaloIdVT_GsfTrkIdT_v16,HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v27,HLT_DoubleEle33_CaloIdL_MW_v26,HLTriggerFinalPath --output minimal --mc --process HLTX --type GRun --globaltag 140X_mcRun3_2024_realistic_v14 --max-events -1 --unprescale --eras Run3 --l1-emulator FullMC --l1 L1Menu_Collisions2024_v1_2_0_xml --input dataset:/RelValZEE_14/CMSSW_14_0_9-PU_140X_mcRun3_2024_realistic_v14_RV245_2024-v1/GEN-SIM-DIGI-RAW --customise HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaMenuDev,HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaInputContent > hlt.py
+  111  pwd
+  112  ls ../../../
+  113  ls ../../../../
+  114  ls ../../../../HLTrigger/Configuration/python/Tools/dasFileQuery.py 
+  115  vi ../../../../HLTrigger/Configuration/python/Tools/dasFileQuery.py 
+  116  hltGetConfiguration /dev/CMSSW_14_0_0/GRun/V156 --path HLTriggerFirstPath,HLT_Ele30_WPTight_Gsf_v9,HLT_Ele32_WPTight_Gsf_v23,HLT_Ele115_CaloIdVT_GsfTrkIdT_v23,HLT_Ele135_CaloIdVT_GsfTrkIdT_v16,HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v27,HLT_DoubleEle33_CaloIdL_MW_v26,HLTriggerFinalPath --output minimal --mc --process HLTX --type GRun --globaltag 140X_mcRun3_2024_realistic_v14 --max-events -1 --unprescale --eras Run3 --l1-emulator FullMC --l1 L1Menu_Collisions2024_v1_2_0_xml --input dataset:/RelValZEE_14/CMSSW_14_0_9-PU_140X_mcRun3_2024_realistic_v14_RV245_2024-v1/GEN-SIM-DIGI-RAW --customise HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaMenuDev,HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaInputContent > hlt.py
+  117  edmConfigDump hlt.py > hlt_config_Reference.py
+  118  pwd
+  119  vi cmsCondorData.py 
+  120  ./cmsCondorData.py hlt_config_Reference.py /afs/cern.ch/work/s/ssaumya/private/Egamma/Tracker_EOR3_Scenarios/22May_2025/CMSSW_14_0_9/src/EGTools/TrigTools/test/Reference/ /eos/cms/store/group/phys_egamma/ssaumya/TrackerStudies/Reference/ -n 15 -q workday -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184 
+  121  python3 cmsCondorData.py hlt_config_Reference.py /afs/cern.ch/work/s/ssaumya/private/Egamma/Tracker_EOR3_Scenarios/22May_2025/CMSSW_14_0_9/src/EGTools/TrigTools/test/Reference/ /eos/cms/store/group/phys_egamma/ssaumya/TrackerStudies/Reference/ -n 15 -q workday -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184 
+  122  ./sub_total.jobb 
+  123  cd ..
+  124  ls
+  125  cd EOR3/
+  126  ls
+  127  rm -rf Jobs
+  128  rm -rf hlt*.py
+  129  ls
+  130  rm -rf output.root 
+  131  rm -rf ssaumya.cc 
+  132  ls
+  133  vi ../../../../HLTrigger/Configuration/python/Tools/dasFileQuery.py
+  134  hltGetConfiguration /dev/CMSSW_14_0_0/GRun/V156 --path HLTriggerFirstPath,HLT_Ele30_WPTight_Gsf_v9,HLT_Ele32_WPTight_Gsf_v23,HLT_Ele115_CaloIdVT_GsfTrkIdT_v23,HLT_Ele135_CaloIdVT_GsfTrkIdT_v16,HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v27,HLT_DoubleEle33_CaloIdL_MW_v26,HLTriggerFinalPath --output minimal --mc --process HLTX --type GRun --globaltag 140X_mcRun3_2024_realistic_EOR3_TkDPGv2 --max-events 10 --unprescale --eras Run3 --l1-emulator FullMC --l1 L1Menu_Collisions2024_v1_2_0_xml --input dataset:/RelValZEE_14/CMSSW_14_0_9-PU_140X_mcRun3_2024_realistic_EOR3_TkDPGv2_RV245_2024-v4/GEN-SIM-DIGI-RAW --customise HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaMenuDev,HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaInputContent > hlt.py
+  135  edmConfigDump hlt.py > hlt_config_EOR3_v1.py
+  136  pwd
+  137  ls
+  138  vi cmsCondorData.py 
+  139  python3 cmsCondorData.py hlt_config_EOR3_v1.py /afs/cern.ch/work/s/ssaumya/private/Egamma/Tracker_EOR3_Scenarios/22May_2025/CMSSW_14_0_9/src/EGTools/TrigTools/test/EOR3/ /eos/cms/store/group/phys_egamma/ssaumya/TrackerStudies/EOR3_v1/ -n 15 -q workday -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184 
+  140  ls
+  141  ./sub_total.jobb 
+  142  cd ..
+  143  ls
+  144  cd EEOR3/
+  145  ls
+  146  rm -rf Jobs
+  147  rm -rf hlt*.py
+  148  ls
+  149  vi cmsCondorData.py
+  150  vi ../../../../HLTrigger/Configuration/python/Tools/dasFileQuery.py
+  151  hltGetConfiguration /dev/CMSSW_14_0_0/GRun/V156 --path HLTriggerFirstPath,HLT_Ele30_WPTight_Gsf_v9,HLT_Ele32_WPTight_Gsf_v23,HLT_Ele115_CaloIdVT_GsfTrkIdT_v23,HLT_Ele135_CaloIdVT_GsfTrkIdT_v16,HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v27,HLT_DoubleEle33_CaloIdL_MW_v26,HLTriggerFinalPath --output minimal --mc --process HLTX --type GRun --globaltag 140X_mcRun3_2024_realistic_EOR3_TkDPGv6 --max-events 10 --unprescale --eras Run3 --l1-emulator FullMC --l1 L1Menu_Collisions2024_v1_2_0_xml --input dataset:/RelValZEE_14/CMSSW_14_0_9-PU_140X_mcRun3_2024_realistic_EOR3_TkDPGv6_RV245_2024-v1/GEN-SIM-DIGI-RAW --customise HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaMenuDev,HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaInputContent > hlt.py
+  152  edmConfigDump hlt.py > hlt_config_EOR3_v1.py
+  153  pwd
+  154  mv hlt_config_EOR3_v1.py hlt_config_EOR3_v2.py
+  155  pwd
+  156  python3 cmsCondorData.py hlt_config_EOR3_v2.py /afs/cern.ch/work/s/ssaumya/private/Egamma/Tracker_EOR3_Scenarios/22May_2025/CMSSW_14_0_9/src/EGTools/TrigTools/test/EEOR3/ /eos/cms/store/group/phys_egamma/ssaumya/TrackerStudies/EOR3_v2/ -n 15 -q workday -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184
+  157  ./sub_total.jobb 
+  158  condor_q
+  159  ls
+  160  ls /eos/cms/store/group/phys_egamma/ssaumya/TrackerStudies/Reference/
+  161  ls /eos/cms/store/group/phys_egamma/ssaumya/TrackerStudies/
+  162  ls /eos/cms/store/group/phys_egamma/ssaumya/TrackerStudies/EOR3_v
+  163  ls /eos/cms/store/group/phys_egamma/ssaumya/TrackerStudies/EOR3_v1/
+  164  cd ..
+  165  ls
+  166  cd Reference/
+  167  ls
+  168  cd Jobs/
+  169  ls
+  170  cd Job_0/
+  171  ls
+  172  vi sub_0.sh 
+  173  vi hlt.stdout 
+  174  vi hlt.stderr 
+  175  l
+  176  ls
+  177  cd ..
+  178  ls
+  179  cd ..
+  180  ls
+  181  cmsRun hlt_config_Reference.py 
+  182  hltGetConfiguration /dev/CMSSW_14_0_0/GRun/V156 --path HLTriggerFirstPath,HLT_Ele30_WPTight_Gsf_v9,HLT_Ele32_WPTight_Gsf_v23,HLT_Ele115_CaloIdVT_GsfTrkIdT_v23,HLT_Ele135_CaloIdVT_GsfTrkIdT_v16,HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v27,HLT_DoubleEle33_CaloIdL_MW_v26,HLTriggerFinalPath --output minimal --mc --process HLTX --type GRun --globaltag 140X_mcRun3_2024_realistic_EOR3_TkDPGv2 --max-events 10 --unprescale --eras Run3 --l1-emulator FullMC --l1 L1Menu_Collisions2024_v1_3_0_xml --input dataset:/RelValZEE_14/CMSSW_14_0_9-PU_140X_mcRun3_2024_realistic_EOR3_TkDPGv2_RV245_2024-v4/GEN-SIM-DIGI-RAW --customise HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaMenuDev,HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaInputContent > hlt.py
+  183  cmsRun CICADAInputTag
+  184  cmsRun hlt.py 
+  185  vi /afs/cern.ch/work/s/ssaumya/private/Egamma/Tracker_EOR3_Scenarios/22May_2025/CMSSW_14_0_9/src/HLTrigger/Configuration/python/Tools/dasFileQuery.py 
+  186  hltGetConfiguration /dev/CMSSW_14_0_0/GRun/V156 --path HLTriggerFirstPath,HLT_Ele30_WPTight_Gsf_v9,HLT_Ele32_WPTight_Gsf_v23,HLT_Ele115_CaloIdVT_GsfTrkIdT_v23,HLT_Ele135_CaloIdVT_GsfTrkIdT_v16,HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v27,HLT_DoubleEle33_CaloIdL_MW_v26,HLTriggerFinalPath --output minimal --mc --process HLTX --type GRun --globaltag 140X_mcRun3_2024_realistic_EOR3_TkDPGv2 --max-events 10 --unprescale --eras Run3 --l1-emulator FullMC --l1 L1Menu_Collisions2024_v1_3_0_xml --input dataset:/RelValZEE_14/CMSSW_14_0_9-PU_140X_mcRun3_2024_realistic_EOR3_TkDPGv2_RV245_2024-v4/GEN-SIM-DIGI-RAW --customise HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaMenuDev,HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaInputContent > hlt.py
+  187  cmsRun hlt.py 
+  188  edmConfigDump hlt.py > hlt_config_Reference.py
+  189  hltGetConfiguration /dev/CMSSW_14_0_0/GRun/V156 --path HLTriggerFirstPath,HLT_Ele30_WPTight_Gsf_v9,HLT_Ele32_WPTight_Gsf_v23,HLT_Ele115_CaloIdVT_GsfTrkIdT_v23,HLT_Ele135_CaloIdVT_GsfTrkIdT_v16,HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v27,HLT_DoubleEle33_CaloIdL_MW_v26,HLTriggerFinalPath --output minimal --mc --process HLTX --type GRun --globaltag 140X_mcRun3_2024_realistic_v14 --max-events 10 --unprescale --eras Run3 --l1-emulator FullMC --l1 L1Menu_Collisions2024_v1_2_0_xml --input dataset:/RelValZEE_14/CMSSW_14_0_9-PU_140X_mcRun3_2024_realistic_v14_RV245_2024-v1/GEN-SIM-DIGI-RAW --customise HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaMenuDev,HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaInputContent > hlt.py
+  190  vi hlt
+  191  vi hlt.py 
+  192  edmConfigDump hlt.py > hlt_config_Reference.py
+  193  cmsRun hlt_config_Reference.py
+  194  hltGetConfiguration /dev/CMSSW_14_0_0/GRun/V156 --path HLTriggerFirstPath,HLT_Ele30_WPTight_Gsf_v9,HLT_Ele32_WPTight_Gsf_v23,HLT_Ele115_CaloIdVT_GsfTrkIdT_v23,HLT_Ele135_CaloIdVT_GsfTrkIdT_v16,HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v27,HLT_DoubleEle33_CaloIdL_MW_v26,HLTriggerFinalPath --output minimal --mc --process HLTX --type GRun --globaltag 140X_mcRun3_2024_realistic_v14 --max-events 10 --unprescale --eras Run3 --l1-emulator FullMC --l1 L1Menu_Collisions2024_v1_1_0_xml --input dataset:/RelValZEE_14/CMSSW_14_0_9-PU_140X_mcRun3_2024_realistic_v14_RV245_2024-v1/GEN-SIM-DIGI-RAW --customise HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaMenuDev,HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaInputContent > hlt.py
+  195  cmsRun hlt.py
+  196  hltGetConfiguration /dev/CMSSW_14_0_0/GRun/V156 --path HLTriggerFirstPath,HLT_Ele30_WPTight_Gsf_v9,HLT_Ele32_WPTight_Gsf_v23,HLT_Ele115_CaloIdVT_GsfTrkIdT_v23,HLT_Ele135_CaloIdVT_GsfTrkIdT_v16,HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v27,HLT_DoubleEle33_CaloIdL_MW_v26,HLTriggerFinalPath --output minimal --mc --process HLTX --type GRun --globaltag 140X_mcRun3_2024_realistic_v14 --max-events 10 --unprescale --eras Run3 --input dataset:/RelValZEE_14/CMSSW_14_0_9-PU_140X_mcRun3_2024_realistic_v14_RV245_2024-v1/GEN-SIM-DIGI-RAW --customise HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaMenuDev,HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaInputContent > hlt.py
+  197  cmsRun hlt.py
+  198  hltGetConfiguration /dev/CMSSW_14_0_0/GRun/V150 --path HLTriggerFirstPath,HLT_Ele30_WPTight_Gsf_v*,HLT_Ele32_WPTight_Gsf_v*,HLT_Ele115_CaloIdVT_GsfTrkIdT_v*,HLT_Ele135_CaloIdVT_GsfTrkIdT_v*,HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v*,HLT_DoubleEle33_CaloIdL_MW_v*,HLTriggerFinalPath --output minimal --mc --process HLTX --type GRun --globaltag 140X_mcRun3_2024_realistic_v14 --max-events 10 --unprescale --eras Run3 --input dataset:/RelValZEE_14/CMSSW_14_0_9-PU_140X_mcRun3_2024_realistic_v14_RV245_2024-v1/GEN-SIM-DIGI-RAW --customise HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaMenuDev,HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaInputContent > hlt.py
+  199  cmsRun hlt.py
+  200  hltGetConfiguration /dev/CMSSW_14_0_0/GRun/V150 --path HLTriggerFirstPath,HLT_Ele30_WPTight_Gsf_v9,HLT_Ele32_WPTight_Gsf_v23,HLT_Ele115_CaloIdVT_GsfTrkIdT_v23,HLT_Ele135_CaloIdVT_GsfTrkIdT_v16,HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v27,HLT_DoubleEle33_CaloIdL_MW_v26,HLTriggerFinalPath --output minimal --mc --process HLTX --type GRun --globaltag 140X_mcRun3_2024_realistic_v14 --max-events 10 --unprescale --eras Run3 --input dataset:/RelValZEE_14/CMSSW_14_0_9-PU_140X_mcRun3_2024_realistic_v14_RV245_2024-v1/GEN-SIM-DIGI-RAW --customise HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaMenuDev,HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaInputContent > hlt.py
+  201  hltGetConfiguration /dev/CMSSW_14_0_0/GRun/V150 --path HLTriggerFirstPath,HLT_Ele30_WPTight_Gsf_v9,HLT_Ele32_WPTight_Gsf_v23,HLT_Ele115_CaloIdVT_GsfTrkIdT_v23,HLT_Ele135_CaloIdVT_GsfTrkIdT_v16,HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v27,HLT_DoubleEle33_CaloIdL_MW_v26,HLTriggerFinalPath --output minimal --mc --process HLTX --type GRun --globaltag 140X_mcRun3_2024_realistic_v14 --max-events 10 --unprescale --eras Run3_2024 --input dataset:/RelValZEE_14/CMSSW_14_0_9-PU_140X_mcRun3_2024_realistic_v14_RV245_2024-v1/GEN-SIM-DIGI-RAW --customise HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaMenuDev,HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaInputContent > hlt.py
+  202  hltGetConfiguration /dev/CMSSW_14_0_0/GRun/V150 --path HLTriggerFirstPath,HLT_Ele30_WPTight_Gsf_v9,HLT_Ele32_WPTight_Gsf_v23,HLT_Ele115_CaloIdVT_GsfTrkIdT_v23,HLT_Ele135_CaloIdVT_GsfTrkIdT_v16,HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v27,HLT_DoubleEle33_CaloIdL_MW_v26,HLTriggerFinalPath --output minimal --mc --process HLTX --type GRun --globaltag 140X_mcRun3_2024_realistic_v14 --max-events 10 --unprescale --eras Run3_2023 --input dataset:/RelValZEE_14/CMSSW_14_0_9-PU_140X_mcRun3_2024_realistic_v14_RV245_2024-v1/GEN-SIM-DIGI-RAW --customise HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaMenuDev,HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaInputContent > hlt.py
+  203  pwd
+  204  ls
+  205  cd ..
+  206  ls
+  207  cd ..
+  208  ls
+  209  cd ..
+  210  ls
+  211  cd TrigTools/
+  212  ls
+  213  cd test/
+  214  ls
+  215  cd Reference/
+  216  ls
+  217  hltGetConfiguration /dev/CMSSW_14_0_0/GRun/V150 --path HLTriggerFirstPath,HLT_Ele30_WPTight_Gsf_v9,HLT_Ele32_WPTight_Gsf_v23,HLT_Ele115_CaloIdVT_GsfTrkIdT_v23,HLT_Ele135_CaloIdVT_GsfTrkIdT_v16,HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v27,HLT_DoubleEle33_CaloIdL_MW_v26,HLTriggerFinalPath --output minimal --mc --process HLTX --type GRun --globaltag 140X_mcRun3_2024_realistic_v14 --max-events 10 --unprescale --eras Run3 --input dataset:/RelValZEE_14/CMSSW_14_0_9-PU_140X_mcRun3_2024_realistic_v14_RV245_2024-v1/GEN-SIM-DIGI-RAW --customise HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaMenuDev,HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaInputContent > hlt.py
+  218  edmConfigDump hlt.py > hlt_config_Reference.py
+  219  python3 cmsCondorData.py hlt_config_Reference.py /afs/cern.ch/work/s/ssaumya/private/Egamma/Tracker_EOR3_Scenarios/22May_2025/CMSSW_14_0_9/src/EGTools/TrigTools/test/Reference/ /eos/cms/store/group/phys_egamma/ssaumya/TrackerStudies/Reference/ -n 15 -q workday -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184 
+  220  ./sub_total.jobb 
+  221  cd ..
+  222  ls
+  223  cd EOR3/
+  224  ls
+  225  vi ../../../../HLTrigger/Configuration/python/Tools/dasFileQuery.py
+  226  hltGetConfiguration /dev/CMSSW_14_0_0/GRun/V150 --path HLTriggerFirstPath,HLT_Ele30_WPTight_Gsf_v9,HLT_Ele32_WPTight_Gsf_v23,HLT_Ele115_CaloIdVT_GsfTrkIdT_v23,HLT_Ele135_CaloIdVT_GsfTrkIdT_v16,HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v27,HLT_DoubleEle33_CaloIdL_MW_v26,HLTriggerFinalPath --output minimal --mc --process HLTX --type GRun --globaltag 140X_mcRun3_2024_realistic_EOR3_TkDPGv2 --max-events 10 --unprescale --eras Run3 --l1-emulator FullMC --l1 L1Menu_Collisions2024_v1_2_0_xml --input dataset:/RelValZEE_14/CMSSW_14_0_9-PU_140X_mcRun3_2024_realistic_EOR3_TkDPGv2_RV245_2024-v4/GEN-SIM-DIGI-RAW --customise HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaMenuDev,HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaInputContent > hlt.py
+  227  hltGetConfiguration /dev/CMSSW_14_0_0/GRun/V150 --path HLTriggerFirstPath,HLT_Ele30_WPTight_Gsf_v9,HLT_Ele32_WPTight_Gsf_v23,HLT_Ele115_CaloIdVT_GsfTrkIdT_v23,HLT_Ele135_CaloIdVT_GsfTrkIdT_v16,HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v27,HLT_DoubleEle33_CaloIdL_MW_v26,HLTriggerFinalPath --output minimal --mc --process HLTX --type GRun --globaltag 140X_mcRun3_2024_realistic_EOR3_TkDPGv2 --max-events 10 --unprescale --eras Run3 --input dataset:/RelValZEE_14/CMSSW_14_0_9-PU_140X_mcRun3_2024_realistic_EOR3_TkDPGv2_RV245_2024-v4/GEN-SIM-DIGI-RAW --customise HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaMenuDev,HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaInputContent > hlt.py
+  228  edmConfigDump hlt.py > hlt_config_EOR3_v1.py
+  229  python3 cmsCondorData.py hlt_config_EOR3_v1.py /afs/cern.ch/work/s/ssaumya/private/Egamma/Tracker_EOR3_Scenarios/22May_2025/CMSSW_14_0_9/src/EGTools/TrigTools/test/EOR3/ /eos/cms/store/group/phys_egamma/ssaumya/TrackerStudies/EOR3_v1/ -n 15 -q workday -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184
+  230  ./sub_total.jobb 
+  231  cd ..
+  232  ls
+  233  cd EEOR3/
+  234  ls
+  235  hltGetConfiguration /dev/CMSSW_14_0_0/GRun/V150 --path HLTriggerFirstPath,HLT_Ele30_WPTight_Gsf_v9,HLT_Ele32_WPTight_Gsf_v23,HLT_Ele115_CaloIdVT_GsfTrkIdT_v23,HLT_Ele135_CaloIdVT_GsfTrkIdT_v16,HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v27,HLT_DoubleEle33_CaloIdL_MW_v26,HLTriggerFinalPath --output minimal --mc --process HLTX --type GRun --globaltag 140X_mcRun3_2024_realistic_EOR3_TkDPGv6 --max-events 10 --unprescale --eras Run3 --input dataset:/RelValZEE_14/CMSSW_14_0_9-PU_140X_mcRun3_2024_realistic_EOR3_TkDPGv6_RV245_2024-v1/GEN-SIM-DIGI-RAW --customise HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaMenuDev,HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaInputContent > hlt.py
+  236  edmConfigDump hlt.py > hlt_config_EOR3_v2.py
+  237  vi ../../../../HLTrigger/Configuration/python/Tools/dasFileQuery.py
+  238  hltGetConfiguration /dev/CMSSW_14_0_0/GRun/V150 --path HLTriggerFirstPath,HLT_Ele30_WPTight_Gsf_v9,HLT_Ele32_WPTight_Gsf_v23,HLT_Ele115_CaloIdVT_GsfTrkIdT_v23,HLT_Ele135_CaloIdVT_GsfTrkIdT_v16,HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v27,HLT_DoubleEle33_CaloIdL_MW_v26,HLTriggerFinalPath --output minimal --mc --process HLTX --type GRun --globaltag 140X_mcRun3_2024_realistic_EOR3_TkDPGv6 --max-events 10 --unprescale --eras Run3 --input dataset:/RelValZEE_14/CMSSW_14_0_9-PU_140X_mcRun3_2024_realistic_EOR3_TkDPGv6_RV245_2024-v1/GEN-SIM-DIGI-RAW --customise HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaMenuDev,HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaInputContent > hlt.py
+  239  edmConfigDump hlt.py > hlt_config_EOR3_v2.py
+  240  python3 cmsCondorData.py hlt_config_EOR3_v2.py /afs/cern.ch/work/s/ssaumya/private/Egamma/Tracker_EOR3_Scenarios/22May_2025/CMSSW_14_0_9/src/EGTools/TrigTools/test/EEOR3/ /eos/cms/store/group/phys_egamma/ssaumya/TrackerStudies/EOR3_v2/ -n 15 -q workday -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184
+  241  ./sub_total.jobb 
+  242  condor_q
+  243  cd /afs/cern.ch/work/s/ssaumya/private/Egamma/Tracker_EOR3_Scenarios/22May_2025/CMSSW_14_0_9/src/EGamma-Studies/Plotting-Tools
+  244  ls
+  245  root outFile.root 
+  246  ls
+  247  cd In
+  248  cd PlotHists/
+  249  ls
+  250  vi Inputs.py 
+  251  vi plotHist.py 
+  252  python3 plotHist.py 
+  253  ls ../
+  254  vi Inputs.py 
+  255  python3 plotHist.py 
+  256  vi /afs/cern.ch/work/s/ssaumya/private/Egamma/Tracker_EOR3_Scenarios/22May_2025/CMSSW_14_0_9/src/EGamma-Studies/Plotting-Tools/PlotHists/PlotFunc.py
+  257  python3 plotHist.py 
+  258  vi /afs/cern.ch/work/s/ssaumya/private/Egamma/Tracker_EOR3_Scenarios/22May_2025/CMSSW_14_0_9/src/EGamma-Studies/Plotting-Tools/PlotHists/PlotFunc.py
+  259  root ../outFile.root 
+  260  ls
+  261  vi plotHist.py 
+  262  vi PlotFunc.py 
+  263  python3 plotHist.py 
+  264  vi Inputs.py 
+  265  python3 plotHist.py 
+  266  vi Inputs.py 
+  267  vi plotHist.py 
+  268  python3 plotHist.py 
+  269  vi plotHist.py 
+  270  vi PlotFunc.py 
+  271  pwd
+  272  ls
+  273  rm -rf v'\'
+  274  rm -rf '\'
+  275  ls
+  276  cd ..
+  277  ls
+  278  cp lastFilterEffHist.py lastFilterEffHist_Backup.py 
+  279  cp lastFilterEffHist.py
+  280  ls
+  281  pwd
+  282  ls
+  283  root outFile2.root 
+  284  root outFile.root 
+  285  pwd
+  286  ls
+  287  cd ..
+  288  ls
+  289  cd EGTools/
+  290  ls
+  291  cd TrigTools/
+  292  ls
+  293  cd test/
+  294  ls
+  295  cd ..
+  296  ls
+  297  cd ..
+  298  ls
+  299  git clone -b Tracker-EOR3-Studies git@github.com:saumyaphor4252/EGEfficiency.git 
+  300  pwd
+  301  ls
+  302  scram b -j 10
+  303  ls
+  304  cd EG
+  305  pwd
+  306  ls
+  307  cd EGEfficiency/
+  308  ls
+  309  cd TrigTools/
+  310  ls
+  311  cd test/
+  312  ls
+  313  vi run_EfficiencyCalculator.py 
+  314  cmsRun run_EfficiencyCalculator.py 
+  315  vi run_EfficiencyCalculator.py 
+  316  cmsRun run_EfficiencyCalculator.py 
+  317  ls
+  318  root ntuple_Reference.root 
+  319  ls
+  320  cd ..
+  321  ls
+  322  cd plugins/
+  323  ls
+  324  vi EfficiencyCalculator.cc 
+  325  scram b -j 10
+  326  cd ..
+  327  ls
+  328  cd test
+  329  ls
+  330  vi run_EfficiencyCalculator.py 
+  331  cmsRun run_EfficiencyCalculator.py 
+  332  pwd
+  333  ls
+  334  mkdir Total
+  335  mv ntuple_Reference.root Total/
+  336  vi run_EfficiencyCalculator.py 
+  337  cmsRun run_EfficiencyCalculator.py 
+  338  pwd
+  339  ls
+  340  mv ntuple_EOR3.root Total
+  341  ls Total/
+  342  vi run_EfficiencyCalculator.py 
+  343  cmsRun run_EfficiencyCalculator.py 
+  344  pwd
+  345  ls
+  346  cd ..
+  347  ls
+  348  cd plugins/
+  349  ls
+  350  vi EfficiencyCalculator.cc 
+  351  scram b -j 10
+  352  cd ..
+  353  ls
+  354  cd test/
+  355  ls
+  356  mv ntuple_EOR3_v2.root Total/
+  357  ls
+  358  mv Total Real
+  359  ls
+  360  vi run_EfficiencyCalculator.py 
+  361  cmsRun run_EfficiencyCalculator.py 
+  362  ls
+  363  mkdir Total
+  364  mv ntuple_Reference.root  Total/
+  365  ls
+  366  vi run_EfficiencyCalculator.py 
+  367  cmsRun run_EfficiencyCalculator.py 
+  368  pwd
+  369  ls
+  370  mv ntuple_EOR3_v1.root Total/
+  371  ls Total/
+  372  vi run_EfficiencyCalculator.py 
+  373  cmsRun run_EfficiencyCalculator.py 
+  374  ls
+  375  mv ntuple_EOR3_v2.root Total/
+  376  ls Total/
+  377  cd ..
+  378  ls
+  379  cd plugins/
+  380  ls
+  381  ls
+  382  vi EfficiencyCalculator.cc 
+  383  pwd
+  384  cd ..
+  385  sl
+  386  ls
+  387  cd ..
+  388  ls
+  389  scram b -j 10
+  390  cd TrigTools/
+  391  ls
+  392  cd test
+  393  ls
+  394  vi run_EfficiencyCalculator.py 
+  395  cmsRun run_EfficiencyCalculator.py 
+  396  ls
+  397  mkdir Fake
+  398  mv ntuple_Reference.root Fake/
+  399  ls
+  400  vi run_EfficiencyCalculator.py 
+  401  cmsRun run_EfficiencyCalculator.py 
+  402  pwd
+  403  ls
+  404  vi run_EfficiencyCalculator.py 
+  405  cmsRun run_EfficiencyCalculator.py 
+  406  ls Fake/
+  407  ls
+  408  mv ntuple_EOR3_v1.root Fake
+  409  mv ntuple_EOR3_v2.root Fake
+  410  pwd
+  411  exit
+  412  pwd
+  413  cd /afs/cern.ch/work/s/ssaumya/private/Egamma/Tracker_EOR3_Scenarios/22May_2025/CMSSW_14_0_9/src/
+  414  ls
+  415  cmsenv
+  416  cd ..
+  417  ls
+  418  cd ..
+  419  ls
+  420  pwd
+  421  ls
+  422  cd ..
+  423  ls
+  424  cd ..
+  425  ls
+  426  mkdir TEST
+  427  cd TEST
+  428  ls
+  429  cmsrel CMSSW_15_0_6_patch1;cd CMSSW_15_0_6_patch1/src; cmsenv
+  430  git cms-init
+  431  scram build -j 4
+  432  hltGetConfiguration /users/ssaumya/Test/dev/CMSSW_15_0_0/CMSHLT_3565/Test01/GRun/v1/V2    --globaltag 150X_dataRun3_HLT_v1    --data    --unprescale    --output minimal    --max-events 100    --eras Run3_2025 --l1-emulator uGT --l1 L1Menu_Collisions2025_v1_1_1_xml    --input /store/data/Run2025C/EphemeralHLTPhysics3/RAW/v1/000/392/250/00000/745d08f7-3834-4757-8f58-5294a13f13ae.root    > hltData.py
+  433  cmsRun hltData.py 
+  434  ls
+  435  cmsRun hltData.py > hltLog.py
+  436  cmsRun hltData.py > hltLog.out
+  437  ls
+  438  vi hltLog.
+  439  vi hltLog.out 
+  440  cmsRun hltData.py | tee hltLog.out
+  441  ls
+  442  vi hltLog.out 
+  443  pwd
+  444  hltIntegrationTests   /users/ssaumya/Test/dev/CMSSW_15_0_0/CMSHLT_3565/Test01/GRun/v1/V2   -n 100   --input /store/data/Run2025C/EphemeralHLTPhysics3/RAW/v1/000/392/250/00000/745d08f7-3834-4757-8f58-5294a13f13ae.root   -x "--globaltag 150X_dataRun3_HLT_v1"   -d output_hltIntegTests 2>&1 | tee output_hltIntegTests.txt
+  445  ls
+  446  vi output_hltIntegTests.txt
+  447  mkdir Setup1
+  448  cp output_hltIntegTests.txt Setup1/
+  449  cd output_hltIntegTests
+  450  ls
+  451  vi MC_Ele5_WPTight_Gsf_v20.log
+  452  pwd
+  453  cd ..
+  454  ls
+  455  mv output_hltIntegTests Setup1/
+  456  vi output_hltIntegTests.txt
+  457  ls
+  458  mv output_hltIntegTests.txt Setup1/
+  459  ls
+  460  mv DQMIO.root Setup1/
+  461  ls
+  462  rm -rf hltData.py
+  463  ls
+  464  mv output.root Setup1/
+  465  ls
+  466  pwd
+  467  ls
+  468  hltIntegrationTests /users/ssaumya/Test/dev/CMSSW_15_0_0/CMSHLT_3565/Test01/GRun/v1/V2 -n 500 --input /store/data/Run2025C/EGamma0/RAW/v1/000/392/542/00000/cd3ade98-ddb7-4969-9d0f-d4913fb8460f.root -x "--globaltag 150X_dataRun3_HLT_v1" -p "*Ele*WPTight*" -d output_hltIntegTests 2>&1 | tee output_hltIntegTests.txt
+  469  cd ..
+  470  ls
+  471  cd src
+  472  ls
+  473  mkdir TEST
+  474  cd TEST
+  475  ls
+  476  hltIntegrationTests /users/ssaumya/Test/dev/CMSSW_15_0_0/CMSHLT_3565/Test01/GRun/v1/V2 -n 1000 --input /store/data/Run2025C/EGamma0/RAW/v1/000/392/542/00000/cd3ade98-ddb7-4969-9d0f-d4913fb8460f.root -x "--globaltag 150X_dataRun3_HLT_v1" -p "*Ele*WPTight*" -d output_hltIntegTests 2>&1 | tee output_hltIntegTests.txt
+  477  ls
+  478  cd ..
+  479  ls
+  480  hltIntegrationTests   /users/ssaumya/Test/dev/CMSSW_15_0_0/CMSHLT_3565/Test01/GRun/v1/V2   -n 500   --input /store/mc/Run3Winter25Digi/TT_TuneCP5_13p6TeV_powheg-pythia8/GEN-SIM-RAW/142X_mcRun3_2025_realistic_v7-v2/2810001/bac23860-7554-4578-9095-39f7dfc589fb.root   --mc   -x "--globaltag 142X_mcRun3_2025_realistic_v7"   -p "*Ele*WPTight*"   -d output_hltIntegTests_CMSHLT3565 2>&1 | tee output_hltIntegTests_CMSHLT3565.txt
+  481  hltIntegrationTests /users/ssaumya/Test/dev/CMSSW_15_0_0/CMSHLT_3565/Test01/GRun/v1/V2 -n 1000 --input /store/data/Run2025C/EGamma0/RAW/v1/000/392/542/00000/cd3ade98-ddb7-4969-9d0f-d4913fb8460f.root -x "--globaltag 150X_dataRun3_HLT_v1" -p "*Ele*WPTight*" -d output_hltIntegTests 2>&1 | tee output_hltIntegTests.txtls
+  482  ;s
+  483  ls
+  484  cd cat output_hltIntegTests.txt
+  485  cat output_hltIntegTests.txt
+  486  l
+  487  ls
+  488  vi hltLog.out
+  489  cd Setup1/
+  490  ls
+  491  vi output_hltIntegTests
+  492  vi output_hltIntegTests.txt 
+  493  cd ..
+  494  ls
+  495  vi output_hltIntegTests_CMSHLT3565.txt
+  496  pwd
+  497  exit
+  498  pwd
+  499  ls
+  500  cd /afs/cern.ch/work/s/ssaumya
+  501  ls
+  502  cd private/
+  503  ls
+  504  cd Egamma/
+  505  ls
+  506  cd TEST/
+  507  ls
+  508  cd CMSSW_15_0_6_patch1/src
+  509  ls
+  510  cmsenv
+  511  hltGetConfiguration /dev/CMSSW_15_0_0/GRun/V79 --globaltag 150X_dataRun3_HLT_v1 --data --unprescale --output minimal --max-events 100 --eras Run3_2025 --l1-emulator uGT --l1 L1Menu_Collisions2025_v1_1_1_xml --input /store/data/Run2025C/EphemeralHLTPhysics3/RAW/v1/000/392/250/00000/745d08f7-3834-4757-8f58-5294a13f13ae.root > hlt_Reference.py
+  512  edmDumpConfig hlt_Reference.py > hlt_ConfigDump_Reference.py
+  513  edmConfigDump hlt_Reference.py > hlt_ConfigDump_Reference.py
+  514  hltGetConfiguration /users/ssaumya/Test/dev/CMSSW_15_0_0/CMSHLT_3565/Test01/GRun/v1/V2 --globaltag 150X_dataRun3_HLT_v1 --data --unprescale --output minimal --max-events 100 --eras Run3_2025 --l1-emulator uGT --l1 L1Menu_Collisions2025_v1_1_1_xml --input /store/data/Run2025C/EphemeralHLTPhysics3/RAW/v1/000/392/250/00000/745d08f7-3834-4757-8f58-5294a13f13ae.root > hlt_Reference.py
+  515  edmConfigDump hlt_Reference.py > hlt_ConfigDump_Target.py
+  516  vimdiff hlt_Reference.py hlt_Target.py
+  517  vimdiff hlt_ConfigDump_Reference.py hlt_ConfigDump_Target.py
+  518  pwd
+  519  hltGetConfiguration /dev/CMSSW_15_0_0/GRun/V79 --globaltag 150X_dataRun3_HLT_v1 --data --unprescale --output minimal --max-events 100 --eras Run3_2025 --l1-emulator uGT --l1 L1Menu_Collisions2025_v1_1_1_xml --input /store/data/Run2025C/EphemeralHLTPhysics3/RAW/v1/000/392/250/00000/745d08f7-3834-4757-8f58-5294a13f13ae.root > hlt_Reference.py
+  520  vi hlt_ConfigDump_Reference.py 
+  521  vimdiff hlt_ConfigDump_Reference.py hlt_ConfigDump_Target.py
+  522  vi hlt_ConfigDump_Reference.py 
+  523  vimdiff hlt_ConfigDump_Reference.py hlt_ConfigDump_Target.py
+  524  ls /eos/cms/store/data/Run2025C/
+  525  ls /eos/cms/store/data/Run2025C/EGamma0
+  526  ls /eos/cms/store/data/Run2025C/EGamma0/RAW
+  527  ls /eos/cms/store/data/Run2025C/EGamma0/RAW/v1
+  528  ls /eos/cms/store/data/Run2025C/EGamma0/RAW/v1/000/
+  529  ls /eos/cms/store/data/Run2025C/EGamma0/RAW/v1/000/392
+  530  ls /eos/cms/store/data/Run2025C/EGamma0/RAW/v1/000/392/542
+  531  ls /eos/cms/store/data/Run2025C/EGamma0/RAW/v1/000/392/542/00000/
+  532  ls /eos/cms/store/mc/Run3Winter25Digi/TT_TuneCP5_13p6TeV_powheg-pythia8/GEN-SIM-RAW/142X_mcRun3_2025_realistic_v7-v2/2810001/bac23860-7554-4578-9095-39f7dfc589fb.root
+  533  pwd
+  534  exit
+  535  cd /afs/cern.ch/work/s/ssaumya/private/Egamma/TEST/CMSSW_15_0_6_patch1/src
+  536  ls
+  537  cmsenv
+  538  vi hlt_ConfigDump_Target.py
+  539  pwd
+  540  exit
+  541  ls
+  542  pwd
+  543  git cms-init
+  544  git clone ssh://git@gitlab.cern.ch:7999/cms-tsg/steam/timing.git --recursive
+  545  hltGetConfiguration /users/ssaumya/Test/dev/CMSSW_15_0_0/CMSHLT_3565/Test01/GRun/v1/V3    --globaltag 150X_dataRun3_HLT_v1    --data    --type GRun    --prescale 2p0E34+ZeroBias+HLTPhysics    --timing    --output minimal    > hlt_Target.py
+  546  cmsenv
+  547  hltGetConfiguration /users/ssaumya/Test/dev/CMSSW_15_0_0/CMSHLT_3565/Test01/GRun/v1/V3    --globaltag 150X_dataRun3_HLT_v1    --data    --type GRun    --prescale 2p0E34+ZeroBias+HLTPhysics    --timing    --output minimal    > hlt_Target.py
+  548  python3 -m venv venv
+  549  source venv/bin/activate
+  550  pip3 install -r timing/requirements.txt
+  551  export PYTHONPATH=$PYTHONPATH:$PWD/timing
+  552  ls
+  553  python3 timing/submit.py hlt_Target.py 
+  554  python3 timing/job_manager.py
+  555  hltGetConfiguration /dev/CMSSW_15_0_0/GRun/V79 --globaltag 150X_dataRun3_HLT_v1 --data --type GRun --prescale 2p0E34+ZeroBias+HLTPhysics --timing --output minimal > hlt_Reference.py
+  556  python3 timing/submit.py hlt_Reference.py --tag _Reference
+  557  ls
+  558  pwd
+  559  ls
+  560  history 100 > history.out
+  561  vi history.out 
+  562  deactivate
+  563  ls
+  564  history 100
+  565  exit
+  566  cd /afs/cern.ch/work/s/ssaumya/private/Egamma/TEST/
+  567  ls
+  568  vi Reference.py
+  569  vi Target.py
+  570  vimdiff Reference.py T
+  571  vimdiff Reference.py Target.py 
+  572  pwd
+  573  ls
+  574  cd /afs/cern.ch/work/s/ssaumya/private/Egamma/
+  575  ls
+  576  cd TEST/
+  577  ls
+  578  cd CMSSW_15_0_6_patch1/src
+  579  ls
+  580  cmsenv
+  581  hltIntegrationTests   /users/ssaumya/Test/dev/CMSSW_15_0_0/CMSHLT_3565/Test01/GRun/v1/V3   -n 500   --input /store/data/Run2025C/EGamma0/RAW/v1/000/392/542/00000/cd3ade98-ddb7-4969-9d0f-d4913fb8460f.root   -x "--globaltag 150X_dataRun3_HLT_v1"   -p "*Ele*WPTight*"   -d output_hltIntegTests 2>&1 | tee output_hltIntegTests.txt
+  582  pwd
+  583  exit
+  584  cd /afs/cern.ch/work/s/ssaumya/private/Egamma/TEST/CMSSW_15_0_6_patch1/src
+  585  ls
+  586  cmsenv
+  587  vi hlt_ConfigDump_Reference.py
+  588  vi SearchPaths.py
+  589  vi dump_trigger_paths.py
+  590  cmsRun dump_trigger_paths.py
+  591  vi dump_trigger_paths.py
+  592  cmsRun dump_trigger_paths.py
+  593  python3 dump_trigger_paths.py
+  594  ls
+  595  vi matched_paths.txt 
+  596  pwd
+  597  ls
+  598  mkdir Refrence
+  599  mv Refrence/ Reference
+  600  ls
+  601  mv hlt_ConfigDump_Reference.py Reference/
+  602  mv hlt_Reference.py Reference/
+  603  ls
+  604  cd Reference/
+  605  ls
+  606  vi hlt_Reference.py 
+  607  git clone --recursive https://gitlab.cern.ch/cms-tsg/steam/timing.git
+  608  pwd
+  609  ls
+  610  cd timing/
+  611  ls
+  612  cd ..
+  613  ls
+  614  vi timing/submit.py
+  615  ls
+  616  vi hlt_ConfigDump_Reference.py 
+  617  python3 timing/submit.py hlt_ConfigDump_Reference.py
+  618  python3 timing/submit.py hlt_ConfigDump_Reference.py --tag _CMSHLT3565_Reference
+  619  python3 -m venv venv
+  620  pwd
+  621  ls
+  622  rm -rf *
+  623  ls
+  624  git clone ssh://git@gitlab.cern.ch:7999/cms-tsg/steam/timing.git
+  625  python3 -m venv venv
+  626  source venv/bin/activate
+  627  pip3 install -r timing/requirements.txt
+  628  python3 timing/submit.py --show-samples
+  629  ls
+  630  voms-proxy-init
+  631  python3 timing/submit.py --show-samples
+  632  hltGetConfiguration /users/ssaumya/Test/dev/CMSSW_15_0_0/CMSHLT_3565/Test01/GRun/v1/V3    --globaltag 150X_dataRun3_HLT_v1    --data    --type GRun    --prescale 2p0E34+ZeroBias+HLTPhysics    --timing    --output minimal    > hlt_Target.py
+  633  python3 timing/submit.py hlt_Target.py --l1menu L1Menu_Collisions2025_v1_1_1-d2_xml --tag _CMSHLT3565_Target
+  634  LS
+  635  ls
+  636  python3 timing/job_manager.py
+  637  export SCRAM_ARCH=el8_amd64_gcc11
+  638  scram arch
+  639  export SCRAM_ARCH=el8_amd64_gcc12
+  640  scram arch
+  641  echo $SCRAM_ARCH
+  642  scram_arch
+  643  python3 timing/submit.py hlt_Target.py --l1menu L1Menu_Collisions2025_v1_1_1-d2_xml --tag _CMSHLT3565_Target
+  644  vi /afs/cern.ch/work/s/ssaumya/private/Egamma/TEST/CMSSW_15_0_6_patch1/src/Reference/timing/submit.py
+  645  cp /afs/cern.ch/work/s/ssaumya/private/Egamma/TEST/CMSSW_15_0_6_patch1/src/Reference/timing/submit.py /afs/cern.ch/work/s/ssaumya/private/Egamma/TEST/CMSSW_15_0_6_patch1/src/Reference/timing/submit_Backup.py
+  646  sed -i "s/python2/python3/g" /afs/cern.ch/work/s/ssaumya/private/Egamma/TEST/CMSSW_15_0_6_patch1/src/Reference/timing/submit.py
+  647  python3 timing/submit.py hlt_Target.py --l1menu L1Menu_Collisions2025_v1_1_1-d2_xml --tag _CMSHLT3565_Target
+  648  pwd
+  649  ls
+  650  pwd
+  651  ls
+  652  deactivate
+  653  pwd
+  654  vi /cvmfs/cms.cern.ch/el9_amd64_gcc12/cms/cmssw/CMSSW_15_0_6/src/FWCore/ParameterSet/python/Config.py
+  655  pwd
+  656  ls
+  657  vi /cvmfs/cms.cern.ch/el9_amd64_gcc12/cms/cmssw/CMSSW_15_0_6/src/FWCore/ParameterSet/python/Config.py
+  658  python3 -m venv venv
+  659  source venv/bin/activate
+  660  pip3 install -r timing/requirements.txt
+  661  python3 timing/submit.py hlt_Target.py --l1menu L1Menu_Collisions2025_v1_1_1-d2_xml --tag _CMSHLT3565_Target
+  662  python timing/submit.py hlt_Target.py --l1menu L1Menu_Collisions2025_v1_1_1-d2_xml --tag _CMSHLT3565_Target
+  663  vi /cvmfs/cms.cern.ch/el9_amd64_gcc12/cms/cmssw/CMSSW_15_0_6/src/FWCore/ParameterSet/python/Config.py
+  664  cd ..
+  665  ls
+  666  pwd
+  667  ls
+  668  cd Reference/
+  669  ls
+  670  cd ..
+  671  ls
+  672  deactivate
+  673  git cms-init
+  674  git cms-addpkg HLTrigger/Timer
+  675  ls
+  676  scram b -j 10
+  677  cd Reference/
+  678  ls
+  679  python timing/submit.py hlt_Target.py --l1menu L1Menu_Collisions2025_v1_1_1-d2_xml --tag _CMSHLT3565_Target
+  680  python3 timing/submit.py hlt_Target.py --l1menu L1Menu_Collisions2025_v1_1_1-d2_xml --tag _CMSHLT3565_Target
+  681  source venv/bin/activate
+  682  python3 timing/submit.py hlt_Target.py --l1menu L1Menu_Collisions2025_v1_1_1-d2_xml --tag _CMSHLT3565_Target
+  683  scram b -j 10
+  684  python3 timing/submit.py hlt_Target.py --l1menu L1Menu_Collisions2025_v1_1_1-d2_xml --tag _CMSHLT3565_Target
+  685  cd ..
+  686  ls
+  687  deactivate
+  688  cd ..
+  689  ls
+  690  cd ..
+  691  ls
+  692  mkdir Timinig_Studies
+  693  cd Timinig_Studies/
+  694  ls
+  695  scram_arch
+  696  scram arch
+  697  cmsrel CMSSW_15_0_6_patch1
+  698  scram list CMSSW_15_0_6_ptach1
+  699  scram list CMSSW_15_0_6_patch1
+  700  export SCRAM_ARCH=el8_amd64_gcc12
+  701  scram arch
+  702  pwd
+  703  ls
+  704  rm -rf *
+  705  cmsrel CMSSW_15_0_6_patch1; cd CMSSW_15_0_6_patch1/src; cmsenv
+  706  ls
+  707  cmssw-el8
+  708  pwd
+  709  ls
+  710  vi hlt_Reference.py hlt_Target.py 
+  711  vimdiff hlt_Reference.py hlt_Target.py 
+  712  pwd
+  713  exit
+  714  ls /eos/cms/store/mc/Run3Winter25Digi/TT_TuneCP5_13p6TeV_powheg-pythia8/GEN-SIM-RAW/142X_mcRun3_2025_realistic_v7-v2/2810001/bac23860-7554-4578-9095-39f7dfc589fb.root
+  715  ls /eos/cms/store/mc/Run3Winter25Digi/
+  716  ls /eos/cms/store/mc/Run3Winter25Digi/DYJetsToLL_M-50_TuneCP5_13p6TeV-madgraphMLM-pythia8
+  717  ls /eos/cms/store/mc/Run3Winter25Digi/DYJetsToLL_M-50_TuneCP5_13p6TeV-madgraphMLM-pythia8/GEN-SIM-RAW/
+  718  ls /eos/cms/store/mc/Run3Winter25Digi/DYJetsToLL_M-50_TuneCP5_13p6TeV-madgraphMLM-pythia8/GEN-SIM-RAW/PilotWinter25wmLHEGS_142X_mcRun3_2025_realistic_v1-v2/
+  719  ls /eos/cms/store/mc/Run3Winter25Digi/DYJetsToLL_M-50_TuneCP5_13p6TeV-madgraphMLM-pythia8/GEN-SIM-RAW/PilotWinter25wmLHEGS_142X_mcRun3_2025_realistic_v1-v2/2530000/
+  720  ls /eos/cms/store/mc/Run3Winter25*
+  721  ls /eos/cms/store/mc/Run3Winter25Reco:
+  722  ls /eos/cms/store/mc/Run3Winter25Reco/
+  723  ls /eos/cms/store/mc/Run3Winter25Reco/ZprimeTo2E_Par-M-6000_TuneCP5_13p6TeV_pythia8
+  724  ls /eos/cms/store/mc/Run3Winter25Reco/ZprimeTo2E_Par-M-6000_TuneCP5_13p6TeV_pythia8/GEN-SIM-RECO/
+  725  ls /eos/cms/store/mc/Run3Winter25Digi/
+  726  ls /eos/cms/store/mc/Run3Winter25Digi/DYJetsToLL_M-50_TuneCP5_13p6TeV-madgraphMLM-pythia8
+  727  ls /eos/cms/store/mc/Run3Winter25Digi/DYJetsToLL_M-50_TuneCP5_13p6TeV-madgraphMLM-pythia8/GEN-SIM-RAW/
+  728  ls /eos/cms/store/mc/Run3Winter25Digi/DYJetsToLL_M-50_TuneCP5_13p6TeV-madgraphMLM-pythia8/GEN-SIM-RAW/PilotWinter25wmLHEGS_142X_mcRun3_2025_realistic_v1-v2/
+  729  ls /eos/cms/store/mc/Run3Winter25Digi/DYJetsToLL_M-50_TuneCP5_13p6TeV-madgraphMLM-pythia8/GEN-SIM-RAW/PilotWinter25wmLHEGS_142X_mcRun3_2025_realistic_v1-v2/2530000/
+  730  ls /eos/cms/store/data/Run2025C/ParkingVBF0/RAW/v1/000/392/175/00000/026a39c0-0e7b-49f5-9eb0-0efff46ea0d3.root
+  731  cd /afs/cern.ch/work/s/ssaumya/private/Egamma/TEST/CMSSW_15_0_6_patch1/src/IntegrationTests
+  732  ls
+  733  cmsenv
+  734  ls
+  735  rm -rf output_hltIntegTests_CMSHLT3565
+  736  ls
+  737  hltIntegrationTests /users/ssaumya/Test/dev/CMSSW_15_0_0/CMSHLT_3565/Test01/GRun/v1/V3 -n 100 --input /store/data/Run2025C/ParkingVBF0/RAW/v1/000/392/997/00000/b49a5bb3-9aad-4f36-a519-100781d3fae8.root --mc -x "--globaltag 142X_mcRun3_2025_realistic_v7" -p "HLT_VBF_DiPFJet50_Mjj*_Ele22_eta2p1_WPTight_Gsf_v" -d output_hltIntegTests_CMSHLT3565 2>&1 | tee output_hltIntegTests_CMSHLT3565.txt
+  738  ls
+  739  cd output_hltIntegTests_CMSHLT3565
+  740  ls
+  741  vi hlt.log 
+  742  cd ..
+  743  ls
+  744  hltIntegrationTests /users/ssaumya/Test/dev/CMSSW_15_0_0/CMSHLT_3565/Test01/GRun/v1/V3 -n 100 --input /eos/cms/store/data/Run2025C/ParkingVBF0/RAW/v1/000/392/997/00000/b49a5bb3-9aad-4f36-a519-100781d3fae8.root --mc -x "--globaltag 142X_mcRun3_2025_realistic_v7" -p "HLT_VBF_DiPFJet50_Mjj*_Ele22_eta2p1_WPTight_Gsf_v" -d output_hltIntegTests_CMSHLT3565 2>&1 | tee output_hltIntegTests_CMSHLT3565.txt
+  745  hltIntegrationTests /users/ssaumya/Test/dev/CMSSW_15_0_0/CMSHLT_3565/Test01/GRun/v1/V3 -n 100 --input /eos/cms/store/data/Run2025C/ParkingVBF0/RAW/v1/000/392/997/00000/b49a5bb3-9aad-4f36-a519-100781d3fae8.root --data -x "--globaltag 150X_dataRun3_HLT_v1" -p "HLT_VBF_DiPFJet50_Mjj*_Ele22_eta2p1_WPTight_Gsf_v" -d output_hltIntegTests_CMSHLT3565 2>&1 | tee output_hltIntegTests_CMSHLT3565.txt
+  746  hltIntegrationTests /users/ssaumya/Test/dev/CMSSW_15_0_0/CMSHLT_3565/Test01/GRun/v1/V3 -n 100 --input /eos/cms/store/data/Run2025C/ParkingVBF0/RAW/v1/000/392/997/00000/b49a5bb3-9aad-4f36-a519-100781d3fae8.root -x "--globaltag 150X_dataRun3_HLT_v1" -p "HLT_VBF_DiPFJet50_Mjj*_Ele22_eta2p1_WPTight_Gsf_v" -d output_hltIntegTests_VBF 2>&1 | tee output_hltIntegTests_VBF.txt
+  747  ls
+  748  cd output_hltIntegTests_VBF
+  749  ls
+  750  vi hlt.log 
+  751  hltIntegrationTests /users/ssaumya/Test/dev/CMSSW_15_0_0/CMSHLT_3565/Test01/GRun/v1/V3 -n 100 --input /store/data/Run2025C/ParkingVBF0/RAW/v1/000/392/997/00000/b49a5bb3-9aad-4f36-a519-100781d3fae8.root -x "--globaltag 150X_dataRun3_HLT_v1" -p "HLT_VBF_DiPFJet50_Mjj*_Ele22_eta2p1_WPTight_Gsf_v" -d output_hltIntegTests_VBF 2>&1 | tee output_hltIntegTests_VBF.txt
+  752  hltIntegrationTests /users/ssaumya/Test/dev/CMSSW_15_0_0/CMSHLT_3565/Test01/GRun/v1/V3 -n 100 --input /store/data/Run2025C/ParkingVBF0/RAW/v1/000/392/997/00000/b49a5bb3-9aad-4f36-a519-100781d3fae8.root -x "--globaltag 150X_dataRun3_HLT_v1" -p "*VBF_DiPFJet50_Mjj*_Ele22_eta2p1_WPTight_Gsf_v*" -d output_hltIntegTests_VBF 2>&1 | tee output_hltIntegTests_VBF.txt
+  753  hltIntegrationTests /users/ssaumya/Test/dev/CMSSW_15_0_0/CMSHLT_3565/Test01/GRun/v1/V3 -n 500 --input /store/data/Run2025C/ParkingVBF0/RAW/v1/000/392/997/00000/b49a5bb3-9aad-4f36-a519-100781d3fae8.root -x "--globaltag 150X_dataRun3_HLT_v1" -p "*VBF_DiPFJet50_Mjj*_Ele22_eta2p1_WPTight_Gsf_v*" -d output_hltIntegTests_VBF 2>&1 | tee output_hltIntegTests_VBF.txt
+  754  pwd
+  755  l
+  756  ls
+  757  pwd
+  758  ls
+  759  cd ..
+  760  ls
+  761  cd output_hltIntegTests_VBF/
+  762  ls
+  763  cd output_hltIntegTests_VBF/
+  764  ls
+  765  vi HLT_VBF_DiPFJet50_Mjj800_Ele22_eta2p1_WPTight_Gsf_v2.log
+  766  pwd
+  767  ls
+  768  hltIntegrationTests /users/ssaumya/Test/dev/CMSSW_15_0_0/CMSHLT_3565/Test01/GRun/v1/V3 -n 500   --input /store/mc/Run3Winter25Digi/TT_TuneCP5_13p6TeV_powheg-pythia8/GEN-SIM-RAW/142X_mcRun3_2025_realistic_v7-v2/2810001/bac23860-7554-4578-9095-39f7dfc589fb.root --mc  -x "--eras Run3_2025 --globaltag 142X_mcRun3_2025_realistic_v7 --l1-emulator uGT --l1 L1Menu_Collisions2025_v1_1_1_xml"   -p "*Ele*WPTight*"   -d output_hltIntegTests 2>&1 | tee output_hltIntegTests.txt
+  769  hltIntegrationTests 	/users/ssaumya/Test/dev/CMSSW_15_0_0/CMSHLT_3565/Test01/GRun/v1/V3 	-n 500 	--input /store/mc/Run3Winter25Digi/TT_TuneCP5_13p6TeV_powheg-pythia8/GEN-SIM-RAW/142X_mcRun3_2025_realistic_v7-v2/2810001/bac23860-7554-4578-9095-39f7dfc589fb.root 	--mc 	-x "--eras Run3_2025 --globaltag 142X_mcRun3_2025_realistic_v7 --l1-emulator uGT --l1 L1Menu_Collisions2025_v1_1_1_xml" 	-p "*Ele*WPTight*" 	-d output_hltIntegTests 2>&1 | tee output_hltIntegTests.txt
+  770  pwd
+  771  exit
+  772  ls
+  773  cmsRun matchPaths.py
+  774  cmsenv
+  775  cmsRun matchPaths.py
+  776  vi matchPaths.py 
+  777  cmsRun matchPaths.py
+  778  vi matchPaths.py 
+  779  vi matchPaths_v1.py 
+  780  python3 matchPaths_v1.py 
+  781  cmsRun matchPaths_v1.py 
+  782  vi matchPaths_v1.py 
+  783  cmsRun matchPaths_v1.py 
+  784  ls -lart
+  785  ls
+  786  vi matchPaths_v2.py 
+  787  python3 matchPaths_v2.py 
+  788  vi matchPaths_v2.py 
+  789  python3 matchPaths_v2.py 
+  790  ls
+  791  ls -lart
+  792  vi ele_WPTight_triggers.txt.root
+  793  vi matchPaths_v2.py 
+  794  hltGetConfiguration /dev/CMSSW_15_0_0/GRun/V79 --output minimal --data --process MYHLT --type GRun --globaltag 150X_dataRun3_HLT_v1 --max-events 100 --unprescale --eras Run3_2025 --cff > "${CMSSW_BASE}"/src/HLTrigger/Configuration/python/HLT_Reference_v79_cff.py
+  795  cmsenv
+  796  hltGetConfiguration /dev/CMSSW_15_0_0/GRun/V79 --output minimal --data --process MYHLT --type GRun --globaltag 150X_dataRun3_HLT_v1 --max-events 100 --unprescale --eras Run3_2025 --cff > "${CMSSW_BASE}"/src/HLTrigger/Configuration/python/HLT_Reference_v79_cff.py
+  797  pwd
+  798  git cms init
+  799  git cms-init
+  800  git cms-addpkg HLTrigger/Configuration
+  801  ls
+  802  hltGetConfiguration /dev/CMSSW_15_0_0/GRun/V79 --output minimal --data --process MYHLT --type GRun --globaltag 150X_dataRun3_HLT_v1 --max-events 100 --unprescale --eras Run3_2025 --cff > "${CMSSW_BASE}"/src/HLTrigger/Configuration/python/HLT_Reference_v79_cff.py
+  803  vi dumpTriggers_cfg.py
+  804  python3 dumpTriggers_cfg.py
+  805  ls
+  806  ls HLTrigger/Configuration/python/
+  807  vi dumpTriggers_cfg.py
+  808  ls HLTrigger/Configuration/python/HLT_Reference_v79_cff
+  809  ls HLTrigger/Configuration/python/HLT_Reference_v79_cff.py 
+  810  cmsenv
+  811  scram b -j 10
+  812  python3 dumpTriggers_cfg.py
+  813  ls -lart
+  814  vi ele_WPTight_triggers.txt
+  815  vi dumpModules_cfg.py
+  816  python3 dumpModules_cfg.py
+  817  ls
+  818  vi modules_HcalIsoFilter.txt
+  819  vi dumpModules_cfg.py
+  820  vi dumpModules_Asterick_cfg.py
+  821  python3 dumpModules_Asterick_cfg.py
+  822  ls
+  823  vi  modules_WPTight_HcalIsoFilter.txt
+  824  vi dumpModules_Asterick_cfg.py
+  825  vi  modules_WPTight_HcalIsoFilter.txt
+  826  vi dumpModules_Asterick_cfg.py
+  827  python3 dumpModules_Asterick_cfg.py
+  828  la
+  829  ls
+  830  vi modules_EleWPTightHcalIsoFilter.txt
+  831  vi dumpModules_Asterick_cfg.py
+  832  python dumpModules_Asterick_cfg.py
+  833  python3 dumpModules_Asterick_cfg.py
+  834  vi modules_EleWPTightHcalIsoFilter.txt
+  835  vi dumpModules_Asterick_cfg.py
+  836  python3 dumpModules_Asterick_cfg.py
+  837  vi modules_EleWPTightHcalIsoFilter.txt
+  838  vi modules_WPTight_HcalIsoFilter.txt
+  839  vi dumpModules_Asterick_cfg.py
+  840  python3 dumpModules_Asterick_cfg.py
+  841  ls -lart
+  842  vi modules_EleWPTightHcalIsoFilter.txt
+  843  vi dumpModules_Asterick_cfg.py
+  844  python3 dumpModules_Asterick_cfg.py
+  845  cat dumpModules_Asterick_cfg.py
+  846  vi modules_EleWPTightHcalIsoFilter.txt
+  847  vi dumpModules_Asterick_cfg.py
+  848  vi modules_EleWPTightHcalIsoFilter.txt
+  849  vi dumpModules_Asterick_cfg.py
+  850  python3 dumpModules_Asterick_cfg.py
+  851  vi modules_EleWPTightHcalIsoFilter.txt
+  852  cat dumpModules_Asterick_cfg.py
+  853  vi modules_EleWPTightHcalIsoFilter.txt
+  854  vi dumpModules_Asterick_cfg.py
+  855  python3 dumpModules_Asterick_cfg.py
+  856  vi modules_EleWPTightHcalIsoFilter.txt
+  857  cat dumpModules_Asterick_cfg.py
+  858  vi dumpModules_Asterick_cfg.py
+  859  python3 dumpModules_Asterick_cfg.py
+  860  vi modules_EleWPTightHcalIsoFilter.txt
+  861  cat dumpModules_Asterick_cfg.py
+  862  pwd
+  863  ls
+  864  vi dumpModules_cfg.py
+  865  cat dumpModules_cfg.py
+  866  vi dumpModules_cfg.py
+  867  python3 dumpModules_cfg.py
+  868  vi modules_EleWPTightHcalIsoFilter.txt
+  869  vi dumpModules_cfg.py
+  870  python3 dumpModules_cfg.py
+  871  vi modules_EleWPTightHcalIsoFilter.txt
+  872  vi dumpModules_cfg.py
+  873  python3 dumpModules_cfg.py
+  874  vi modules_EleWPTightHcalIsoFilter.txt
+  875  vi dumpModules_cfg.py
+  876  python3 dumpModules_cfg.py
+  877  vi dumpModules_cfg.py
+  878  vi modules_HcalIsoFilter.txt
+  879  python3 dumpModules_cfg.py
+  880  ls -lart
+  881  vi modules_HcalIsoFilter.txt
+  882  ls
+  883  cat dumpModules_cfg.py
+  884  vi modules_HcalIsoFilter.txt
+  885  ls *.py
+  886  vi dumpTriggers_cfg.py
+  887  vi dumpModules_Asterick_cfg.py
+  888  cat dumpModules_Asterick_cfg.py
+  889  python3  dumpModules_Asterick_cfg.py
+  890  vi modules_EleWPTightHcalIsoFilter.txt
+  891  vi dumpModules_Asterick_cfg.py
+  892  python3  dumpModules_Asterick_cfg.py
+  893  cat dumpModules_Asterick_cfg.py
+  894  vi modules_EleWPTightHcalIsoFilter.txt
+  895  vi dumpModules_Asterick_cfg.py
+  896  vi modules_EleWPTightHcalIsoFilter.txt
+  897  vi dumpModules_Asterick_cfg.py
+  898  python3i dumpModules_Asterick_cfg.py
+  899  python3 dumpModules_Asterick_cfg.py
+  900  vi modules_EleWPTightHcalIsoFilter.txt
+  901  vi dumpModules_Asterick_cfg.py
+  902  python3 dumpModules_Asterick_cfg.py
+  903  vi modules_EleWPTightHcalIsoFilter.txt
+  904  vi dumpModules_Asterick_cfg.py
+  905  python3 dumpModules_Asterick_cfg.py
+  906  vi modules_EleWPTightHcalIsoFilter.txt
+  907  vi dumpModules_Asterick_cfg.py
+  908  vi dumpMatchingModules_cfg.py
+  909  dumpMatchingModules_cfg.py searchString='*Tight*HcalIsoFilter*' outputFile='modules.txt'
+  910  python3 dumpMatchingModules_cfg.py searchString='*Tight*HcalIsoFilter*' outputFile='modules.txt'
+  911  vi dumpMatchingModules_cfg.py
+  912  python3 dumpMatchingModules_cfg.py searchString='*Tight*HcalIsoFilter*'
+  913  python3 dumpMatchingModules_cfg.py searchString='*Tight*HEFilter*'
+  914  python3 dumpMatchingModules_cfg.py searchString='*Tight*HE*Filter*'
+  915  python3 dumpMatchingModules_cfg.py searchString='*WPTight*HcalIsoFilter*'
+  916  python3 dumpMatchingModules_cfg.py searchString='*WP*Tight*HcalIsoFilter*'
+  917  python3 dumpMatchingModules_cfg.py searchString='*Tight*HcalIso*Filter*'
+  918  vi dumpMatchingModules_cfg.py
+  919  python3 dumpMatchingModules_cfg.py searchString='*HcalIsoFilter*'
+  920  python3 dumpMatchingModules_cfg.py searchString='*WP*Tight*HcalIso*Filter*'
+  921  python3 dumpMatchingModules_cfg.py searchString='*Tight*HcalIso*Filter*'
+  922  python3 dumpMatchingModules_cfg.py searchString='*HcalIso*Filter*'
+  923  python3 dumpMatchingModules_cfg.py searchString='*Tight*HE*Filter*'
+  924  python3 dumpMatchingModules_cfg.py searchString='*Tight*HEFilter*'
+  925  python3 dumpMatchingModules_cfg.py searchString='*TightHEFilter*'
+  926  python3 dumpMatchingModules_cfg.py searchString='*WPTightHEFilter*'
+  927  python3 dumpMatchingModules_cfg.py searchString='*HEFilter*'
+  928  vi dumpMatchingModules_cfg.py
+  929  python3 dumpMatchingModules_cfg.py searchString='*HE*Filter*'
+  930  python3 dumpMatchingModules_cfg.py searchString='*Tight*HE*Filter*'
+  931  vi dumpMatchingModules_cfg.py
+  932  cat dumpMatchingModules_cfg.py
+  933  pwd
+  934  exit
+  935  cd /afs/cern.ch/work/s/ssaumya/private/Egamma/TEST/CMSSW_15_0_6_patch1/src/
+  936  ls
+  937  cd Reference/
+  938  ls
+  939  cd ..
+  940  ls
+  941  ls Setup1/
+  942  ls TEST/
+  943  pwd
+  944  cd ..
+  945  ls
+  946  cd ..
+  947  ls
+  948  cd ..
+  949  ls
+  950  cd CMSSW_15_0_5/src
+  951  ls
+  952  cd ..
+  953  ls
+  954  cd ..
+  955  ls
+  956  ls -lart
+  957  cd TEST
+  958  ls
+  959  ls CMSSW_15_0_6_patch1/src
+  960  ls CMSSW_15_0_6_patch1/src/Reference/
+  961  ls CMSSW_15_0_6_patch1/src/TEST/
+  962  ls CMSSW_15_0_6_patch1/src/Se
+  963  ls
+  964  cd Timinig_Studies/
+  965  ls
+  966  cd CMSSW_15_0_6_patch1/src
+  967  ls
+  968  vi hlt_Reference.py
+  969  grep 'Ele.*WPTight' hlt_Reference.py > matching_triggers.txt
+  970  vi matching_triggers.txt 
+  971  vi matchPaths.py
+  972  python3 matchPaths.py
+  973  cmsenv
+  974  python3 matchPaths.py
+  975  export SCRAM_ARCH=el9_amd64_gcc12
+  976  cmsenv
+  977  scram arch
+  978  export SCRAMARCH=el9_amd64_gcc12
+  979  scram arch
+  980  cmsRun matchPaths.py
+  981  export SCRAM_ARCH=el9_amd64_gcc12
+  982  scram arch
+  983  cmsenv
+  984  scram list CMSSW_15_0_6
+  985  cmssw-el8
+  986  pwd
+  987  python3 dumpMatchingModules_cfg.py searchString='*El*Tight*HcalIsoFilter*'
+  988  pwd
+  989  ls
+  990  pwd
+  991  ls
+  992  cd ..
+  993  ls
+  994  cd .
+  995  cd ..
+  996  ls
+  997  cd ..
+  998  ls
+  999  exit
+ 1000  cd /afs/cern.ch/work/s/ssaumya/private/Egamma/TEST/
+ 1001  ls
+ 1002  cmsenv
+ 1003  git clone git@github.com:saumyaphor4252/EGamma-Studies.git
+ 1004  ls
+ 1005  cd EGamma-Studies/
+ 1006  ls
+ 1007  mkdir CMSHLT-3565
+ 1008  cd CMSHLT-3565
+ 1009  ls
+ 1010  vi README.md
+ 1011  mkdir TimingStudies
+ 1012  mkdir TriggerEfficiencies
+ 1013  cd T
+ 1014  cd TimingStudies/
+ 1015  ls
+ 1016  ls ../
+ 1017  vi README.md
+ 1018  ls ../../
+ 1019  ls ../../../
+ 1020  ls ../../../T
+ 1021  ls ../../../Timinig_Studies/
+ 1022  ls ../../../Timinig_Studies/CMSSW_15_0_6_patch1/src
+ 1023  vi README.md 
+ 1024  history 5000 > Commands.out
