@@ -1,5 +1,8 @@
 ## Relevant Links
 - JIRA : https://its.cern.ch/jira/browse/CMSHLT-3565
+- Reference menu : /cdaq/physics/Run2025/2e34/v1.1.2/HLT/V6
+- Target menu: /cdaq/physics/Run2025/2e34/v1.1.3/HLT/V1 
+- Run used : Run392925 from 2025C
 
 ### Set up the rucio rules for the files/blocks as per required minimally for the testing
 ```
