@@ -1,6 +1,8 @@
 ## Relevant Links
 - JIRA : https://its.cern.ch/jira/browse/CMSHLT-3566
 - Recipe : https://its.cern.ch/jira/browse/CMSHLT-3566?focusedId=6815019&page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#comment-6815019
+- Menu used: /cdaq/physics/Run2025/2e34/v1.1.2/HLT/V6
+- Run used : Run392925 from 2025C
 
 ### Set up the rucio rules for the files/blocks as per required minimally for the testing
 ```
@@ -35,9 +37,6 @@ cmsDriver.py --conditions 150X_dataRun3_HLT_v1 --data --datatier RECO --era Run3
 
 ### Now run the configuration file for local testing
 cmsRun hlt_ReRun_Config_Target.py
-
-### Submit on condor
-python3 cmsCondor.py hlt_ReRun_Config_Target.py /afs/cern.ch/work/s/ssaumya/private/Egamma/2025_CMSHLT-3566/CMSSW_15_0_7/src/HLT_Target/ /eos/cms/store/group/phys_egamma/ssaumya/2025_CMSHLT-3566/HLTstep_RECO_RootFiles_Target/ -n 10 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184
 ```
 
 ##### Reference
@@ -51,25 +50,49 @@ cmsDriver.py --conditions 150X_dataRun3_HLT_v1 --data --datatier RECO --era Run3
 
 ### Now run the configuration file for local testing
 cmsRun hlt_ReRun_Config_Reference.py
-
-### Submit on condor
-python3 cmsCondor.py hlt_ReRun_Config_Reference.py /afs/cern.ch/work/s/ssaumya/private/Egamma/2025_CMSHLT-3566/CMSSW_15_0_7/src/HLT_Target/ /eos/cms/store/group/phys_egamma/ssaumya/2025_CMSHLT-3566/HLTstep_RECO_RootFiles_Target/ -n 10 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184
 ```
  
 ### Run the PAT step to create miniAOD
 ```
-cmsDriver.py stepMINI -s PAT --conditions 150X_dataRun3_Prompt_v1 --datatier MINIAOD -n 100 --eventcontent MINIAOD --python_filename makeMini_cfg.py --geometry DB:Extended --era Run3_2024 --filein file:hltOutput_RECO.root --fileout file:stepMINI.root --hltProcess MYHLT
+# Run locally
+cmsDriver.py stepMINI -s PAT --conditions 150X_dataRun3_Prompt_v1 --datatier MINIAOD -n 100 --eventcontent MINIAOD --python_filename makeMini_cfg.py --geometry DB:Extended --era Run3_2025 --filein file:hltOutput_RECO.root --fileout file:stepMINI.root --hltProcess MYHLT
 ```
  
+### Condor Submission Tools
+```
+##### Input setup #####
+
+# Use the dasFileQuery script to control the number of files/events in the dataset you want to run on
+python3 dasFileQuery.py
+# This will create the List_cff.py file with the list of input files to be used.
+voms-proxy-init --valid 100:00
+cp /tmp/x509up_u<999999> /afs/cern.ch/user/s/ssaumya/private/x509up_u<999999>
+
+##### For HLT step #####
+
+# Update the cmsCondor.py accordingly for input and output, and the change needed in hltConfiguration
+## L49-L63 for configuration modification of the HLT step, L65-L82 for input source, L85 for events, L90-92 and L140-143 for output file name
+# -n 10 --> 10 files per job
+python3 cmsCondor.py hlt_ReRun_Config_Target.py /afs/cern.ch/work/s/ssaumya/private/Egamma/2025_CMSHLT-3566/CMSSW_15_0_7/src/HLT_Target/ /eos/cms/store/group/phys_egamma/ssaumya/CMSHLT-3566/HLTstep_RECO_RootFiles_Target/ -n 7 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184
+./sub_total.jobb
+
+##### For PAT step #####
+
+# Update the cmsCondor.py accordingly for input and output, and the change needed in hltConfiguration  
+python3 cmsCondor.py makeMini_cfg.py /afs/cern.ch/work/s/ssaumya/private/Egamma/2025_CMSHLT-3566/CMSSW_15_0_7/src/PAT_Reference/ /eos/cms/store/group/phys_egamma/ssaumya/CMSHLT-3566/PATstep_MINIAOD_RootFiles_Reference/ -n 1 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u<99999>
+./sub_total.jobb
+```
+
 ### Make the ntuples
 Set up inside `CMSSW_X_Y_Z/src`
 ```
-git clone -b Private_MINIAOD_2024_Data git@github.com:saumyaphor4252/EgammaAnalysis-TnPTreeProducer.git EgammaAnalysis/TnPTreeProducer
+git clone -b 150X_2025_Studies git@github.com:saumyaphor4252/EgammaAnalysis-TnPTreeProducer.git EgammaAnalysis/TnPTreeProducer
 scram b -j8
 cd EgammaAnalysis/TnPTreeProducer/crab/
 
 vi tnpCrabSubmit_PrivateMINIAOD.py
 # Update the file tnpCrabSubmit_PrivateMINIAOD.py as per needs for input, output files and storage folder
+source /cvmfs/cms.cern.ch/common/crab-setup.sh
 python3 tnpCrabSubmit_PrivateMINIAOD.py # This will create a file crab_submit_Private_MINIAOD.py
 crab submit crab_submit_Private_MINIAOD.py # This will submit the jobs
 ```
@@ -77,10 +100,10 @@ crab submit crab_submit_Private_MINIAOD.py # This will submit the jobs
 ### Run Iason's tool for plotting
 ```
 ssh -o ServerAliveInterval=10 ssaumya@lxplus9.cern.ch -L8777:localhost:8777
-cd /afs/cern.ch/user/s/ssaumya/Egamma/egamma-tnp/
+cd /afs/cern.ch/work/s/ssaumya/private/Egamma/IasonTool/egamma-tnp/
 source egmtnpenv/bin/activate
 jupyter lab --no-browser --port 8777
 
-# Code used: https://github.com/saumyaphor4252/egamma-tnp/tree/2024_Studies
-# Notebook Template: Winter24Checks.ipynb, Wniter24_DataMC_Checks.ipynb
+# Code template: https://github.com/saumyaphor4252/egamma-tnp/tree/2025_Studies
+# Notebook template: STEAM_23ndMay2025.ipynb
 ```
