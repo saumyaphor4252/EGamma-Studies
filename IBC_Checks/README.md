@@ -1,12 +1,18 @@
 ## Relevant Links
 - JIRA : https://its.cern.ch/jira/browse/CMSHLT-3589
-- CMSALCA-325 : https://its.cern.ch/jira/browse/CMSALCA-325
+- CMSALCA-331 : https://its.cern.ch/jira/browse/CMSALCA-331, CMSALCA-332 : https://its.cern.ch/jira/browse/CMSALCA-332
 - Menu used: /cdaq/physics/Run2025/2e34/v1.1.4/HLT/V1
 - Run used : 393276, 393331, 393346
 - CMSSW: CMSSW_15_0_7
 - Target Vs Reference: GTs
-	- HLT: 150X_dataRun3_HLT_TkAl_Target_w26_v1 (except BS tags) vs 150X_dataRun3_HLT_v1
-	- Prompt: 150X_dataRun3_Prompt_TkAl_Target_w26_v1 vs 150X_dataRun3_Prompt_v1
+	- HLT: 150X_dataRun3_HLT_TkAl_Target_w27_v1 (except BS tags) vs 150X_dataRun3_HLT_v1
+	- Prompt: 150X_dataRun3_Prompt_TkAl_Target_w27_v1 vs 150X_dataRun3_Prompt_v1
+
+    |  Global Tag  | HLT         | Prompt      |
+    |  ----------- | ----------- | ----------- |
+    |  Reference   | 150X_dataRun3_HLT_v1 | 150X_dataRun3_Prompt_v1 |
+    |  IBC Off     | 150X_dataRun3_HLT_TkAl_Target_w27_v1 | 150X_dataRun3_Prompt_TkAl_Target_w27_v1 |
+    |  IBC On      | 150X_dataRun3_HLT_TkAl_Target_w27_v2 | 150X_dataRun3_Prompt_TkAl_Target_w27_v2 |
 
 ### Set up the rucio rules for the files/blocks as per required minimally for the testing
 ```
@@ -41,8 +47,9 @@ cmsDriver.py --conditions 150X_dataRun3_HLT_v1 --data --datatier RECO --era Run3
 Update `hlt_ReRun_Config_Target.py` with respect to `hlt_ReRun_Config_Reference.py` to update the Global Tag as follows:
 ```
 from Configuration.AlCa.GlobalTag import GlobalTag
-#process.GlobalTag = GlobalTag(process.GlobalTag, '150X_dataRun3_HLT_v1', '')
-process.GlobalTag = GlobalTag(process.GlobalTag, '150X_dataRun3_HLT_TkAl_Target_w26_v1', '')
+#process.GlobalTag = GlobalTag(process.GlobalTag, '150X_dataRun3_HLT_v1', '') # REFERENCE
+#process.GlobalTag = GlobalTag(process.GlobalTag, '150X_dataRun3_HLT_TkAl_Target_w27_v2', '') # IBC ON
+process.GlobalTag = GlobalTag(process.GlobalTag, '150X_dataRun3_HLT_TkAl_Target_w27_v1', '') # IBC OFF
 process.GlobalTag.toGet = cms.VPSet(
     cms.PSet(record = cms.string('BeamSpotObjectsRcd'),
         tag = cms.string('BeamSpotObjects_PCL_byRun_v0_hlt'),
@@ -58,11 +65,26 @@ process.GlobalTag.toGet = cms.VPSet(
     )
 )
 ```
- 
+
 ### Run the PAT step to create miniAOD
 ```
 # Run locally
+cmsDriver.py stepMINI -s PAT --conditions 150X_dataRun3_Prompt_v1 --datatier MINIAOD -n 100 --eventcontent MINIAOD --python_filename makeMini_cfg_Reference.py --geometry DB:Extended --era Run3_2025 --filein file:hltOutput_RECO.root --fileout file:stepMINI.root --hltProcess MYHLT
+```
 
+##### Reference Vs Target Prompt step
+Update `makeMini_cfg.py` for Target to update the Global Tag as follows:
+```
+from Configuration.AlCa.GlobalTag import GlobalTag
+#process.GlobalTag = GlobalTag(process.GlobalTag, '150X_dataRun3_Prompt_v1', '') # REFERENCE
+#process.GlobalTag = GlobalTag(process.GlobalTag, '150X_dataRun3_Prompt_TkAl_Target_w27_v2', '') # IBC ON
+process.GlobalTag = GlobalTag(process.GlobalTag, '150X_dataRun3_Prompt_TkAl_Target_w27_v1', '') # IBC OFF
+process.GlobalTag.toGet = cms.VPSet(
+    cms.PSet(record = cms.string('BeamSpotObjectsRcd'),
+        tag = cms.string('BeamSpotObjects_PCL_byLumi_v0_prompt'),
+        connect =cms.string('frontier://FrontierProd/CMS_CONDITIONS')
+    )
+)
 ```
  
 ### Condor Submission Tools
@@ -80,13 +102,13 @@ cp /tmp/x509up_u<999999> /afs/cern.ch/user/s/ssaumya/private/x509up_u<999999>
 # Update the cmsCondor.py accordingly for input and output, and the change needed in hltConfiguration
 ## L49-L63 for configuration modification of the HLT step, L65-L82 for input source, L85 for events, L90-92 and L140-143 for output file name
 # -n 10 --> 10 files per job
-python3 cmsCondor.py hlt_ReRun_Config_Target.py /afs/cern.ch/work/s/ssaumya/private/Egamma/2025_CMSHLT-3566/CMSSW_15_0_7/src/HLT_Target/ /eos/cms/store/group/phys_egamma/ssaumya/CMSHLT-3566/HLTstep_RECO_RootFiles_Target/ -n 7 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184
+python3 cmsCondor.py hlt_ReRun_Config_Reference.py /afs/cern.ch/work/s/ssaumya/private/Egamma/IBC_Checks_Updated/CMSSW_15_0_7/src/HLT_Reference/ /eos/cms/store/group/phys_egamma/ssaumya/IBC_Checks/HLTstep_RECO_RootFiles_Reference/ -n 7 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u<99999>
 ./sub_total.jobb
 
 ##### For PAT step #####
 
 # Update the cmsCondor.py accordingly for input and output, and the change needed in hltConfiguration  
-python3 cmsCondor.py makeMini_cfg.py /afs/cern.ch/work/s/ssaumya/private/Egamma/2025_CMSHLT-3566/CMSSW_15_0_7/src/PAT_Reference/ /eos/cms/store/group/phys_egamma/ssaumya/CMSHLT-3566/PATstep_MINIAOD_RootFiles_Reference/ -n 1 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u<99999>
+python3 cmsCondor.py makeMini_cfg_Reference.py /afs/cern.ch/work/s/ssaumya/private/Egamma/IBC_Checks_Updated/CMSSW_15_0_7/src/PAT_Reference/ /eos/cms/store/group/phys_egamma/ssaumya/IBC_Checks/PATstep_MINIAOD_RootFiles_Reference/ -n 1 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u<999999>
 ./sub_total.jobb
 ```
 

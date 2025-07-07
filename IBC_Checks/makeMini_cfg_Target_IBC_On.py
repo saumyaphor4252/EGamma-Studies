@@ -148,7 +148,13 @@ process.MINIAODoutput = cms.OutputModule("PoolOutputModule",
 # Other statements
 from Configuration.AlCa.GlobalTag import GlobalTag
 #process.GlobalTag = GlobalTag(process.GlobalTag, '150X_dataRun3_Prompt_v1', '')
-process.GlobalTag = GlobalTag(process.GlobalTag, '150X_dataRun3_Prompt_TkAl_Target_w26_v1', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, '150X_dataRun3_Prompt_TkAl_Target_w27_v2', '')
+process.GlobalTag.toGet = cms.VPSet(
+    cms.PSet(record = cms.string('BeamSpotObjectsRcd'),
+        tag = cms.string('BeamSpotObjects_PCL_byLumi_v0_prompt'),
+        connect =cms.string('frontier://FrontierProd/CMS_CONDITIONS')
+    )
+)
 
 # Path and EndPath definitions
 process.Flag_BadChargedCandidateFilter = cms.Path(process.BadChargedCandidateFilter)

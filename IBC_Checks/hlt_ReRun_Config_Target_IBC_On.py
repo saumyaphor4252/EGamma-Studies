@@ -90,7 +90,7 @@ process = ProcessName(process)
 
 from Configuration.AlCa.GlobalTag import GlobalTag
 #process.GlobalTag = GlobalTag(process.GlobalTag, '150X_dataRun3_HLT_v1', '')
-process.GlobalTag = GlobalTag(process.GlobalTag, '150X_dataRun3_HLT_Candidate_2025_06_23_12_45_09', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, '150X_dataRun3_HLT_TkAl_Target_w27_v2', '')
 process.GlobalTag.toGet = cms.VPSet(
     cms.PSet(record = cms.string('BeamSpotObjectsRcd'),
         tag = cms.string('BeamSpotObjects_PCL_byRun_v0_hlt'),
