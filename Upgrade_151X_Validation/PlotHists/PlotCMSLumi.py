@@ -86,8 +86,8 @@ def CMS_lumi(lumi_13TeV, pad,  iPeriod,  iPosX, extraText):
         if( outOfFrame): lumiText += "}"
     elif ( iPeriod==12 ):
         lumiText += "8 TeV"
-    elif ( iPeriod==None ):    
-        lumiText += ""
+    elif ( iPeriod==13 ):
+        lumiText += "Run4 MC (14 TeV)"
     elif ( iPeriod==0 ):
         lumiText += lumi_sqrtS
             

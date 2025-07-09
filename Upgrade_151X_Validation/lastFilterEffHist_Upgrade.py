@@ -9,6 +9,7 @@ import argparse
 import sys
 import math
 import logging
+import numpy as np
 from typing import List, Dict, Any
 from DataFormats.FWLite import Events, Handle
 import ROOT
@@ -22,7 +23,7 @@ import time
 # Constants
 EB_ETA_MAX = 1.44
 EE_ETA_MIN = 1.56
-MIN_GEN_PT = 30.0
+MIN_GEN_PT = 25.0
 MAX_DR = 0.1
 
 # Configure logging
@@ -33,8 +34,9 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 class HistogramManager:
-    def __init__(self, pt_bins: array, eta_bins: array, phi_bins: array):
+    def __init__(self, pt_bins: array, pt_bins_TurnOn: array, eta_bins: array, phi_bins: array):
         self.pt_bins = pt_bins
+        self.pt_bins_TurnOn = pt_bins_TurnOn
         self.eta_bins = eta_bins
         self.phi_bins = phi_bins
         self.histograms = {}
@@ -54,8 +56,11 @@ class HistogramManager:
             self.histograms[f'{sequence_name}_den_ele_phi_EE'] = ROOT.TH1D(f"{sequence_name}_den_ele_phi_EE", "#phi", len(self.phi_bins)-1, self.phi_bins)
             self.histograms[f'{sequence_name}_den_ele_phi'] = ROOT.TH1D(f"{sequence_name}_den_ele_phi", "#phi", len(self.phi_bins)-1, self.phi_bins)
             self.histograms[f'{sequence_name}_den_ele_pt_EB'] = ROOT.TH1D(f"{sequence_name}_den_ele_pt_EB", "pT", len(self.pt_bins)-1, self.pt_bins)
+            self.histograms[f'{sequence_name}_den_ele_pt_TurnOn_EB'] = ROOT.TH1D(f"{sequence_name}_den_ele_pt_TurnOn_EB", "pT", len(self.pt_bins_TurnOn)-1, self.pt_bins_TurnOn)
             self.histograms[f'{sequence_name}_den_ele_pt_EE'] = ROOT.TH1D(f"{sequence_name}_den_ele_pt_EE", "pT", len(self.pt_bins)-1, self.pt_bins)
+            self.histograms[f'{sequence_name}_den_ele_pt_TurnOn_EE'] = ROOT.TH1D(f"{sequence_name}_den_ele_pt_TurnOn_EE", "pT", len(self.pt_bins_TurnOn)-1, self.pt_bins_TurnOn)
             self.histograms[f'{sequence_name}_den_ele_pt'] = ROOT.TH1D(f"{sequence_name}_den_ele_pt", "pT", len(self.pt_bins)-1, self.pt_bins)
+            self.histograms[f'{sequence_name}_den_ele_pt_TurnOn'] = ROOT.TH1D(f"{sequence_name}_den_ele_pt_TurnOn", "pT", len(self.pt_bins_TurnOn)-1, self.pt_bins_TurnOn)
             
             # Create numerator histograms for each filter in this sequence
             for filter_name in sequences[sequence_name]:
@@ -66,8 +71,11 @@ class HistogramManager:
                 self.histograms[f'{sequence_name}_num_ele_phi_EE_{filter_name}'] = ROOT.TH1D(f"{sequence_name}_num_ele_phi_EE_{filter_name}", "#phi", len(self.phi_bins)-1, self.phi_bins)
                 self.histograms[f'{sequence_name}_num_ele_phi_{filter_name}'] = ROOT.TH1D(f"{sequence_name}_num_ele_phi_{filter_name}", "#phi", len(self.phi_bins)-1, self.phi_bins)
                 self.histograms[f'{sequence_name}_num_ele_pt_EB_{filter_name}'] = ROOT.TH1D(f"{sequence_name}_num_ele_pt_EB_{filter_name}", "pT", len(self.pt_bins)-1, self.pt_bins)
+                self.histograms[f'{sequence_name}_num_ele_pt_TurnOn_EB_{filter_name}'] = ROOT.TH1D(f"{sequence_name}_num_ele_pt_TurnOn_EB_{filter_name}", "pT", len(self.pt_bins_TurnOn)-1, self.pt_bins_TurnOn)
                 self.histograms[f'{sequence_name}_num_ele_pt_EE_{filter_name}'] = ROOT.TH1D(f"{sequence_name}_num_ele_pt_EE_{filter_name}", "pT", len(self.pt_bins)-1, self.pt_bins)
+                self.histograms[f'{sequence_name}_num_ele_pt_TurnOn_EE_{filter_name}'] = ROOT.TH1D(f"{sequence_name}_num_ele_pt_TurnOn_EE_{filter_name}", "pT", len(self.pt_bins_TurnOn)-1, self.pt_bins_TurnOn)         
                 self.histograms[f'{sequence_name}_num_ele_pt_{filter_name}'] = ROOT.TH1D(f"{sequence_name}_num_ele_pt_{filter_name}", "pT", len(self.pt_bins)-1, self.pt_bins)
+                self.histograms[f'{sequence_name}_num_ele_pt_TurnOn_{filter_name}'] = ROOT.TH1D(f"{sequence_name}_num_ele_pt_TurnOn_{filter_name}", "pT", len(self.pt_bins_TurnOn)-1, self.pt_bins_TurnOn)
 
     def write_histograms(self, output_file: TFile) -> None:
         """Write all histograms to the output file."""
@@ -280,23 +288,27 @@ def process_events(events: Events, hist_manager: HistogramManager, sequences: Di
                         if abs(eg.eta()) <= EB_ETA_MAX:
                             if ind == 1:
                                 hist_manager.histograms[f'{sequence_name}_den_ele_pt_EB'].Fill(eg.pt())
+                                hist_manager.histograms[f'{sequence_name}_den_ele_pt_TurnOn_EB'].Fill(eg.pt())
                             hist_manager.histograms[f'{sequence_name}_num_ele_pt_EB_{filter_name}'].Fill(eg.pt())
+                            hist_manager.histograms[f'{sequence_name}_num_ele_pt_TurnOn_EB_{filter_name}'].Fill(eg.pt())
                             
                         if abs(eg.eta()) <= EB_ETA_MAX or abs(eg.eta()) >= EE_ETA_MIN:
                             if ind == 1:
                                 hist_manager.histograms[f'{sequence_name}_den_ele_pt'].Fill(eg.pt())
+                                hist_manager.histograms[f'{sequence_name}_den_ele_pt_TurnOn'].Fill(eg.pt())
                             hist_manager.histograms[f'{sequence_name}_num_ele_pt_{filter_name}'].Fill(eg.pt())
+                            hist_manager.histograms[f'{sequence_name}_num_ele_pt_TurnOn_{filter_name}'].Fill(eg.pt())
                             
                         if ind == 1:
                             hist_manager.histograms[f'{sequence_name}_den_ele_eta_EB'].Fill(eg.eta())
                             hist_manager.histograms[f'{sequence_name}_den_ele_phi_EB'].Fill(eg.phi())
                             hist_manager.histograms[f'{sequence_name}_den_ele_eta'].Fill(eg.eta())
-                            hist_manager.histograms[f'{sequence_name}_den_ele_phi'].Fill(eg.eta())
+                            hist_manager.histograms[f'{sequence_name}_den_ele_phi'].Fill(eg.phi())
                             
                         hist_manager.histograms[f'{sequence_name}_num_ele_eta_EB_{filter_name}'].Fill(eg.eta())
                         hist_manager.histograms[f'{sequence_name}_num_ele_phi_EB_{filter_name}'].Fill(eg.phi())
                         hist_manager.histograms[f'{sequence_name}_num_ele_eta_{filter_name}'].Fill(eg.eta())
-                        hist_manager.histograms[f'{sequence_name}_num_ele_phi_{filter_name}'].Fill(eg.eta())
+                        hist_manager.histograms[f'{sequence_name}_num_ele_phi_{filter_name}'].Fill(eg.phi())
 
             for eg in eles_HGC:
                 gen_match_ele, _, gen_pt = match_to_gen(eg.eta(), eg.phi(), genobjs, pid=11)
@@ -330,23 +342,27 @@ def process_events(events: Events, hist_manager: HistogramManager, sequences: Di
                         if abs(eg.eta()) >= EE_ETA_MIN:
                             if ind == 1:
                                 hist_manager.histograms[f'{sequence_name}_den_ele_pt_EE'].Fill(eg.pt())
+                                hist_manager.histograms[f'{sequence_name}_den_ele_pt_TurnOn_EE'].Fill(eg.pt())
                             hist_manager.histograms[f'{sequence_name}_num_ele_pt_EE_{filter_name}'].Fill(eg.pt())
+                            hist_manager.histograms[f'{sequence_name}_num_ele_pt_TurnOn_EE_{filter_name}'].Fill(eg.pt())
 
                         if abs(eg.eta()) <= EB_ETA_MAX or abs(eg.eta()) >= EE_ETA_MIN:
                             if ind == 1:
                                 hist_manager.histograms[f'{sequence_name}_den_ele_pt'].Fill(eg.pt())
+                                hist_manager.histograms[f'{sequence_name}_den_ele_pt_TurnOn'].Fill(eg.pt())
                             hist_manager.histograms[f'{sequence_name}_num_ele_pt_{filter_name}'].Fill(eg.pt())
+                            hist_manager.histograms[f'{sequence_name}_num_ele_pt_TurnOn_{filter_name}'].Fill(eg.pt())
 
                         if ind == 1:
                             hist_manager.histograms[f'{sequence_name}_den_ele_eta_EE'].Fill(eg.eta())
                             hist_manager.histograms[f'{sequence_name}_den_ele_phi_EE'].Fill(eg.phi())
                             hist_manager.histograms[f'{sequence_name}_den_ele_eta'].Fill(eg.eta())
-                            hist_manager.histograms[f'{sequence_name}_den_ele_phi'].Fill(eg.eta())
+                            hist_manager.histograms[f'{sequence_name}_den_ele_phi'].Fill(eg.phi())
 
                         hist_manager.histograms[f'{sequence_name}_num_ele_eta_EE_{filter_name}'].Fill(eg.eta())
                         hist_manager.histograms[f'{sequence_name}_num_ele_phi_EE_{filter_name}'].Fill(eg.phi())
                         hist_manager.histograms[f'{sequence_name}_num_ele_eta_{filter_name}'].Fill(eg.eta())
-                        hist_manager.histograms[f'{sequence_name}_num_ele_phi_{filter_name}'].Fill(eg.eta())
+                        hist_manager.histograms[f'{sequence_name}_num_ele_phi_{filter_name}'].Fill(eg.phi())
 
 def main():
     parser = argparse.ArgumentParser(description='E/gamma HLT analyzer')
@@ -383,11 +399,24 @@ def main():
         sys.exit(1)
     
     # Create histogram manager
-    pt_bins = array('d', [5,10,15,20,22,26,28,30,32,34,36,38,40,45,50,60,80,100,150,250,500])
-    eta_bins = array('d', [-2.5,-2.4,-2.3,-2.2,-2.1,-2.0,-1.9,-1.8,-1.7,-1.56,-1.44,-1.3,-1.2,-1.1,-1.0,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,1.1,1.2,1.3,1.44,1.56,1.7,1.8,1.9,2.0,2.1,2.2,2.3,2.4,2.5])
+    # Custom pt binning: 0-50, 50-100, then steps of 100 till 3000, then steps of 250 till 4000
+    pt_bins_list = [0, 50, 100]  # Start with 0-50, 50-100
+    pt_bins_list_TurnOn = [0, 20, 30, 40, 50, 60, 80, 100, 125, 150, 175, 200]
+    
+    # Add steps of 100 from 100 to 3000
+    for i in range(200, 3001, 100):
+        pt_bins_list.append(i)
+    
+    # Add steps of 250 from 3000 to 4000
+    for i in range(3250, 4001, 250):
+        pt_bins_list.append(i)
+    
+    pt_bins = array('d', pt_bins_list)
+    pt_bins_TurnOn = array('d', pt_bins_list_TurnOn)
+    eta_bins = np.arange(-4, 4.01, 0.25, dtype='d')
     phi_bins = array('d', [-3.32,-2.97,-2.62,-2.27,-1.92,-1.57,-1.22,-0.87,-0.52,-0.18,0.18,0.52,0.87,1.22,1.57,1.92,2.27,2.62,2.97,3.32])
     
-    hist_manager = HistogramManager(pt_bins, eta_bins, phi_bins)
+    hist_manager = HistogramManager(pt_bins, pt_bins_TurnOn, eta_bins, phi_bins)
     
     # Define sequences
     sequences = {

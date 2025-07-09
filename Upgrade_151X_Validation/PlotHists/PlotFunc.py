@@ -2,48 +2,35 @@ import ROOT as rt
 import numpy as np
 import sys
 from ctypes import c_double
+from ROOT import TFile, TLegend, gPad, gROOT, TCanvas, THStack, TF1, TH1F, TGraphAsymmErrors
+from PlotCMSLumi import CMS_lumi
 
 #-----------------------------------------
 #Get, add, substract histograms 
 #-----------------------------------------
-def getEff(inFile, num, den):
+def getEff(inFile, num, den, plotType="pt"):
     try:
         hPass = inFile.Get(num)
         hAll  = inFile.Get(den)
-        
-        # Add debug information
-        if not hPass:
-            print(f"Error: Numerator histogram '{num}' not found in file {inFile.GetName()}")
-            print(f"Available histograms in file:")
-            for key in inFile.GetListOfKeys():
-                print(f"  - {key.GetName()}")
-            sys.exit(1)
-        if not hAll:
-            print(f"Error: Denominator histogram '{den}' not found in file {inFile.GetName()}")
-            print(f"Available histograms in file:")
-            for key in inFile.GetListOfKeys():
-                print(f"  - {key.GetName()}")
-            sys.exit(1)
-            
-        # Verify the objects are histograms
-        if not isinstance(hPass, rt.TH1):
-            print(f"Error: '{num}' is not a histogram (type: {type(hPass)})")
-            sys.exit(1)
-        if not isinstance(hAll, rt.TH1):
-            print(f"Error: '{den}' is not a histogram (type: {type(hAll)})")
-            sys.exit(1)
-            
-        hPass.GetXaxis().SetTitle(num)
-        pEff = rt.TGraphAsymmErrors(hPass, hAll)
-        pEff.SetName(num)
-        return pEff
-        
-    except Exception as e:
-        print(f"Error in getEff: {str(e)}")
-        print(f"File: {inFile.GetName()}")
-        print(f"Numerator: {num}")
-        print(f"Denominator: {den}")
-        sys.exit(1)
+    except Exception:
+        print ("Error: Hist not found. \nFile: %s \nHistName: %s"%(inFile, num))
+        sys.exit()
+    #if(rt.TEfficiency::CheckConsistency(hPass, hAll)):
+    
+    # Set x-axis title based on plot type
+    xTitles = {
+        "pt": "p_{T} [GeV]",
+        "pt_TurnOn": "p_{T} [GeV]",
+        "eta": "#eta",
+        "phi": "#phi [rad]"
+    }
+    xTitle = xTitles.get(plotType, num)  # Default to histogram name if plotType not found
+    hPass.GetXaxis().SetTitle(xTitle)
+    
+    #pEff = rt.TEfficiency(hPass, hAll)
+    pEff = rt.TGraphAsymmErrors(hPass, hAll)
+    pEff.SetName(num)
+    return pEff
 
 def divideGraphs(graph1, graph2): #from ChatGPT
     result_graph = rt.TGraphAsymmErrors()
@@ -82,12 +69,12 @@ def divideGraphs(graph1, graph2): #from ChatGPT
 #-----------------------------------------
 #Get ratio of two eff histograms
 #-----------------------------------------
-def getRatio(files, num, den):
+def getRatio(files, num, den, plotType="pt"):
     effs  = []
     names = []
     for name, f in files.items():
         names.append(name)
-        effs.append(getEff(f, num, den))
+        effs.append(getEff(f, num, den, plotType))
     rName  = "%s/%s"%(names[0], names[1])
     ratio  = divideGraphs(effs[0], effs[1])
     ratio.SetName(rName) 
@@ -159,7 +146,19 @@ def decoLegend(legend, nCol, textSize):
     return legend
 
 def getLumiLabel(year):
-    lumi = "Run4 MC (14 TeV)"
+    lumi = "Run4MC"
+    if "16Pre" in year:
+        lumi = "19.5 fb^{-1} (2016Pre)"
+    if "16Post" in year:
+        lumi = "16.8 fb^{-1} (2016Post)"
+    if "17" in year:
+        lumi = "41.5 fb^{-1} (2017)"
+    if "18" in year:
+        lumi = "59.8 fb^{-1} (2018)"
+    if "__" in year:
+        lumi = "138 fb^{-1} (Run2)"
+    if "2023" in year:
+        lumi = "X fb^{-1} (2023)"
     return lumi
 
 def getChLabel(decay, channel):
@@ -171,3 +170,122 @@ def getChLabel(decay, channel):
         name += "%s#color[%i]{%s}"%(nDict[decay], colDict[ch], chDict[ch])
     name += ", p_{T}^{miss} #geq 20 GeV"
     return name
+
+#-----------------------------------------
+#Make efficiency plots
+#-----------------------------------------
+def makeEff(num, den, plotType, forRatio, forOverlay, padGap=0.01, iPeriod=13, iPosX=10, 
+            xPadRange=[0.0,1.0], yPadRange=[0.0,0.30-0.01, 0.30+0.01,1.0], outPlotDir="./plots"):
+    """
+    Create efficiency plots with optional ratio panels.
+    
+    Args:
+        num (str): Numerator histogram name
+        den (str): Denominator histogram name  
+        plotType (str): Type of plot (pt, eta, phi)
+        forRatio (list): List of ratio pairs to plot
+        forOverlay (dict): Dictionary of files to overlay
+        padGap (float): Gap between pads
+        iPeriod (int): CMS period
+        iPosX (int): X position for CMS label
+        xPadRange (list): X range for pads
+        yPadRange (list): Y range for pads
+        outPlotDir (str): Output directory for plots
+    """
+    # Define x-axis ranges for different plot types
+    xRanges = {
+        "pt": [0, 4000],      # pT range: 0-1000 GeV
+        "pt_TurnOn": [0, 200], 
+        "eta": [-4.0, 4.0],   # Eta range: -3 to 3
+        "phi": [-3.2, 3.2]    # Phi range: -π to π (approximately)
+    }
+    
+    # Get the appropriate x-range for this plot type
+    xRange = xRanges.get(plotType, [0, 4000])  # Default fallback
+    
+    gROOT.SetBatch(True)
+    canvas = TCanvas()
+    if len(forRatio)>0: 
+        canvas.Divide(1, 2)
+        canvas.cd(1)
+        gPad.SetRightMargin(0.03);
+        gPad.SetPad(xPadRange[0],yPadRange[2],xPadRange[1],yPadRange[3]);
+        gPad.SetTopMargin(0.09);
+        gPad.SetBottomMargin(padGap);
+        #gPad.SetTickx(0);
+        gPad.RedrawAxis();
+    else:
+        canvas.cd()
+
+    #get files
+    files = forOverlay
+
+    #get effs 
+    effs = []
+    for name, f in files.items(): 
+        eff   = getEff(f, num, den, plotType)
+        effs.append(eff)
+
+    #plot effs
+    #leg = TLegend(0.25,0.85,0.95,0.92); 
+    leg = TLegend(0.36,0.4,0.8,0.5); 
+    decoLegend(leg, 4, 0.027)
+    for index, eff in enumerate(effs): 
+        # Set x-axis title based on plot type
+        xTitles = {
+            "pt": "p_{T} [GeV]",
+            "pt_TurnOn": "p_{T} [GeV]",
+            "eta": "#eta",
+            "phi": "#phi [rad]"
+        }
+        xTitle = xTitles.get(plotType, num)  # Default to histogram name if plotType not found
+        yTitle = "HLT  Efficiency"
+        decoHist(eff, xTitle, yTitle, index+1)
+        eff.SetMaximum(1.2)
+        eff.SetMinimum(0.1)
+        eff.GetXaxis().SetRangeUser(xRange[0], xRange[1])
+        if index==0:
+            eff.Draw("AP")
+        else:
+            eff.Draw("Psame")
+        #leg.AddEntry(eff, "%s"%(eff.GetName().replace("HistNano_", "")), "APL")
+        leg.AddEntry(eff, "%s"%(forRatio[index]), "APL")
+        #print(f"HERE I AM :{forRatio[index]}")
+        #leg.AddEntry(eff, "%s"%(eff.GetName()), "APL")
+    
+    #Draw CMS, Lumi, channel
+    extraText  = "Preliminary"
+    year = "XYZ"
+    lumi_13TeV = getLumiLabel(year)
+    CMS_lumi(lumi_13TeV, canvas, iPeriod, iPosX, extraText)
+    leg.Draw()
+    
+    #Ratio lots
+    if len(forRatio)>0: 
+        canvas.cd(2)
+        gPad.SetTopMargin(padGap); 
+        gPad.SetBottomMargin(0.30); 
+        gPad.SetRightMargin(0.03);
+        #gPad.SetTickx(0);
+        gPad.SetPad(xPadRange[0],yPadRange[0],xPadRange[1],yPadRange[2]);
+        gPad.RedrawAxis();
+        rLeg = TLegend(0.25,0.75,0.95,0.85); 
+        decoLegend(rLeg, 4, 0.085)
+        baseLine = TF1("baseLine","1", -100, 10000);
+        baseLine.SetLineColor(3);
+        #baseLine.Draw()
+        files = {}
+        files[forRatio[0]] = forOverlay[forRatio[0]]  # First version
+        files[forRatio[1]] = forOverlay[forRatio[1]]  # Second version
+        hRatio = getRatio(files, num, den, plotType)
+        decoHistRatio(hRatio, xTitle, "Ratio", 1)
+        hRatio.GetYaxis().SetRangeUser(0.7, 1.3)
+        hRatio.GetXaxis().SetRangeUser(xRange[0], xRange[1])
+        hRatio.Draw("AP")
+        rLeg.AddEntry(hRatio, "%s"%(hRatio.GetName()), "L")
+        #rLeg.Draw()
+    #pdf = "%s/effPlot_%s.pdf"%(outPlotDir, num)
+    pdf = "./plots/effPlot_%s.pdf"%(num)
+    png = pdf.replace("pdf", "png")
+    canvas.SaveAs(pdf)
+    canvas.SaveAs(png)

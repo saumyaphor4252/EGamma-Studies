@@ -134,6 +134,44 @@ FILTERS = {
     ]
 }
 
+# FILTERS = {
+#     "HLTEle26WP70L1Seeded": [
+#         'hltEGL1SeedsForSingleEleIsolatedFilter',
+#         'hltEG26EtL1SeededFilter',
+#         'hltEle26WP70GsfTrackIsoL1SeededFilter'
+#     ],
+#     "HLTEle26WP70Unseeded": [
+#         'hltEGL1SeedsForSingleEleIsolatedFilter',
+#         'hltEG26EtUnseededFilter',
+#         'hltEle26WP70GsfTrackIsoUnseededFilter'
+#     ],
+#     "HLTEle32WPTightUnseeded": [
+#         'hltEGL1SeedsForSingleEleIsolatedFilter',
+#         'hltEG32EtUnseededFilter',
+#         'hltEle32WPTightGsfTrackIsoUnseededFilter'
+#     ],
+#     "HLTEle32WPTightL1Seeded": [
+#         'hltEGL1SeedsForSingleEleIsolatedFilter',
+#         'hltEG32EtL1SeededFilter',
+#         'hltEle32WPTightGsfTrackIsoL1SeededFilter'
+#     ],
+#     "HLTDoubleEle25CaloIdLPMS2L1Seeded": [
+#         'hltEGL1SeedsForDoubleEleNonIsolatedFilter',
+#         'hltDiEG25EtL1SeededFilter', 
+#         'hltDiEle25CaloIdLPMS2L1SeededFilter'
+#     ],
+#     "HLTDoubleEle25CaloIdLPMS2Unseeded": [
+#         'hltEGL1SeedsForDoubleEleNonIsolatedFilter',
+#         'hltDiEG25EtUnseededFilter',
+#         'hltDiEle25CaloIdLPMS2UnseededFilter'
+#     ],
+#     "HLTDoubleEle2312IsoL1Seeded": [
+#         'hltEGL1SeedsForDoubleEleIsolatedFilter',
+#         'hltEG23EtL1SeededFilter',
+#         'hltDiEle2312IsoGsfTrackIsoL1SeededFilter'
+#     ]
+# }
+
 # Helper function to get all available HLT paths
 def get_available_paths():
     """
