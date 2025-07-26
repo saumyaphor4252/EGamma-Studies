@@ -21,6 +21,21 @@
 /EGamma3/Run2025C-ZElectron-PromptReco-v2/RAW-RECO#73202192-8584-485e-af18-374c030746d4
 ```
 
+### Rucio rules for dataset not available on disk
+```
+source /cvmfs/cms.cern.ch/rucio/setup-py3.sh
+voms-proxy-init -voms cms
+export RUCIO_ACCOUNT=`whoami`
+rucio add-rule cms:/EGamma0/Run2025C-ZElectron-PromptReco-v2/RAW-RECO#4c88add9-27f5-4dca-9bd8-8f726f805049  1 T2_CH_CERN  --lifetime 8640    00 --activity "User AutoApprove" --ask-approval --comment "For important 2025C EGM-HLT studies"
+rucio add-rule cms:/EGamma1/Run2025C-ZElectron-PromptReco-v2/RAW-RECO#49df50de-dfb4-4f90-be37-c2b3da4a49e6  1 T2_CH_CERN  --lifetime 8640    00 --activity "User AutoApprove" --ask-approval --comment "For important 2025C EGM-HLT studies"
+rucio add-rule cms:/EGamma2/Run2025C-ZElectron-PromptReco-v2/RAW-RECO#836b224a-121a-4f28-9619-49f58dbb60c1  1 T2_CH_CERN  --lifetime 8640    00 --activity "User AutoApprove" --ask-approval --comment "For important 2025C EGM-HLT studies"
+rucio add-rule cms:/EGamma3/Run2025C-ZElectron-PromptReco-v2/RAW-RECO#73202192-8584-485e-af18-374c030746d4 1 T2_CH_CERN  --lifetime 86400    0 --activity "User AutoApprove" --ask-approval --comment "For important 2025C EGM-HLT studies"
+rucio rule-info f826cda862964bd2bad0395397f63f78
+rucio rule-info 795ab1f2f1f34c4fa14b3f287e06de09
+rucio rule-info a9c1fb3ee6ae406b9a8355311f3fed6b
+rucio rule-info fa130a6d042e4290890193b715d47640
+```
+
 ### CMSSW set-up
 ```
 cmsrel CMSSW_15_0_10; cd CMSSW_15_0_10/src; cmsenv
