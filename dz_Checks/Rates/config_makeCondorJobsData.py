@@ -23,7 +23,7 @@ makeInputFilesList = True
 #Directory where your input root files are located
 #inputFilesDir = "/eos/cms/store/group/dpg_trigger/comm_trigger/TriggerStudiesGroup/STEAM/dbeghin/NoCustom"
 #inputFilesDir = "/afs/cern.ch/work/j/jalimena/HLT_saveDisplacedPhotonPath/CMSSW_12_6_0_pre5/src/SteamRatesEdmWorkflow/Prod/PU60"
-inputFilesDir = "/eos/cms/store/group/phys_egamma/ssaumya/dz_Checks/Rates/Target_60/"
+inputFilesDir = "/eos/cms/store/group/phys_egamma/ssaumya/dz_Checks/Rates/Target_75/"
 #Were your input files produced by STEAM? If yes, file_type = "custom"
 #Are these raw data files?
 #If yes, are you running specifically on L1Accept files? Then file_type = "L1Accept"
