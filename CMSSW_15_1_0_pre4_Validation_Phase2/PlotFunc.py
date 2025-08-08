@@ -291,10 +291,10 @@ def makeEff(num, den, plotType, forRatio, forOverlay, padGap=0.01, iPeriod=13, i
     file_names = []  # Track file names to debug
     for name, f in files.items(): 
         print(f"DEBUG: Processing file '{name}' with TFile pointer: {f}")
-        eff   = getEffTH1(f, num, den, plotType)  # Use TH1 for consistency with ratio panel
+        eff   = getEff(f, num, den, plotType)  # Use TEfficiency for top panel (TGraphAsymmErrors)
         effs.append(eff)
         file_names.append(name)
-        print(f"DEBUG: Created efficiency histogram '{eff.GetName()}' for file '{name}'")
+        print(f"DEBUG: Created efficiency graph '{eff.GetName()}' for file '{name}'")
 
     #plot effs
     #leg = TLegend(0.25,0.85,0.95,0.92); 
@@ -315,7 +315,15 @@ def makeEff(num, den, plotType, forRatio, forOverlay, padGap=0.01, iPeriod=13, i
         decoHist(eff, xTitle, yTitle, index+1)
         eff.SetMaximum(1.2)
         eff.SetMinimum(0.1)
+        
+        # Force exact same x-axis range for alignment
         eff.GetXaxis().SetRangeUser(xRange[0], xRange[1])
+        eff.GetXaxis().SetLimits(xRange[0], xRange[1])  # Force limits for TGraph
+        
+        # Force identical x-axis settings for alignment
+        eff.GetXaxis().SetNdivisions(510)
+        eff.GetXaxis().SetMoreLogLabels()
+        eff.GetXaxis().SetNoExponent()
         
         # Add transparency to see overlap better
         if index == 0:  # First line (black)
@@ -327,35 +335,29 @@ def makeEff(num, den, plotType, forRatio, forOverlay, padGap=0.01, iPeriod=13, i
             eff.SetLineStyle(2)  # Dashed line for second curve
         
         if index==0:
-            eff.Draw("E1")  # Use E1 for TH1 instead of AP for TGraph
+            eff.Draw("AP")  # Use AP for TGraphAsymmErrors
         else:
-            eff.Draw("E1same")  # Use E1same for TH1 instead of Psame for TGraph
-            # Alternative: Try "Lsame" for just lines without markers to see overlap better
-            # eff.Draw("Lsame")
+            eff.Draw("Psame")  # Use Psame for TGraphAsymmErrors
         #leg.AddEntry(eff, "%s"%(eff.GetName().replace("HistNano_", "")), "APL")
-        leg.AddEntry(eff, "%s"%(name), "L")  # Use actual file name instead of forRatio[index]
+        leg.AddEntry(eff, "%s"%(name), "APL")  # Use APL for TGraphAsymmErrors
         
         # Debug: Print efficiency values to check if both are plotted
-        print(f"DEBUG: {name} - Efficiency histogram has {eff.GetNbinsX()} bins")
-        print(f"DEBUG: {name} - First bin: {eff.GetBinContent(1):.3f} ± {eff.GetBinError(1):.3f}")
-        print(f"DEBUG: {name} - Last bin: {eff.GetBinContent(eff.GetNbinsX()):.3f} ± {eff.GetBinError(eff.GetNbinsX()):.3f}")
-        
-        # Check for suspicious values (all 1.0 or all 0.0)
-        suspicious_bins = 0
-        total_bins = eff.GetNbinsX()
-        for i in range(1, total_bins + 1):
-            content = eff.GetBinContent(i)
-            error = eff.GetBinError(i)
-            if content == 1.0 and error == 0.0:
-                suspicious_bins += 1
-            elif content == 0.0 and error == 0.0:
-                suspicious_bins += 1
-        
-        print(f"DEBUG: {name} - {suspicious_bins}/{total_bins} bins have suspicious values (1.0±0.0 or 0.0±0.0)")
-        
-        # Check if histogram is empty or has no variation
-        if suspicious_bins == total_bins:
-            print(f"WARNING: {name} - ALL bins have suspicious values! This suggests a problem with the input histograms.")
+        if hasattr(eff, 'GetNbinsX'):  # TH1
+            print(f"DEBUG: {name} - Efficiency histogram has {eff.GetNbinsX()} bins")
+            print(f"DEBUG: {name} - First bin: {eff.GetBinContent(1):.3f} ± {eff.GetBinError(1):.3f}")
+            print(f"DEBUG: {name} - Last bin: {eff.GetBinContent(eff.GetNbinsX()):.3f} ± {eff.GetBinError(eff.GetNbinsX()):.3f}")
+        else:  # TGraphAsymmErrors
+            print(f"DEBUG: {name} - Efficiency graph has {eff.GetN()} points")
+            x, y = c_double(0.0), c_double(0.0)
+            eff.GetPoint(0, x, y)
+            ey_low = eff.GetErrorYlow(0)
+            ey_high = eff.GetErrorYhigh(0)
+            print(f"DEBUG: {name} - First point: {y.value:.3f} ± [{ey_low:.3f}, {ey_high:.3f}]")
+            
+            eff.GetPoint(eff.GetN()-1, x, y)
+            ey_low = eff.GetErrorYlow(eff.GetN()-1)
+            ey_high = eff.GetErrorYhigh(eff.GetN()-1)
+            print(f"DEBUG: {name} - Last point: {y.value:.3f} ± [{ey_low:.3f}, {ey_high:.3f}]")
         #leg.AddEntry(eff, "%s"%(eff.GetName()), "APL")
     
     #Draw CMS, Lumi, channel
@@ -386,13 +388,18 @@ def makeEff(num, den, plotType, forRatio, forOverlay, padGap=0.01, iPeriod=13, i
         hRatio.SetName(f"{forRatio[1]}/{forRatio[0]}")
         decoHistRatio(hRatio, xTitle, "Ratio", 1)
         hRatio.GetYaxis().SetRangeUser(0.7, 1.3)
-        hRatio.GetXaxis().SetRangeUser(xRange[0], xRange[1])
         
-        # Ensure x-axis alignment by copying binning from efficiency histograms
-        # This ensures both panels have identical x-axis binning
+        # Force exact same x-axis range for alignment
+        hRatio.GetXaxis().SetRangeUser(xRange[0], xRange[1])
+        hRatio.GetXaxis().SetLimits(xRange[0], xRange[1])  # Force limits for TH1
+        
+        # Force identical x-axis settings for perfect alignment
         hRatio.GetXaxis().SetNdivisions(510)  # Same as efficiency panel
         hRatio.GetXaxis().SetMoreLogLabels()
         hRatio.GetXaxis().SetNoExponent()
+        hRatio.GetXaxis().SetTitleOffset(1.0)  # Same as efficiency panel
+        hRatio.GetXaxis().SetTitleSize(0.05)   # Same as efficiency panel
+        hRatio.GetXaxis().SetLabelSize(0.05)   # Same as efficiency panel
         
         # Create baseline with the correct range
         baseLine = TF1("baseLine","1", xRange[0], xRange[1]);
