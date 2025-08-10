@@ -260,9 +260,9 @@ def makeEff(num, den, plotType, forRatio, forOverlay, padGap=0.01, iPeriod=13, i
     """
     # Define x-axis ranges for different plot types
     xRanges = {
-        "pt": [0, 4000],      # pT range: 0-1000 GeV
+        "pt": [0, 4000],      # pT range: 0-4000 GeV
         "pt_TurnOn": [0, 200], 
-        "eta": [-4.0, 4.0],   # Eta range: -3 to 3
+        "eta": [-4.0, 4.0],   # Eta range: -4.0 to 4.0 
         "phi": [-3.2, 3.2]    # Phi range: -π to π (approximately)
     }
     
@@ -321,18 +321,18 @@ def makeEff(num, den, plotType, forRatio, forOverlay, padGap=0.01, iPeriod=13, i
         eff.GetXaxis().SetLimits(xRange[0], xRange[1])  # Force limits for TGraph
         
         # Force identical x-axis settings for alignment
-        eff.GetXaxis().SetNdivisions(510)
-        eff.GetXaxis().SetMoreLogLabels()
+        #eff.GetXaxis().SetNdivisions(510)
+        #eff.GetXaxis().SetMoreLogLabels()
         eff.GetXaxis().SetNoExponent()
-        
-        # Add transparency to see overlap better
-        if index == 0:  # First line (black)
-            eff.SetLineWidth(3)
-            eff.SetMarkerSize(1.2)
-        else:  # Second line (red) 
-            eff.SetLineWidth(2)
-            eff.SetMarkerSize(1.0)
-            eff.SetLineStyle(2)  # Dashed line for second curve
+                
+        # # Add transparency to see overlap better
+        # if index == 0:  # First line (black)
+        #     eff.SetLineWidth(3)
+        #     eff.SetMarkerSize(1.2)
+        # else:  # Second line (red) 
+        #     eff.SetLineWidth(2)
+        #     eff.SetMarkerSize(1.0)
+        #     eff.SetLineStyle(2)  # Dashed line for second curve
         
         if index==0:
             eff.Draw("AP")  # Use AP for TGraphAsymmErrors
@@ -367,7 +367,7 @@ def makeEff(num, den, plotType, forRatio, forOverlay, padGap=0.01, iPeriod=13, i
     CMS_lumi(lumi_13TeV, canvas, iPeriod, iPosX, extraText)
     leg.Draw()
     
-    #Ratio lots
+    # Ratio Plots
     if len(forRatio)>0: 
         canvas.cd(2)
         gPad.SetTopMargin(padGap); 
@@ -378,24 +378,63 @@ def makeEff(num, den, plotType, forRatio, forOverlay, padGap=0.01, iPeriod=13, i
         gPad.RedrawAxis();
         rLeg = TLegend(0.25,0.75,0.95,0.85); 
         decoLegend(rLeg, 4, 0.085)
-        # Build efficiencies as TH1 with binomial errors, then take ratio
+        # Build efficiencies as TH1 for proper ratio calculation
         eff1_h = getEffTH1(forOverlay[forRatio[1]], num, den, plotType)  # numerator (newer)
         eff0_h = getEffTH1(forOverlay[forRatio[0]], num, den, plotType)  # denominator (older)
 
         eff1_h.Sumw2(); eff0_h.Sumw2()
         hRatio = eff1_h.Clone(f"ratio_{forRatio[1]}_{forRatio[0]}")
         hRatio.Divide(eff0_h)  # standard propagated errors for ratio of two efficiencies
-        hRatio.SetName(f"{forRatio[1]}/{forRatio[0]}")
-        decoHistRatio(hRatio, xTitle, "Ratio", 1)
-        hRatio.GetYaxis().SetRangeUser(0.7, 1.3)
         
-        # Force exact same x-axis range for alignment
-        hRatio.GetXaxis().SetRangeUser(xRange[0], xRange[1])
-        hRatio.GetXaxis().SetLimits(xRange[0], xRange[1])  # Force limits for TH1
+        # Convert TH1 ratio to TGraphAsymmErrors for plotting consistency
+        gRatio = ROOT.TGraphAsymmErrors()
+        point_index = 0
+        for i in range(1, hRatio.GetNbinsX() + 1):
+            x = hRatio.GetBinCenter(i)
+            y = hRatio.GetBinContent(i)
+            ey = hRatio.GetBinError(i)  # Symmetric y error
+            
+                # Only add points that have data (similar to TEfficiency behavior)
+            if plotType == "eta":
+                if y > 0 or ey > 0:  # Only include bins with content or errors
+                    ex = hRatio.GetBinWidth(i) / 2.0  # Half bin width for x error
+                    gRatio.SetPoint(point_index, x, y)
+                    gRatio.SetPointError(point_index, ex, ex, ey, ey)  # Symmetric errors
+                    point_index += 1
+            else:
+                ex = hRatio.GetBinWidth(i) / 2.0  # Half bin width for x error                ex = hRatio.GetBinWidth(i) / 2.0  # Half bin width for x error
+                gRatio.SetPoint(point_index, x, y)
+                gRatio.SetPointError(point_index, ex, ex, ey, ey)  # Symmetric errors
+                point_index += 1
+                                
+        gRatio.SetName(f"{forRatio[1]}/{forRatio[0]}")
+        decoHistRatio(gRatio, xTitle, "Ratio", 1)
+        gRatio.GetYaxis().SetRangeUser(0.7, 1.3)
+        
+        # Get the actual range from the top panel efficiency curves
+        top_min_x = effs[0].GetXaxis().GetXmin()
+        top_max_x = effs[0].GetXaxis().GetXmax()
+        print(f"DEBUG: Top panel x-range: [{top_min_x:.2f}, {top_max_x:.2f}]")
+        
+        # Get the number of points in the top panel
+        top_n_points = effs[0].GetN()
+        print(f"DEBUG: Top panel has {top_n_points} points")
+        
+        # Force ratio panel to match top panel's exact range
+        gRatio.GetXaxis().SetRangeUser(top_min_x, top_max_x)
+        gRatio.GetXaxis().SetLimits(top_min_x, top_max_x)
+        
+        # Print ratio panel info for comparison
+        ratio_min_x = gRatio.GetXaxis().GetXmin()
+        ratio_max_x = gRatio.GetXaxis().GetXmax()
+        ratio_n_points = gRatio.GetN()
+        print(f"DEBUG: Ratio panel x-range: [{ratio_min_x:.2f}, {ratio_max_x:.2f}]")
+        print(f"DEBUG: Ratio panel has {ratio_n_points} points")
+        print(f"DEBUG: Original TH1 ratio had {hRatio.GetNbinsX()} bins")
         
         # Force identical x-axis settings for perfect alignment
-        hRatio.GetXaxis().SetNdivisions(510)  # Same as efficiency panel
-        hRatio.GetXaxis().SetMoreLogLabels()
+        #hRatio.GetXaxis().SetNdivisions(510)  # Same as efficiency panel
+        #hRatio.GetXaxis().SetMoreLogLabels()
         hRatio.GetXaxis().SetNoExponent()
         hRatio.GetXaxis().SetTitleOffset(1.0)  # Same as efficiency panel
         hRatio.GetXaxis().SetTitleSize(0.05)   # Same as efficiency panel
@@ -407,9 +446,9 @@ def makeEff(num, den, plotType, forRatio, forOverlay, padGap=0.01, iPeriod=13, i
         baseLine.SetLineStyle(2);  # Make it dashed
         baseLine.SetLineWidth(2);  # Make it thicker for better visibility
         
-        hRatio.Draw("E1")
+        gRatio.Draw("AP")  # Use AP for TGraphAsymmErrors (same as top panel)
         baseLine.Draw("same")  # Draw the dashed line on top
-        rLeg.AddEntry(hRatio, "%s"%(hRatio.GetName()), "L")
+        rLeg.AddEntry(gRatio, "%s"%(gRatio.GetName()), "APL")  # Use APL for TGraphAsymmErrors
         rLeg.AddEntry(baseLine, "Unity", "L")  # Add legend entry for the line
         #rLeg.Draw()
     #pdf = "%s/effPlot_%s.pdf"%(outPlotDir, num)
