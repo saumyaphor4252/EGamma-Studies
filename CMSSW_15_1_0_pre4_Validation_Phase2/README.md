@@ -15,6 +15,7 @@
 
 ```
 cmsrel CMSSW_15_1_0_pre4; cd CMSSW_15_1_0_pre4/src; cmsenv
+git cms-merge-topic Sam-Harper:EGHLTCustomisation_1230pre6
 scram b -j 10
 
 cmsDriver.py Phase2 -s L1P2GT,HLT:75e33 --processName=HLTX --conditions auto:phase2_realistic_T33 --geometry ExtendedRun4D110 --era Phase2C17I13M9 --eventcontent FEVTDEBUGHLT --customise SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000,HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaMenuDev --filein=file:/eos/cms/store/relval/CMSSW_15_1_0_pre3/RelValZpToEE_m6000_14TeV/GEN-SIM-DIGI-RAW/PU_150X_mcRun4_realistic_v1_STD_Run4D110_PU-v1/2590000/fe4d939e-c351-47e6-8fd2-8c1be859bfda.root --inputCommands='keep *, drop *_hlt*_*_HLT, drop triggerTriggerFilterObjectWithRefs_l1t*_*_HLT' --mc -n 10
