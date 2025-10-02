@@ -16,12 +16,16 @@ scram b -j 10
 ```
 
 ### Scripts with details
-- For getting histograms: 
+- For getting histograms:
+	- `lastFilterEffHist_Upgrade_MINIAOD.py`
+
 - For plotting trigger Efficiencies: 
-	- Inputs.py
-	- plotter
-	- filter_configs
-	
+	- `Inputs.py`
+	- `plotHist.py`
+	- `filter_configs`
+	- `PlotCMSLumi.py`
+	- `PlotFunc.py`
+	- `PlotTDRStyle.py`	
 
 ```
 python3 lastFilterEffHist_Upgrade_MINIAOD.py /eos/cms/store/relval/CMSSW_15_1_0_pre5/RelValZpToEE_m6000_14TeV/MINIAODSIM/PU_150X_mcRun4_realistic_v1_STD_Run4D110_PU-v1/2580000/*.root -o outputFile_ZpToEE_CMSSW_15_1_0_pre5.root 2>&1 | tee log_CMSSW_15_1_0_pre5_ZpToEE.out
@@ -34,7 +38,7 @@ python3 lastFilterEffHist_Upgrade_MINIAOD.py /eos/cms/store/relval/CMSSW_15_1_0_
 ```
 
 ### Plotting
-
+Update the `Inputs.py` for the input root files, `filter_configs` if the trigger paths/filters need to be changed.
 ```
 python3 plotHist.py
 ```
