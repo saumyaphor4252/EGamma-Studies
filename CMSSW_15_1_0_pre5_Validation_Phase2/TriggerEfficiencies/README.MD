@@ -24,14 +24,13 @@ scram b -j 10
 	
 
 ```
-python3 lastFilterEffHist_Upgrade_Test.py /eos/cms/store/relval/CMSSW_15_1_0_pre5/RelValZpToEE_m6000_14TeV/MINIAODSIM/PU_150X_mcRun4_realistic_v1_STD_Run4D110_PU-v1/2580000/*.root -o outputFile_ZpToEE_CMSSW_15_1_0_pre5.root 2>&1 | tee log_CMSSW_15_1_0_pre5_ZpToEE.out
+python3 lastFilterEffHist_Upgrade_MINIAOD.py /eos/cms/store/relval/CMSSW_15_1_0_pre5/RelValZpToEE_m6000_14TeV/MINIAODSIM/PU_150X_mcRun4_realistic_v1_STD_Run4D110_PU-v1/2580000/*.root -o outputFile_ZpToEE_CMSSW_15_1_0_pre5.root 2>&1 | tee log_CMSSW_15_1_0_pre5_ZpToEE.out
 
-python3 lastFilterEffHist_Upgrade_Test.py /eos/cms/store/relval/CMSSW_15_1_0_pre4/RelValZpToEE_m6000_14TeV/MINIAODSIM/PU_150X_mcRun4_realistic_v1_STD_Run4D110_PU-v1/2580000/*.root -o outputFile_ZpToEE_CMSSW_15_1_0_pre4.root 2>&1 | tee log_CMSSW_15_1_0_pre4_ZpToEE.out
+python3 lastFilterEffHist_Upgrade_MINIAOD.py /eos/cms/store/relval/CMSSW_15_1_0_pre4/RelValZpToEE_m6000_14TeV/MINIAODSIM/PU_150X_mcRun4_realistic_v1_STD_Run4D110_PU-v1/2580000/*.root -o outputFile_ZpToEE_CMSSW_15_1_0_pre4.root 2>&1 | tee log_CMSSW_15_1_0_pre4_ZpToEE.out
 
 python3 lastFilterEffHist_Upgrade_MINIAOD.py /eos/cms/store/relval/CMSSW_15_1_0_pre4/RelValZEE_14/MINIAODSIM/PU_150X_mcRun4_realistic_v1_STD_Run4D110_PU-v1/2580000/*.root -o outputFile_ZEE_CMSSW_15_1_0_pre4.root 2>&1 | tee log_CMSSW_15_1_0_pre4_ZEE.out
 
-python3 lastFilterEffHist_Upgrade_MINIAOD.py /eos/cms/store/relval/CMSSW_15_1_0_pre5/RelValZEE_14/
-MINIAODSIM/PU_150X_mcRun4_realistic_v1_STD_Run4D110_PU-v1/2580000/*.root -o outputFile_ZEE_CMSSW_15_1_0_pre5.root 2>&1 | tee log_CMSSW_15_1_0_pre5_ZEE.out
+python3 lastFilterEffHist_Upgrade_MINIAOD.py /eos/cms/store/relval/CMSSW_15_1_0_pre5/RelValZEE_14/MINIAODSIM/PU_150X_mcRun4_realistic_v1_STD_Run4D110_PU-v1/2580000/*.root -o outputFile_ZEE_CMSSW_15_1_0_pre5.root 2>&1 | tee log_CMSSW_15_1_0_pre5_ZEE.out
 ```
 
 ### Plotting
