@@ -1,20 +1,12 @@
 ## Relevant Links
-- Presentation: 
-- RelMon: 
+- Presentation: https://indico.cern.ch/event/1587306/#sc-2-2-egamma
 
 ### Datasets
 ```
-# CMSSW_15_0_0_pre3:
-	/RelValZpToEE_m6000_14TeV/CMSSW_15_0_0_pre3-PU_141X_mcRun4_realistic_v3_STD_Run4D110_PU-v2/MINIAODSIM 
-
-# CMSSW_15_1_0_pre1:
-	/RelValZpToEE_m6000_14TeV/CMSSW_15_1_0_pre1-PU_141X_mcRun4_realistic_v3_STD_Run4D110_PU-v1/MINIAODSIM
-
-# CMSSW_15_1_0_pre2:
-	/RelValZpToEE_m6000_14TeV/CMSSW_15_1_0_pre2-PU_150X_mcRun4_realistic_v1_STD_Run4D110_PU-v1/MINIAODSIM
-
-# CMSSW_15_1_0_pre3:
-	/RelValZpToEE_m6000_14TeV/CMSSW_15_1_0_pre3-PU_150X_mcRun4_realistic_v1_STD_Run4D110_PU-v1/MINIAODSIM
+# Reference: CMSSW_15_1_0_pre4:
+	/RelValZpToEE_m6000_14TeV/CMSSW_15_1_0_pre4-PU_150X_mcRun4_realistic_v1_STD_Run4D110_PU-v1/MINIAODSIM
+# Target: CMSSW_15_1_0_pre5:
+	/RelValZpToEE_m6000_14TeV/CMSSW_15_1_0_pre5-PU_150X_mcRun4_realistic_v1_STD_Run4D110_PU-v1/MINIAODSIM
 ```
 
 ### CMSSW set-up
@@ -32,14 +24,14 @@ scram b -j 10
 	
 
 ```
-python3 lastFilterEffHist_Upgrade.py /eos/cms/store/relval/CMSSW_15_0_0_pre3/RelValZpToEE_m6000_14TeV/MINIAODSIM/PU_141X_mcRun4_realistic_v3_STD_Run4D110_PU-v2/2580000/*.root -o outputFile_CMSSW_15_0_0_pre3.root 2>&1 | tee log_CMSSW_15_0_0_pre3.out
+python3 lastFilterEffHist_Upgrade_Test.py /eos/cms/store/relval/CMSSW_15_1_0_pre5/RelValZpToEE_m6000_14TeV/MINIAODSIM/PU_150X_mcRun4_realistic_v1_STD_Run4D110_PU-v1/2580000/*.root -o outputFile_ZpToEE_CMSSW_15_1_0_pre5.root 2>&1 | tee log_CMSSW_15_1_0_pre5_ZpToEE.out
 
-python3 lastFilterEffHist_Upgrade.py /eos/cms/store/relval/CMSSW_15_1_0_pre1/RelValZpToEE_m6000_14TeV/MINIAODSIM/PU_141X_mcRun4_realistic_v3_STD_Run4D110_PU-v1/2580000/*.root -o outputFile_CMSSW_15_1_0_pre1.root 2>&1 | tee log_CMSSW_15_1_0_pre1.out
+python3 lastFilterEffHist_Upgrade_Test.py /eos/cms/store/relval/CMSSW_15_1_0_pre4/RelValZpToEE_m6000_14TeV/MINIAODSIM/PU_150X_mcRun4_realistic_v1_STD_Run4D110_PU-v1/2580000/*.root -o outputFile_ZpToEE_CMSSW_15_1_0_pre4.root 2>&1 | tee log_CMSSW_15_1_0_pre4_ZpToEE.out
 
-python3 lastFilterEffHist_Upgrade.py /eos/cms/store/relval/CMSSW_15_1_0_pre2/RelValZpToEE_m6000_14TeV/MINIAODSIM/PU_150X_mcRun4_realistic_v1_STD_Run4D110_PU-v1/2580000/*.root -o outputFile_CMSSW_15_1_0_pre2.root 2>&1 | tee log_CMSSW_15_1_0_pre2.out
+python3 lastFilterEffHist_Upgrade_MINIAOD.py /eos/cms/store/relval/CMSSW_15_1_0_pre4/RelValZEE_14/MINIAODSIM/PU_150X_mcRun4_realistic_v1_STD_Run4D110_PU-v1/2580000/*.root -o outputFile_ZEE_CMSSW_15_1_0_pre4.root 2>&1 | tee log_CMSSW_15_1_0_pre4_ZEE.out
 
-python3 lastFilterEffHist_Upgrade.py /eos/cms/store/relval/CMSSW_15_1_0_pre3/RelValZpToEE_m6000_14TeV/MINIAODSIM/PU_150X_mcRun4_realistic_v1_STD_Run4D110_PU-v1/2590000/*.root -o outputFile_CMSSW_15_1_0_pre3.root 2>&1 | tee log_CMSSW_15_1_0_pre3.out
-
+python3 lastFilterEffHist_Upgrade_MINIAOD.py /eos/cms/store/relval/CMSSW_15_1_0_pre5/RelValZEE_14/
+MINIAODSIM/PU_150X_mcRun4_realistic_v1_STD_Run4D110_PU-v1/2580000/*.root -o outputFile_ZEE_CMSSW_15_1_0_pre5.root 2>&1 | tee log_CMSSW_15_1_0_pre5_ZEE.out
 ```
 
 ### Plotting
