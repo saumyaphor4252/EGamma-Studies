@@ -1,6 +1,23 @@
 ## Relevant Links
-- Presentation: 
+- Presentation: https://indico.cern.ch/event/1602818/#sc-2-2-egamma
 - Link: https://cms-pdmv-prod.web.cern.ch/valdb/campaigns/15_1_0_pre6_Phase2_D110
+
+### Datasets
+```
+# Reference: CMSSW_15_1_0_pre5:
+	/RelValZpToEE_m6000_14TeV/CMSSW_15_1_0_pre5-PU_150X_mcRun4_realistic_v1_STD_Run4D110_PU-v1/GEN-SIM-DIGI-RAW
+# Target: CMSSW_15_1_0_pre6:
+	/RelValZpToEE_m6000_14TeV/CMSSW_15_1_0_pre6-PU_150X_mcRun4_realistic_v1_STD_Run4D110_PU-v1/GEN-SIM-DIGI-RAW
+```
+
+#### Rucio rules for dataset not available on disk
+```
+source /cvmfs/cms.cern.ch/rucio/setup-py3.sh
+voms-proxy-init -voms cms
+export RUCIO_ACCOUNT=`whoami`
+rucio add-rule cms:/RelValZpToEE_m6000_14TeV/CMSSW_15_1_0_pre5-PU_150X_mcRun4_realistic_v1_STD_Run4D110_PU-v1/GEN-SIM-DIGI-RAW 1 T2_CH_CERN  --lifetime 864000 --activity "User AutoApprove" --ask-approval --comment "For HLT Phase2 Upgrade EGM Validation of CMSSW_15_1_0_pre6"
+rucio rule-info be54b28bccde4c17923afeefb7403642 
+```
 
 ## For EGM Variable distributions
 
