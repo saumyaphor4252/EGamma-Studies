@@ -37,6 +37,13 @@ rucio add-rule cms:/DYto2L-4Jets_Bin-MLL-50_TuneCP5_13p6TeV_madgraphMLM-pythia8/
 rucio rule-info 27878e9e53d44af18d4d9bf08b6c0a07
 ```
 
+Local files for testing
+```
+/eos/cms/store/data/Run2025G/EGamma0/RAW/v1/000/398/859/00000/1fc4f40f-35f0-44af-8fa2-168133f5e0d0.root
+/eos/cms/store/mc/Run3Winter25Digi/DYto2L-4Jets_Bin-MLL-50_TuneCP5_13p6TeV_madgraphMLM-pythia8/GEN-SIM-RAW/142X_mcRun3_2025_realistic_v7-v2/2810006/61f5c550-8216-4f35-9ada-d07538e22d29.root
+/eos/cms/store/mc/Run3Winter25Digi/TTto2L2Nu_TuneCP5_13p6TeV_powheg-pythia8/GEN-SIM-RAW/142X_mcRun3_2025_realistic_v7-v2/2540001/0041d7ec-4b44-431e-91a5-227891f6534a.root
+```
+
 ### CMSSW set-up
 ```
 cmsrel CMSSW_16_0_0_pre3
