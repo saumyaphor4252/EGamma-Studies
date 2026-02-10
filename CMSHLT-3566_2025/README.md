@@ -73,7 +73,7 @@ cp /tmp/x509up_u<999999> /afs/cern.ch/user/s/ssaumya/private/x509up_u<999999>
 # Update the cmsCondor.py accordingly for input and output, and the change needed in hltConfiguration
 ## L49-L63 for configuration modification of the HLT step, L65-L82 for input source, L85 for events, L90-92 and L140-143 for output file name
 # -n 10 --> 10 files per job
-python3 cmsCondor.py hlt_ReRun_Config_Target.py /afs/cern.ch/work/s/ssaumya/private/Egamma/2025_CMSHLT-3566/CMSSW_15_0_7/src/HLT_Target/ /eos/cms/store/group/phys_egamma/ssaumya/CMSHLT-3566/HLTstep_RECO_RootFiles_Target/ -n 7 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184
+python3 cmsCondor.py hlt_ReRun_Config_Target.py /afs/cern.ch/work/s/ssaumya/private/Egamma/2025_CMSHLT-3566/CMSSW_15_0_7/src/HLT_Target/ /eos/cms/store/group/phys_egamma/ssaumya/CMSHLT-3566/HLTstep_RECO_RootFiles_Target/ -n 7 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u999999
 ./sub_total.jobb
 
 ##### For PAT step #####

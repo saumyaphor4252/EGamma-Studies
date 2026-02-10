@@ -37,7 +37,7 @@ cmsDriver.py --conditions 150X_dataRun3_HLT_v1 --data --datatier RECO --era Run3
 cmsRun hlt_ReRun_Config_Reference.py
 
 ### Submit on condor
-python3 cmsCondor.py hlt_ReRun_Config_Reference.py /afs/cern.ch/work/s/ssaumya/private/Egamma/CA_Tuning/28thApril/CMSSW_15_0_5/src/HLT_Reference/ /eos/cms/store/group/phys_egamma/ssaumya/CATuning_mkFit/OnlyCA_6thMay2025/HLTstep_RECO_RootFiles_Reference/ -n 10 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184
+python3 cmsCondor.py hlt_ReRun_Config_Reference.py /afs/cern.ch/work/s/ssaumya/private/Egamma/CA_Tuning/28thApril/CMSSW_15_0_5/src/HLT_Reference/ /eos/cms/store/group/phys_egamma/ssaumya/CATuning_mkFit/OnlyCA_6thMay2025/HLTstep_RECO_RootFiles_Reference/ -n 10 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u999999
 ```
 
 ##### Target
@@ -53,7 +53,7 @@ cmsDriver.py --conditions 150X_dataRun3_HLT_v1 --data --datatier RECO --era Run3
 cmsRun hlt_ReRun_Config_Target.py
 
 ### Submit on condor
-python3 cmsCondor.py hlt_ReRun_Config_Target.py /afs/cern.ch/work/s/ssaumya/private/Egamma/CA_Tuning/28thApril/CMSSW_15_0_5/src/HLT_Target/ /eos/cms/store/group/phys_egamma/ssaumya/CATuning_mkFit/OnlyCA_6thMay2025/HLTstep_RECO_RootFiles_Target/ -n 10 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184
+python3 cmsCondor.py hlt_ReRun_Config_Target.py /afs/cern.ch/work/s/ssaumya/private/Egamma/CA_Tuning/28thApril/CMSSW_15_0_5/src/HLT_Target/ /eos/cms/store/group/phys_egamma/ssaumya/CATuning_mkFit/OnlyCA_6thMay2025/HLTstep_RECO_RootFiles_Target/ -n 10 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u999999
 ```
  
 ### Run the PAT step to create miniAOD

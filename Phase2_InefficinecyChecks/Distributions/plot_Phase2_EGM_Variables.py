@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-🎯 ROOT Histogram Comparison Script for eg_hcalHForHoverE 🎯
+🎯 ROOT Histogram Comparison Script for Multiple EGM Variables 🎯
 
-This script takes two ROOT files and plots the eg_hcalHForHoverE branch
+This script takes multiple ROOT files and plots various EGM variables
 as normalized histograms with log scale y-axis.
 
-Usage: python plot_hcal_hovere.py Target.root Reference.root [output_name] [Reference_Legend] [Target_Legend] 
+Usage: python plot_Phase2_EGM_Variables.py file1.root file2.root [file3.root ...] [output_name] [legend1] [legend2] [legend3] ...
 """
 
 import sys
@@ -28,13 +28,22 @@ def setup_root_style():
     gStyle.SetPadTopMargin(0.05)
     gStyle.SetPadBottomMargin(0.12)
 
-def plot_hcal_hovere(file1_path, file2_path, output_name="hcal_hovere_comparison", legend1="Reference", legend2="Target"):
-    """Plot multiple variables from two ROOT files, creating separate plots for each"""
+def plot_egm_variables(file_paths, output_name="egm_variables_comparison", legends=None):
+    """Plot multiple variables from multiple ROOT files, creating separate plots for each"""
+    
+    # Set up default legends if not provided
+    if legends is None or len(legends) == 0:
+        legends = [f"File {i+1}" for i in range(len(file_paths))]
+    elif len(legends) < len(file_paths):
+        # Extend legends if not enough provided
+        legends.extend([f"File {i+1}" for i in range(len(legends), len(file_paths))])
     
     print(f"🎯 Starting variable comparison plots! 🎯")
-    print(f"📁 File 1: {file1_path} (Legend: {legend1})")
-    print(f"📁 File 2: {file2_path} (Legend: {legend2})")
+    print(f"📁 Processing {len(file_paths)} files:")
+    for i, (file_path, legend) in enumerate(zip(file_paths, legends)):
+        print(f"   {i+1}. {file_path} (Legend: {legend})")
     print(f"📂 Output base name: {output_name}")
+    print(f"🎨 Color scheme: Blue, Red, Green, Magenta, Orange, Cyan, Yellow, Pink, Violet, Teal")
     print("=" * 60)
     
     # Define variables to plot with their binning
@@ -72,105 +81,80 @@ def plot_hcal_hovere(file1_path, file2_path, output_name="hcal_hovere_comparison
     
     # Open ROOT files
     try:
-        file1 = TFile(file1_path, "READ")
-        file2 = TFile(file2_path, "READ")
+        files = []
+        trees = []
         
-        if file1.IsZombie() or file2.IsZombie():
-            print("💀 Oops! One of the files is a zombie! Check your file paths!")
-            return
+        for i, file_path in enumerate(file_paths):
+            file_obj = TFile(file_path, "READ")
+            if file_obj.IsZombie():
+                print(f"💀 Oops! File {i+1} ({file_path}) is a zombie! Check your file paths!")
+                return
+            files.append(file_obj)
+            
+            # Get the egHLTTree from each file
+            tree = file_obj.Get("egHLTTree")
+            if not tree:
+                print(f"🌳 'egHLTTree' not found in file {i+1} ({file_path})!")
+                return
+            trees.append(tree)
+            print(f"🌳 Tree {i+1}: {tree.GetName()} with {tree.GetEntries()} entries")
         
-        # Get the egHLTTree from both files
-        tree1 = file1.Get("egHLTTree")
-        tree2 = file2.Get("egHLTTree")
-        
-        if not tree1:
-            print("🌳 'egHLTTree' not found in file 1!")
-            return
-        
-        if not tree2:
-            print("🌳 'egHLTTree' not found in file 2!")
-            return
-        
-        print(f"🌳 Tree 1: {tree1.GetName()} with {tree1.GetEntries()} entries")
-        print(f"🌳 Tree 2: {tree2.GetName()} with {tree2.GetEntries()} entries")
+        # Define colors for different files (cycling through a nice palette)
+        colors = [ROOT.kBlue, ROOT.kRed, ROOT.kGreen+2, ROOT.kMagenta+2, ROOT.kOrange+2, 
+                 ROOT.kCyan+2, ROOT.kYellow+2, ROOT.kPink+2, ROOT.kViolet+2, ROOT.kTeal+2]
         
         # Loop over each variable and create separate plots
         for var_name, var_config in variables.items():
             print(f"\n📊 Creating plot for: {var_name}")
             print(f"   Bins: {var_config['bins']}, Range: {var_config['xmin']} to {var_config['xmax']}")
             
-            # Create histograms for this variable
-            hist1 = TH1F(f"hist1_{var_name}", "", var_config['bins'], var_config['xmin'], var_config['xmax'])
-            hist2 = TH1F(f"hist2_{var_name}", "", var_config['bins'], var_config['xmin'], var_config['xmax'])
+            # Create histograms for this variable for all files
+            histograms = []
+            for i, tree in enumerate(trees):
+                hist = TH1F(f"hist_{i}_{var_name}", "", var_config['bins'], var_config['xmin'], var_config['xmax'])
+                tree.Draw(f"{var_name}>>hist_{i}_{var_name}", "", "goff")
+                print(f"   File {i+1}: {hist.GetEntries()} entries")
+                
+                # Normalize histogram to 1
+                if hist.GetEntries() > 0:
+                    hist.Scale(1.0 / hist.GetEntries())
+                
+                # Style the histogram
+                hist.SetLineColor(colors[i % len(colors)])
+                hist.SetLineWidth(2)
+                hist.SetFillColor(0)
+                hist.SetFillStyle(3001)
+                hist.SetStats(0)  # Hide statistics box
+                
+                histograms.append(hist)
             
-            # Draw the branch into histograms
-            tree1.Draw(f"{var_name}>>hist1_{var_name}", "", "goff")
-            tree2.Draw(f"{var_name}>>hist2_{var_name}", "", "goff")
+            # Set up axis labels for the first histogram (they'll be the same for all)
+            if histograms:
+                histograms[0].GetXaxis().SetTitle(var_config['xlabel'])
+                histograms[0].GetXaxis().SetTitleSize(0.05)
+                histograms[0].GetXaxis().SetLabelSize(0.04)
+                histograms[0].GetXaxis().SetTitleOffset(1.1)
+                histograms[0].GetYaxis().SetTitle("a.u.")
+                histograms[0].GetYaxis().SetLabelSize(0.045)
+                histograms[0].GetYaxis().SetTitleSize(0.06)
+                histograms[0].GetYaxis().SetTitleOffset(0.8)
             
-            print(f"   File 1: {hist1.GetEntries()} entries")
-            print(f"   File 2: {hist2.GetEntries()} entries")
-            
-            # Normalize histograms to 1
-            if hist1.GetEntries() > 0:
-                hist1.Scale(1.0 / hist1.GetEntries())
-            if hist2.GetEntries() > 0:
-                hist2.Scale(1.0 / hist2.GetEntries())
-            
-            # Style the histograms
-            hist1.SetLineColor(ROOT.kBlue)
-            hist1.SetLineWidth(2)
-            hist1.SetFillColor(0)
-            hist1.SetFillStyle(3001)
-            hist1.SetStats(0)  # Hide statistics box
-            hist1.GetXaxis().SetTitle("")  # Remove X-axis title from main plot
-            hist1.GetXaxis().SetLabelOffset(999)  # Hide X-axis labels by moving them far away
-            hist1.GetYaxis().SetTitle("a.u.")
-            hist1.GetYaxis().SetLabelSize(0.045)
-            hist1.GetYaxis().SetTitleSize(0.06)
-            hist1.GetYaxis().SetTitleOffset(0.8)
-            
-            hist2.SetLineColor(ROOT.kRed)
-            hist2.SetLineWidth(2)
-            hist2.SetFillColor(0)
-            hist2.SetFillStyle(3001)
-            hist2.SetStats(0)  # Hide statistics box
-            
-            # Create canvas and draw - same dimensions as original
-            canvas = TCanvas(f"canvas_{var_name}", f"{var_config['title']} Comparison", 800, 1000)
+            # Create canvas and draw - simplified without ratio panel
+            canvas = TCanvas(f"canvas_{var_name}", f"{var_config['title']} Comparison", 800, 800)
             canvas.SetLogy(True)
             canvas.SetGridx(True)
             canvas.SetGridy(True)
             
-            # Create pads for main plot and ratio - same as original
-            main_pad = ROOT.TPad(f"main_pad_{var_name}", "Main", 0.0, 0.3, 1.0, 0.97)  # Top 70%
-            ratio_pad = ROOT.TPad(f"ratio_pad_{var_name}", "Ratio", 0.0, 0.0, 1.0, 0.3)  # Bottom 30%
-            
-            main_pad.SetLeftMargin(0.12)
-            main_pad.SetRightMargin(0.05)
-            main_pad.SetTopMargin(0.05)
-            main_pad.SetBottomMargin(0.02)  # Smaller bottom margin for main pad
-            
-            ratio_pad.SetLeftMargin(0.12)
-            ratio_pad.SetRightMargin(0.05)
-            ratio_pad.SetTopMargin(0.02)  # Smaller top margin for ratio pad
-            ratio_pad.SetBottomMargin(0.25)  # Larger bottom margin for ratio pad
-            
-            main_pad.Draw()
-            ratio_pad.Draw()
-            
-            # Draw main plot on main pad
-            main_pad.cd()
-            main_pad.SetLogy(True)
-            main_pad.SetGridx(True)
-            main_pad.SetGridy(True)
-            
             # Find the maximum to set proper scale
-            max_val = max(hist1.GetMaximum(), hist2.GetMaximum())
-            hist1.SetMaximum(max_val * 1.5)
+            max_val = max([hist.GetMaximum() for hist in histograms])
+            histograms[0].SetMaximum(max_val * 1.5)
             
             # Draw histograms
-            hist1.Draw("")
-            hist2.Draw("same")
+            for i, hist in enumerate(histograms):
+                if i == 0:
+                    hist.Draw("")
+                else:
+                    hist.Draw("same")
             
             # Add legend with custom labels
             legend = TLegend(0.62, 0.75, 0.93, 0.89)
@@ -182,8 +166,9 @@ def plot_hcal_hovere(file1_path, file2_path, output_name="hcal_hovere_comparison
             legend.SetFillStyle(1001)
             legend.SetTextSize(0.045)
             
-            legend.AddEntry(hist1, legend1, "lpf")
-            legend.AddEntry(hist2, legend2, "lpf")
+            # Add entries for all histograms
+            for i, (hist, legend_label) in enumerate(zip(histograms, legends)):
+                legend.AddEntry(hist, legend_label, "lpf")
             legend.Draw()
 
             # Add CMS labels
@@ -191,7 +176,7 @@ def plot_hcal_hovere(file1_path, file2_path, output_name="hcal_hovere_comparison
             tex.SetTextFont(42)
             tex.SetTextSize(0.04)
             tex.SetLineWidth(2)
-            tex.DrawLatexNDC(0.6,0.97,"Z'#rightarrow ee, 200 PU (14 TeV)")
+            tex.DrawLatexNDC(0.7,0.97,"Run4 MC (14 TeV)")
             
             tex_cms = TLatex()
             tex_cms.SetTextSize(0.06)
@@ -201,46 +186,8 @@ def plot_hcal_hovere(file1_path, file2_path, output_name="hcal_hovere_comparison
             tex_private = TLatex()
             tex_private.SetTextSize(0.045)
             tex_private.SetTextFont(52)
-            tex_private.DrawLatexNDC(0.18, 0.8, "Phase-2 Simulation")
+            tex_private.DrawLatexNDC(0.18, 0.8, "#it{Private Work}")
             
-            # Now create ratio panel
-            ratio_pad.cd()
-            ratio_pad.SetGridx(True)
-            ratio_pad.SetGridy(True)
-            
-            # Create ratio histogram
-            ratio_hist = hist2.Clone(f"ratio_{var_name}")
-            ratio_hist.Divide(hist1)  # Target / Reference
-            
-            # Style the ratio histogram
-            ratio_hist.SetLineColor(ROOT.kBlack)
-            ratio_hist.SetLineWidth(2)
-            ratio_hist.SetMarkerColor(ROOT.kBlack)
-            ratio_hist.SetMarkerStyle(20)
-            ratio_hist.SetMarkerSize(0.8)
-            ratio_hist.SetStats(0)
-            
-            # Set ratio plot range and labels
-            ratio_hist.SetMinimum(0.0)  # Ratio can't be negative
-            ratio_hist.SetMaximum(2.0)  # Adjust this based on your data
-            ratio_hist.GetXaxis().SetTitle(var_config['xlabel'])
-            ratio_hist.GetXaxis().SetTitleSize(0.1)  # X-axis title size
-            ratio_hist.GetXaxis().SetLabelSize(0.09) 
-            ratio_hist.GetXaxis().SetTitleOffset(0.9)
-            ratio_hist.GetYaxis().SetTitle("Ratio")
-            ratio_hist.GetYaxis().SetTitleSize(0.11)  # Y-axis title size
-            ratio_hist.GetYaxis().SetTitleOffset(0.5)
-            ratio_hist.GetYaxis().SetLabelSize(0.08)
-                    
-            # Draw ratio histogram
-            ratio_hist.Draw("E1")  # Error bars
-            
-            # Add horizontal line at ratio = 1.0
-            line = ROOT.TLine(var_config['xmin'], 1.0, var_config['xmax'], 1.0)
-            line.SetLineColor(ROOT.kRed)
-            line.SetLineStyle(2)
-            line.SetLineWidth(2)
-            line.Draw()
             
             # Save the plot for this variable
             var_output_name = f"{output_name}_{var_name.replace('eg_', '')}"
@@ -250,9 +197,8 @@ def plot_hcal_hovere(file1_path, file2_path, output_name="hcal_hovere_comparison
                         
             # Clean up canvas and histograms for this variable
             canvas.Close()
-            hist1.Delete()
-            hist2.Delete()
-            ratio_hist.Delete()
+            for hist in histograms:
+                hist.Delete()
             
             print(f"   ✅ Completed plot for {var_name}")
         
@@ -265,55 +211,75 @@ def plot_hcal_hovere(file1_path, file2_path, output_name="hcal_hovere_comparison
     
     finally:
         # Clean up
-        if 'file1' in locals():
-            file1.Close()
-        if 'file2' in locals():
-            file2.Close()
+        if 'files' in locals():
+            for file_obj in files:
+                file_obj.Close()
 
 def main():
     """Main function to parse arguments and run the comparison"""
     
-    parser = argparse.ArgumentParser(
-        description="🎯 Plot multiple EGM variables comparison from two ROOT files",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
+    # Show help if no arguments or --help
+    if len(sys.argv) == 1 or "--help" in sys.argv or "-h" in sys.argv:
+        print("""
+🎯 Plot multiple EGM variables comparison from multiple ROOT files
+
+Usage:
+  python plot_Phase2_EGM_Variables.py file1.root file2.root [file3.root ...] [output_name] [legend1] [legend2] ...
+
 Examples:
-  python plot_Phase2_EGM_Variables.py file1.root file2.root
-  python plot_Phase2_EGM_Variables.py file1.root file2.root my_comparison
-  python plot_Phase2_EGM_Variables.py file1.root file2.root my_comparison "Reference Sample" "Target Sample"
+  python plot_Phase2_EGM_Variables.py file1.root file2.root file3.root
+  python plot_Phase2_EGM_Variables.py file1.root file2.root file3.root my_comparison
+  python plot_Phase2_EGM_Variables.py file1.root file2.root file3.root my_comparison "Ref" "Target1" "Target2"
 
 Note: 
-  - file1.root will be plotted as BLUE (Reference)
-  - file2.root will be plotted as RED (Target)  
-  - Ratio plot shows: Target/Reference (hist2/hist1)
-        """
-    )
+  - First file will be plotted in BLUE
+  - Other files will be plotted in different colors (RED, GREEN, etc.)
+  - You can provide up to 10 files with different colors
+        """)
+        sys.exit(0)
     
-    parser.add_argument("file1", help="First ROOT file path")
-    parser.add_argument("file2", help="Second ROOT file path")
-    parser.add_argument("output_name", nargs="?", default="hcal_hovere_comparison", 
-                       help="Output name for plots (default: hcal_hovere_comparison)")
-    parser.add_argument("legend1", nargs="?", default="Reference", 
-                       help="Legend label for first file (default: Target)")
-    parser.add_argument("legend2", nargs="?", default="Target", 
-                       help="Legend label for second file (default: Reference)")
+    # Parse arguments manually to handle the mixed file/string arguments
+    all_args = sys.argv[1:]  # Get all command line arguments except script name
     
-    args = parser.parse_args()
-    
-    # Check if files exist
-    if not os.path.exists(args.file1):
-        print(f"💀 File not found: {args.file1}")
+    if len(all_args) < 2:
+        print("💀 Error: At least 2 ROOT files are required!")
         sys.exit(1)
     
-    if not os.path.exists(args.file2):
-        print(f"💀 File not found: {args.file2}")
+    # Find the first non-file argument (output_name)
+    files = []
+    output_name = "egm_variables_comparison"
+    legends = []
+    
+    i = 0
+    while i < len(all_args):
+        arg = all_args[i]
+        # Check if it's a file (ends with .root and exists)
+        if arg.endswith('.root') and os.path.exists(arg):
+            files.append(arg)
+            i += 1
+        else:
+            # This is the output_name
+            output_name = arg
+            # Everything after this are legends
+            legends = all_args[i+1:]
+            break
+    
+    # Check if we have at least 2 files
+    if len(files) < 2:
+        print("💀 Error: At least 2 ROOT files are required!")
         sys.exit(1)
+    
+    # Check if files exist (double check)
+    for file_path in files:
+        if not os.path.exists(file_path):
+            print(f"💀 File not found: {file_path}")
+            sys.exit(1)
     
     # Setup ROOT style
     setup_root_style()
     
     # Let's plot this! 🚀
-    plot_hcal_hovere(args.file1, args.file2, args.output_name, args.legend1, args.legend2)
+    plot_egm_variables(files, output_name, legends)
 
 if __name__ == "__main__":
     main()

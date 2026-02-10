@@ -19,6 +19,9 @@ import FWCore.ParameterSet.Config as cms
 from CondCore.CondDB.CondDB_cfi import *
 from PhysicsTools.PythonAnalysis import *
 import time
+import glob
+import os
+import subprocess
 
 # Constants
 EB_ETA_MAX = 1.44
@@ -327,10 +330,55 @@ def process_events(events: Events, hist_manager: HistogramManager, sequences: Di
                             hist_manager.histograms[f'{sequence_name}_num_ele_eta_{filter_name}'].Fill(eg.eta())
                             hist_manager.histograms[f'{sequence_name}_num_ele_phi_{filter_name}'].Fill(eg.phi())
 
+def process_single_file(input_file: str, output_file: str, sequences: Dict[str, List[str]], 
+                       pt_bins: array, pt_bins_TurnOn: array, eta_bins: array, phi_bins: array, 
+                       max_events: int = -1) -> bool:
+    """Process a single input file and create output histograms.
+    
+    Args:
+        input_file: Path to input ROOT file
+        output_file: Path to output ROOT file
+        sequences: Dictionary mapping sequence names to their filter lists
+        pt_bins, pt_bins_TurnOn, eta_bins, phi_bins: Histogram binning arrays
+        max_events: Maximum number of events to process (-1 for all events)
+        
+    Returns:
+        bool: True if processing was successful, False otherwise
+    """
+    try:
+        print(f"🔄 Processing: {os.path.basename(input_file)}")
+        
+        # Create histogram manager for this file
+        hist_manager = HistogramManager(pt_bins, pt_bins_TurnOn, eta_bins, phi_bins)
+        hist_manager.create_histograms(sequences)
+        
+        # Process events from this single file
+        events = Events([input_file])
+        process_events(events, hist_manager, sequences, max_events)
+        
+        # Write output for this file
+        output_root_file = TFile(output_file, 'recreate')
+        hist_manager.write_histograms(output_root_file)
+        output_root_file.Close()
+        
+        print(f"✅ Completed: {os.path.basename(input_file)} -> {os.path.basename(output_file)}")
+        return True
+        
+    except Exception as e:
+        logger.error(f"❌ Error processing {input_file}: {str(e)}")
+        return False
+
 def main():
-    parser = argparse.ArgumentParser(description='E/gamma HLT analyzer')
-    parser.add_argument('in_filename', nargs="+", help='input filename(s)')
-    parser.add_argument("-o", "--output", required=True, help="Output file name")
+    parser = argparse.ArgumentParser(description='E/gamma HLT analyzer - Memory efficient version 🚀')
+    
+    # Input options (mutually exclusive)
+    input_group = parser.add_mutually_exclusive_group(required=True)
+    input_group.add_argument('--input-file', help='Single input ROOT file')
+    input_group.add_argument('--input-dir', help='Directory containing ROOT files')
+    input_group.add_argument('--input-pattern', help='File pattern (e.g., /path/to/files/*.root)')
+    
+    parser.add_argument("-o", "--output", required=True, help="Output file name (for final merged output)")
+    parser.add_argument("--output-dir", default="OutputNtuples_Reference", help="Directory for individual output files")
     parser.add_argument("--debug", action="store_true", help="Enable debug logging")
     parser.add_argument("-n", "--max-events", type=int, default=-1, help="Maximum number of events to process (-1 for all events)")
     
@@ -344,15 +392,76 @@ def main():
     ROOT.gSystem.Load("libDataFormatsFWLite.so")
     ROOT.FWLiteEnabler.enable()
     
+    # Create output directory
+    output_dir = args.output_dir
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+        print(f"📁 Created output directory: {output_dir}")
+    
+    # Determine input files
+    input_files = []
+    if args.input_file:
+        input_files = [args.input_file]
+    elif args.input_dir:
+        # Handle EOS paths better
+        if "eos" in args.input_dir:
+            # Use shell expansion for EOS paths
+            try:
+                result = subprocess.run(f"ls {args.input_dir}/*.root",
+                                     capture_output=True, text=True, shell=True)
+                if result.returncode == 0:
+                    input_files = result.stdout.strip().split('\n')
+                else:
+                    # Fallback to glob
+                    input_files = glob.glob(os.path.join(args.input_dir, "*.root"))
+            except:
+                input_files = glob.glob(os.path.join(args.input_dir, "*.root"))
+        else:
+            input_files = glob.glob(os.path.join(args.input_dir, "*.root"))
+    elif args.input_pattern:
+        # Handle EOS paths in patterns
+        if "eos" in args.input_pattern:
+            try:
+                result = subprocess.run(f"ls {args.input_pattern}",
+                                     capture_output=True, text=True, shell=True)
+                if result.returncode == 0:
+                    input_files = result.stdout.strip().split('\n')
+                else:
+                    input_files = glob.glob(args.input_pattern)
+            except:
+                input_files = glob.glob(args.input_pattern)
+        else:
+            input_files = glob.glob(args.input_pattern)
+
+    if not input_files:
+        print("❌ No input files found!")
+        print("💡 Debugging info:")
+        if args.input_dir:
+            print(f"   Directory: {args.input_dir}")
+            print(f"   Directory exists: {os.path.exists(args.input_dir)}")
+            if os.path.exists(args.input_dir):
+                print(f"   Directory contents:")
+                try:
+                    for item in os.listdir(args.input_dir):
+                        print(f"     {item}")
+                except Exception as e:
+                    print(f"     Error listing directory: {e}")
+        elif args.input_pattern:
+            print(f"   Pattern: {args.input_pattern}")
+        return
+    
+    print(f"🎯 Found {len(input_files)} input files")
+    
     # Validate input files
     valid_files = []
-    for file in args.in_filename:
+    for file in input_files:
         try:
             file_temp = ROOT.TFile(file)
             if file_temp.IsZombie():
                 logger.warning(f"Skipping invalid file: {file}")
                 continue
             valid_files.append(file)
+            file_temp.Close()  # Close immediately to free memory
         except Exception as e:
             logger.error(f"Error opening file {file}: {str(e)}")
             continue
@@ -361,7 +470,9 @@ def main():
         logger.error("No valid input files found")
         sys.exit(1)
     
-    # Create histogram manager
+    print(f"✅ Valid files: {len(valid_files)}")
+    
+    # Setup histogram binning arrays
     # Custom pt binning: 0-50, 50-100, then steps of 100 till 3000, then steps of 250 till 4000
     pt_bins_list = [0, 50, 100]  # Start with 0-50, 50-100
     #pt_bins_list_TurnOn = [0, 20, 30, 40, 50, 60, 80, 100, 125, 150, 175, 200]
@@ -380,8 +491,6 @@ def main():
     eta_bins = np.arange(-4, 4.01, 0.25, dtype='d')
     phi_bins = array('d', [-3.32,-2.97,-2.62,-2.27,-1.92,-1.57,-1.22,-0.87,-0.52,-0.18,0.18,0.52,0.87,1.22,1.57,1.92,2.27,2.62,2.97,3.32])
     
-    hist_manager = HistogramManager(pt_bins, pt_bins_TurnOn, eta_bins, phi_bins)
-    
     # Define sequences
     sequences = {
        'HLTEle26WP70Unseeded': "cms.Sequence( hltEGL1SeedsForSingleEleIsolatedFilter + HLTDoFullUnpackingEgammaEcalSequence + HLTPFClusteringForEgammaUnseededSequence + HLTHgcalTiclPFClusteringForEgammaUnseededSequence + hltEgammaCandidatesUnseeded + hltEgammaCandidatesWrapperUnseeded +hltEG26EtUnseededFilter + hltEgammaClusterShapeUnseeded + hltEle26WP70ClusterShapeUnseededFilter + hltEgammaHGCALIDVarsUnseeded +hltEle26WP70ClusterShapeSigmavvUnseededFilter + hltEle26WP70ClusterShapeSigmawwUnseededFilter + hltEle26WP70HgcalHEUnseededFilter +HLTEGammaDoLocalHcalSequence + HLTFastJetForEgammaSequence + hltEgammaHoverEUnseeded + hltEle26WP70HEUnseededFilter +hltEgammaEcalPFClusterIsoUnseeded + hltEle26WP70EcalIsoUnseededFilter + hltEgammaHGCalLayerClusterIsoUnseeded +hltEle26WP70HgcalIsoUnseededFilter + HLTPFHcalClusteringForEgammaSequence + hltEgammaHcalPFClusterIsoUnseeded +hltEle26WP70HcalIsoUnseededFilter + HLTElePixelMatchUnseededSequence + hltEle26WP70PixelMatchUnseededFilter +hltEle26WP70PMS2UnseededFilter + HLTGsfElectronUnseededSequence + hltEle26WP70GsfOneOEMinusOneOPUnseededFilter +hltEle26WP70GsfDetaUnseededFilter + hltEle26WP70GsfDphiUnseededFilter + hltEle26WP70BestGsfNLayerITUnseededFilter +hltEle26WP70BestGsfChi2UnseededFilter + hltEgammaEleL1TrkIsoUnseeded + hltEle26WP70GsfTrackIsoFromL1TracksUnseededFilter +HLTTrackingSequence + hltEgammaEleGsfTrackIsoUnseeded + hltEle26WP70GsfTrackIsoUnseededFilter )",
@@ -390,24 +499,75 @@ def main():
     
     # Get filter names for each sequence
     sequence_filters = {name: getFilters(seq) for name, seq in sequences.items()}
-    print(f"Sequence Filters Extracted:")
+    print(f"🔍 Sequence Filters Extracted:")
     for seq_name, filters in sequence_filters.items():
         print(f"  {seq_name}: {len(filters)} filters")
     
-    # Create histograms for all sequences
-    hist_manager.create_histograms(sequence_filters)
+    # Process files one by one to avoid memory issues
+    print(f"\n🚀 Starting individual file processing...")
+    print(f"📁 Output directory: {output_dir}")
     
-    # Process events
-    events = Events(valid_files)
-    process_events(events, hist_manager, sequence_filters, args.max_events)
+    successful_files = []
+    failed_files = []
     
-    # Write output
-    try:
-        output_file = TFile(args.output, 'recreate')
-        hist_manager.write_histograms(output_file)
-        output_file.Close()
-    except Exception as e:
-        logger.error(f"Error writing output file: {str(e)}")
+    for i, input_file in enumerate(valid_files, 1):
+        # Generate unique output filename based on input filename
+        input_basename = os.path.splitext(os.path.basename(input_file))[0]
+        output_filename = f"{input_basename}_processed.root"
+        output_filepath = os.path.join(output_dir, output_filename)
+        
+        print(f"\n📊 Processing file {i}/{len(valid_files)}: {os.path.basename(input_file)}")
+        
+        # Process this single file
+        success = process_single_file(
+            input_file, 
+            output_filepath, 
+            sequence_filters, 
+            pt_bins, 
+            pt_bins_TurnOn, 
+            eta_bins, 
+            phi_bins, 
+            args.max_events
+        )
+        
+        if success:
+            successful_files.append(output_filepath)
+        else:
+            failed_files.append(input_file)
+    
+    # Print summary
+    print(f"\n🎉 Processing Summary:")
+    print(f"✅ Successfully processed: {len(successful_files)}/{len(valid_files)} files")
+    print(f"❌ Failed files: {len(failed_files)}")
+    
+    if failed_files:
+        print(f"Failed files:")
+        for failed_file in failed_files:
+            print(f"  - {os.path.basename(failed_file)}")
+    
+    # Generate hadd command for merging
+    if successful_files:
+        print(f"\n🔗 To merge all output files, run the following command:")
+        successful_basenames = [os.path.basename(f) for f in successful_files]
+        hadd_command = f"hadd {args.output} {output_dir}/*.root"
+        print(f"   {hadd_command}")
+        
+        # Also create a script file for convenience
+        script_filename = "merge_outputs.sh"
+        with open(script_filename, 'w') as script_file:
+            script_file.write("#!/bin/bash\n")
+            script_file.write(f"# Auto-generated script to merge output files\n")
+            script_file.write(f"# Generated on {time.strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+            script_file.write(f"echo 'Merging {len(successful_files)} output files...'\n")
+            script_file.write(f"{hadd_command}\n")
+            script_file.write(f"echo 'Merged output saved to: {args.output}'\n")
+        
+        # Make script executable
+        os.chmod(script_filename, 0o755)
+        print(f"📝 Merge script saved to: {script_filename}")
+        print(f"   Run with: ./{script_filename}")
+    else:
+        print(f"❌ No files were successfully processed!")
         sys.exit(1)
 
 if __name__ == "__main__":

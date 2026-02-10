@@ -356,91 +356,111 @@ Examples:
         lumi.push_back(evt.eventAuxiliary().luminosityBlock())
         event.push_back(evt.eventAuxiliary().event())
         
-        # Use the working collection directly
-        col_name = "egtrigobjs_unseeded"
-        #label = "hltEgammaHLTExtra:Unseeded"
-        label = "hltEgammaHLTExtra"
-        #process_name = "HLTX"
+        # Use the working collections found by check_collections.py
+        collections_to_try = [
+            ("egtrigobjs_unseeded", "hltEgammaHLTExtra:Unseeded"),
+            ("egtrigobjs_unseeded", "hltEgammaHLTExtra:Unseeded", "HLTX")
+        ]
         
-        #evt.getByLabel(label, egtrigobjs_unseeded_handle)
-        evt.getByLabel(label, "Unseeded", "HLTX", egtrigobjs_unseeded_handle)
-        
-        if not egtrigobjs_unseeded_handle.isValid():
-            print(f"  ✗ Invalid handle for {label}")
-            continue
-
-        egobjs = egtrigobjs_unseeded_handle.product()
-        print(f"  ✓ Found {egobjs.size()} objects")
-        
-        if egobjs.size() == 0:
-            continue
-        
-        # Store collection info
-        collection_name.push_back(col_name)
-        nr_objects.push_back(egobjs.size())
-        
-        # Process each object
-        for j, obj in enumerate(egobjs):
-            # Basic properties
-            eg_et.push_back(obj.et())
-            eg_energy.push_back(obj.energy())
-            eg_eta.push_back(obj.eta())
-            eg_phi.push_back(obj.phi())
+        for collection_info in collections_to_try:
+            if len(collection_info) == 2:
+                col_name, label = collection_info
+                process_name = ""
+            else:
+                col_name, label, process_name = collection_info
+                
+            print(f"\nTrying collection: {col_name} with label: {label}" + (f" process: {process_name}" if process_name else ""))
             
-            # SuperCluster properties
-            eg_nrClus.push_back(obj.superCluster().clusters().size())
-            eg_rawEnergy.push_back(obj.superCluster().rawEnergy())
-            eg_phiWidth.push_back(obj.superCluster().phiWidth())
-            eg_seedId.push_back(obj.superCluster().seed().seed().rawId())
-            eg_seedDet.push_back(obj.superCluster().seed().seed().det())
-            
-            # HLT variables - try different naming conventions
-            eg_sigmaIEtaIEta.push_back(obj.var("hltEgammaClusterShapeUnseeded_sigmaIEtaIEta5x5",0))
-            eg_ecalPFIsol_default.push_back(obj.var("hltEgammaEcalPFClusterIsoUnseeded",0))
-            eg_hcalPFIsol_default.push_back(obj.var("hltEgammaHcalPFClusterIsoUnseeded",0))
-            eg_hgcalPFIsol_default.push_back(obj.var("hltEgammaHGCalPFClusterIsoUnseeded",0))
-            eg_trkIsolV0_default.push_back(obj.var("hltEgammaEleGsfTrackIsoUnseeded",0))
-            eg_trkIsolV6_default.push_back(obj.var("hltEgammaEleGsfTrackIsoV6Unseeded",0))
-            eg_trkIsolV72_default.push_back(obj.var("hltEgammaEleGsfTrackIsoV72Unseeded",0))
-            eg_trkChi2_default.push_back(obj.var("hltEgammaGsfTrackVarsUnseeded_Chi2",0))
-            #eg_trkMissHits.push_back(obj.var("hltEgammaGsfTrackVarsUnseeded_MissingHits",0))
-            #eg_trkValidHits.push_back(obj.var("hltEgammaGsfTrackVarsUnseeded_ValidHits",0))
-            eg_invESeedInvP.push_back(obj.var("hltEgammaGsfTrackVarsUnseeded_OneOESeedMinusOneOP",0))
-            eg_invEInvP.push_back(obj.var("hltEgammaGsfTrackVarsUnseeded_OneOESuperMinusOneOP",0))
-            eg_trkDEta.push_back(obj.var("hltEgammaGsfTrackVarsUnseeded_Deta",0))
-            #eg_trkDEtaSeed.push_back(obj.var("hltEgammaGsfTrackVarsUnseeded_DetaSeed",0))
-            #eg_trkDPhi.push_back(obj.var("hltEgammaGsfTrackVarsUnseeded_Dphi",0))
-            #eg_trkNrLayerIT.push_back(obj.var("hltEgammaGsfTrackVarsUnseeded_NLayerIT",0))
-            #eg_rVar.push_back(obj.var("hltEgammaHGCALIDVarsUnseeded_rVar",0))
-            
-            eg_sigma2uu.push_back(obj.var("hltEgammaHGCALIDVarsUnseeded_sigma2uu",0))
-            eg_sigma2vv.push_back(obj.var("hltEgammaHGCALIDVarsUnseeded_sigma2vv",0))
-            eg_sigma2ww.push_back(obj.var("hltEgammaHGCALIDVarsUnseeded_sigma2ww",0))
-            eg_sigma2xx.push_back(obj.var("hltEgammaHGCALIDVarsUnseeded_sigma2xx",0))
-            eg_sigma2xy.push_back(obj.var("hltEgammaHGCALIDVarsUnseeded_sigma2xy",0))
-            eg_sigma2yy.push_back(obj.var("hltEgammaHGCALIDVarsUnseeded_sigma2yy",0))
-            eg_sigma2yz.push_back(obj.var("hltEgammaHGCALIDVarsUnseeded_sigma2yz",0))
-            eg_sigma2zx.push_back(obj.var("hltEgammaHGCALIDVarsUnseeded_sigma2zx",0))
-            eg_sigma2zz.push_back(obj.var("hltEgammaHGCALIDVarsUnseeded_sigma2zz",0))
-            eg_pms2_default.push_back(obj.var("hltEgammaPixelMatchVarsUnseeded_s2",0))
-            eg_hcalHForHoverE.push_back(obj.var("hltEgammaHGCALIDVarsUnseeded_hForHOverE",0))
-            
-            eg_l1TrkIsoCMSSW.push_back(obj.var("hltEgammaHoverEUnseeded",0))
-            eg_bestTrkChi2.push_back(obj.var("hltEgammaEleL1TrkIsoUnseeded",0))
-            eg_bestTrkDEta.push_back(obj.var("hltEgammaBestGsfTrackVarsUnseeded_Chi2",0))
-            eg_bestTrkDEtaSeed.push_back(obj.var("hltEgammaBestGsfTrackVarsUnseeded_Deta",0))
-            eg_bestTrkDPhi.push_back(obj.var("hltEgammaBestGsfTrackVarsUnseeded_DetaSeed",0))
-            #eg_bestTrkMissHits.push_back(obj.var("hltEgammaBestGsfTrackVarsUnseeded_Dphi",0))
-            #eg_bestTrkNrLayerIT.push_back(obj.var("hltEgammaBestGsfTrackVarsUnseeded_MissingHits",0))
-            eg_bestTrkESeedInvP.push_back(obj.var("hltEgammaBestGsfTrackVarsUnseeded_NLayerIT",0))
-            eg_bestTrkInvEInvP.push_back(obj.var("hltEgammaBestGsfTrackVarsUnseeded_OneOESeedMinusOneOP",0))
-            #eg_bestTrkValitHits.push_back(obj.var("hltEgammaBestGsfTrackVarsUnseeded_OneOESuperMinusOneOP",0))
-            eg_hgcaliso_layerclus.push_back(obj.var("hltEgammaBestGsfTrackVarsUnseeded_ValidHits",0))
-            eg_hgcaliso_layerclusem.push_back(obj.var("hltEgammaHGCalLayerClusterIsoUnseeded",0))
-            eg_hgcaliso_layerclushad.push_back(obj.var("hltEgammaHGCalLayerClusterIsoUnseeded_em",0))
-        
-        # Fill tree for this collection
-        tree.Fill()
+            try:
+                if col_name == "egtrigobjs":
+                    handle = egtrigobjs_handle
+                else:
+                    handle = egtrigobjs_unseeded_handle
+                
+                if process_name:
+                    evt.getByLabel(label, process_name, handle)
+                else:
+                    evt.getByLabel(label, handle)
+                
+                if handle.isValid():
+                    egobjs = handle.product()
+                    print(f"  ✓ Found {egobjs.size()} objects")
+                    
+                    if egobjs.size() > 0:
+                        # Store collection info
+                        collection_name.push_back(col_name)
+                        nr_objects.push_back(egobjs.size())
+                        
+                        # Process each object
+                        for j, obj in enumerate(egobjs):
+                            
+                            # Basic properties
+                            eg_et.push_back(obj.et())
+                            eg_energy.push_back(obj.energy())
+                            eg_eta.push_back(obj.eta())
+                            eg_phi.push_back(obj.phi())
+                            
+                            # SuperCluster properties
+                            eg_nrClus.push_back(obj.superCluster().clusters().size())
+                            eg_rawEnergy.push_back(obj.superCluster().rawEnergy())
+                            eg_phiWidth.push_back(obj.superCluster().phiWidth())
+                            eg_seedId.push_back(obj.superCluster().seed().seed().rawId())
+                            eg_seedDet.push_back(obj.superCluster().seed().seed().det())                                                                           
+                                                                   
+                            # HLT variables - try different naming conventions
+                            eg_sigmaIEtaIEta.push_back(obj.var("hltEgammaClusterShapeUnseeded_sigmaIEtaIEta5x5",0))
+                            eg_ecalPFIsol_default.push_back(obj.var("hltEgammaEcalPFClusterIsoUnseeded",0))
+                            eg_hcalPFIsol_default.push_back(obj.var("hltEgammaHcalPFClusterIsoUnseeded",0))
+                            eg_hgcalPFIsol_default.push_back(obj.var("hltEgammaHGCalPFClusterIsoUnseeded",0))
+                            eg_trkIsolV0_default.push_back(obj.var("hltEgammaEleGsfTrackIsoUnseeded",0))
+                            eg_trkIsolV6_default.push_back(obj.var("hltEgammaEleGsfTrackIsoV6Unseeded",0))
+                            eg_trkIsolV72_default.push_back(obj.var("hltEgammaEleGsfTrackIsoV72Unseeded",0))
+                            eg_trkChi2_default.push_back(obj.var("hltEgammaGsfTrackVarsUnseeded_Chi2",0))
+                            #eg_trkMissHits.push_back(obj.var("hltEgammaGsfTrackVarsUnseeded_MissingHits",0))
+                            #eg_trkValidHits.push_back(obj.var("hltEgammaGsfTrackVarsUnseeded_ValidHits",0))
+                            eg_invESeedInvP.push_back(obj.var("hltEgammaGsfTrackVarsUnseeded_OneOESeedMinusOneOP",0))
+                            eg_invEInvP.push_back(obj.var("hltEgammaGsfTrackVarsUnseeded_OneOESuperMinusOneOP",0))
+                            eg_trkDEta.push_back(obj.var("hltEgammaGsfTrackVarsUnseeded_Deta",0))
+                            #eg_trkDEtaSeed.push_back(obj.var("hltEgammaGsfTrackVarsUnseeded_DetaSeed",0))
+                            #eg_trkDPhi.push_back(obj.var("hltEgammaGsfTrackVarsUnseeded_Dphi",0))
+                            #eg_trkNrLayerIT.push_back(obj.var("hltEgammaGsfTrackVarsUnseeded_NLayerIT",0))
+                            #eg_rVar.push_back(obj.var("hltEgammaHGCALIDVarsUnseeded_rVar",0))
+                            
+                            eg_sigma2uu.push_back(obj.var("hltEgammaHGCALIDVarsUnseeded_sigma2uu",0))
+                            eg_sigma2vv.push_back(obj.var("hltEgammaHGCALIDVarsUnseeded_sigma2vv",0))
+                            eg_sigma2ww.push_back(obj.var("hltEgammaHGCALIDVarsUnseeded_sigma2ww",0))
+                            eg_sigma2xx.push_back(obj.var("hltEgammaHGCALIDVarsUnseeded_sigma2xx",0))
+                            eg_sigma2xy.push_back(obj.var("hltEgammaHGCALIDVarsUnseeded_sigma2xy",0))
+                            eg_sigma2yy.push_back(obj.var("hltEgammaHGCALIDVarsUnseeded_sigma2yy",0))
+                            eg_sigma2yz.push_back(obj.var("hltEgammaHGCALIDVarsUnseeded_sigma2yz",0))
+                            eg_sigma2zx.push_back(obj.var("hltEgammaHGCALIDVarsUnseeded_sigma2zx",0))
+                            eg_sigma2zz.push_back(obj.var("hltEgammaHGCALIDVarsUnseeded_sigma2zz",0))
+                            eg_pms2_default.push_back(obj.var("hltEgammaPixelMatchVarsUnseeded_s2",0))
+                            eg_hcalHForHoverE.push_back(obj.var("hltEgammaHGCALIDVarsUnseeded_hForHOverE",0))
+                            
+                            eg_l1TrkIsoCMSSW.push_back(obj.var("hltEgammaHoverEUnseeded",0))
+                            eg_bestTrkChi2.push_back(obj.var("hltEgammaEleL1TrkIsoUnseeded",0))
+                            eg_bestTrkDEta.push_back(obj.var("hltEgammaBestGsfTrackVarsUnseeded_Chi2",0))
+                            eg_bestTrkDEtaSeed.push_back(obj.var("hltEgammaBestGsfTrackVarsUnseeded_Deta",0))
+                            eg_bestTrkDPhi.push_back(obj.var("hltEgammaBestGsfTrackVarsUnseeded_DetaSeed",0))
+                            #eg_bestTrkMissHits.push_back(obj.var("hltEgammaBestGsfTrackVarsUnseeded_Dphi",0))
+                            #eg_bestTrkNrLayerIT.push_back(obj.var("hltEgammaBestGsfTrackVarsUnseeded_MissingHits",0))
+                            eg_bestTrkESeedInvP.push_back(obj.var("hltEgammaBestGsfTrackVarsUnseeded_NLayerIT",0))
+                            eg_bestTrkInvEInvP.push_back(obj.var("hltEgammaBestGsfTrackVarsUnseeded_OneOESeedMinusOneOP",0))
+                            #eg_bestTrkValitHits.push_back(obj.var("hltEgammaBestGsfTrackVarsUnseeded_OneOESuperMinusOneOP",0))
+                            eg_hgcaliso_layerclus.push_back(obj.var("hltEgammaBestGsfTrackVarsUnseeded_ValidHits",0))
+                            eg_hgcaliso_layerclusem.push_back(obj.var("hltEgammaHGCalLayerClusterIsoUnseeded",0))
+                            eg_hgcaliso_layerclushad.push_back(obj.var("hltEgammaHGCalLayerClusterIsoUnseeded_em",0))
+                                                                                    
+                        # Fill tree for this collection
+                        tree.Fill()
+                        break  # Found a working collection, stop trying others
+                        
+                else:
+                    print(f"  ✗ Invalid handle for {label}")
+                    
+            except Exception as e:
+                print(f"  ✗ Error accessing {label}: {e}")
     
     # Write and close
     out_file.Write()

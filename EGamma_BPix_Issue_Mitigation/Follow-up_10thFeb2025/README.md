@@ -62,7 +62,7 @@ cp /tmp/x509up_u<999999> /afs/cern.ch/user/s/ssaumya/private/x509up_u<999999>
 #### For HLT step ####
 # Update the cmsCondor.py accordingly for input and output, and the change needed in hltConfiguration
 # L49-L53 for configuration modification, L55-L72 for input source, L75 for events, L78-79 and L127-130 for output file name
-python3 cmsCondor.py hlt_ReRun_Config.py /afs/cern.ch/work/s/ssaumya/private/Egamma/EGM_Bpix/CMSSW_14_2_1/src/ /eos/cms/store/group/phys_egamma/ssaumya/EGM_BPix_Fix/10thFeb/HLTstep_RECO_RootFiles_Suggestion1 -n 10 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184
+python3 cmsCondor.py hlt_ReRun_Config.py /afs/cern.ch/work/s/ssaumya/private/Egamma/EGM_Bpix/CMSSW_14_2_1/src/ /eos/cms/store/group/phys_egamma/ssaumya/EGM_BPix_Fix/10thFeb/HLTstep_RECO_RootFiles_Suggestion1 -n 10 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u999999
 # -n 10 --> 10 files per job, 149 jobs created in this case
 ./sub_total.jobb
 

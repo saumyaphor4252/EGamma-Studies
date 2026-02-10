@@ -23,10 +23,21 @@ git cms-merge-topic Sam-Harper:EGHLTCustomisation_1230pre6
 scram b -j 10
 
 # Update the configuration files for changes required
-
+# HLT step
 cmsDriver.py Phase2 -s L1P2GT,HLT:75e33 --processName=HLTX --conditions auto:phase2_realistic_T33 --geometry ExtendedRun4D110 --era Phase2C17I13M9 --eventcontent FEVTDEBUGHLT --customise SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000,HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaMenuDev --filein=file:/eos/cms/store/relval/CMSSW_16_0_0_pre4/RelValZpToEE_m6000_14TeV/GEN-SIM-DIGI-RAW/PU_150X_mcRun4_realistic_v1_STD_Run4D110_PU-v1/2580000/4e272bbf-46e0-4a11-8b59-c10d9e5dbe23.root --inputCommands='keep *, drop *_hlt*_*_HLT, drop triggerTriggerFilterObjectWithRefs_l1t*_*_HLT' --mc -n 5
+cmsRun Phase2_L1P2GT_HLT.py 
 
-python3 cmsCondor.py Phase2_L1P2GT_HLT.py /afs/cern.ch/work/s/ssaumya/private/Egamma/Upgrade/InefficiencyChecls/3rdFeb_2026/CMSSW_16_0_0_pre4/src/ZpEE/ /eos/cms/store/group/phys_egamma/ssaumya/Phase2_InefficiencyChecks/ZpToEE/ -n 1 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184
+# submit jobs on condor
+python3 cmsCondor.py Phase2_L1P2GT_HLT.py /afs/cern.ch/work/s/ssaumya/private/Egamma/Upgrade/InefficiencyChecls/3rdFeb_2026/CMSSW_16_0_0_pre4/src/ZpEE/ /eos/cms/store/group/phys_egamma/ssaumya/Phase2_InefficiencyChecks/ZpToEE/ -n 1 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u<999999>
 ./sub_total.jobb
 
+# make ntuples from the HLT step files for calculating trigger efficiencies
+python3 submit_condor.py --input-dir /eos/cms/store/group/phys_egamma/ssaumya/Phase2_InefficiencyChecks/ZpEE_Target/ -o OutputNtuple_Target.root --files-per-job 1 --dry-run
+python3 submit_condor.py --input-dir /eos/cms/store/group/phys_egamma/ssaumya/Phase2_InefficiencyChecks/ZpEE_Target/ -o OutputNtuple_Target.root --submit 
+hadd Ntuple_Target.root OutputNtuples_Target/*.root
+
+# Make plots from PlotHists
+cd PlotHists/
+# Update the input files in Inputs.py
+python3 plotHist.py
 ```

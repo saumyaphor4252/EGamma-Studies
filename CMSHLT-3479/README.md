@@ -42,7 +42,7 @@ python3 dasFileQuery.py # Update the dataset manually used here if not already; 
 # This will generate List_cff.py with files list
 
 ### Submit on condor
-python3 cmsCondor.py hlt_ReRun_Config_Reference.py /afs/cern.ch/work/s/ssaumya/private/Egamma/FineTuning/UpdatedMenu/CMSSW_15_0_2/src/HLT_Reference/ /eos/cms/store/group/phys_egamma/ssaumya/FineTuning/UpdatedMenu/HLTstep_RECO_RootFiles_Reference/ -n 10 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184
+python3 cmsCondor.py hlt_ReRun_Config_Reference.py /afs/cern.ch/work/s/ssaumya/private/Egamma/FineTuning/UpdatedMenu/CMSSW_15_0_2/src/HLT_Reference/ /eos/cms/store/group/phys_egamma/ssaumya/FineTuning/UpdatedMenu/HLTstep_RECO_RootFiles_Reference/ -n 10 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u999999
 # Format for above command: python3 cmsCondor.py <config_file> <CMSSW_Area> <Output_Files_Area> -n <number_of_files_per_job> -q <flavour> -p <voms_proxy_area>
 ./sub_total.jobb
 ```
@@ -55,7 +55,7 @@ cmsDriver.py --conditions 150X_dataRun3_HLT_v1 --data --datatier RECO --era Run3
 
 cmsRun hlt_ReRun_Config_Target.py
 
-python3 cmsCondor.py hlt_ReRun_Config_Target.py /afs/cern.ch/work/s/ssaumya/private/Egamma/FineTuning/UpdatedMenu/CMSSW_15_0_2/src/HLT_Target/ /eos/cms/store/group/phys_egamma/ssaumya/FineTuning/UpdatedMenu/HLTstep_RECO_RootFiles_Target/ -n 10 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184
+python3 cmsCondor.py hlt_ReRun_Config_Target.py /afs/cern.ch/work/s/ssaumya/private/Egamma/FineTuning/UpdatedMenu/CMSSW_15_0_2/src/HLT_Target/ /eos/cms/store/group/phys_egamma/ssaumya/FineTuning/UpdatedMenu/HLTstep_RECO_RootFiles_Target/ -n 10 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u999999
 ```
 
 ## Run the PAT step to create miniAOD (Common for Reference and Target)
@@ -66,7 +66,7 @@ cmsDriver.py stepMINI -s PAT --conditions 150X_dataRun3_Prompt_v1 --datatier MIN
 # Update the cmsCondor.py accordingly for input and output, and the change needed in hltConfiguration  
 # L49-L53 for configuration modification, L55-L72 for input source, L75 for events, L78-79 and L127-130 for output file name
 
-python3 cmsCondor.py makeMini_cfg.py /afs/cern.ch/work/s/ssaumya/private/Egamma/FineTuning/UpdatedMenu/CMSSW_15_0_2/src/PAT_Reference/ /eos/cms/store/group/phys_egamma/ssaumya/FineTuning/UpdatedMenu/PATstep_MINIAOD_RootFiles_Reference/ -n 1 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184
+python3 cmsCondor.py makeMini_cfg.py /afs/cern.ch/work/s/ssaumya/private/Egamma/FineTuning/UpdatedMenu/CMSSW_15_0_2/src/PAT_Reference/ /eos/cms/store/group/phys_egamma/ssaumya/FineTuning/UpdatedMenu/PATstep_MINIAOD_RootFiles_Reference/ -n 1 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u999999
 ./sub_total.jobb
 ```
 
