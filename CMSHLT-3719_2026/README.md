@@ -1,15 +1,18 @@
 ## Relevant Links and information
 - JIRA : https://its.cern.ch/jira/browse/CMSHLT-3719
-- CMSSW: CMSSW_16_0_2_patch1
-- Menu used: /dev/CMSSW_16_0_0/GRun/V31
-- Dataset used: /EGamma1/Run2025G-ZElectron-PromptReco-v1/RAW-RECO
+- CMSSW: `CMSSW_16_0_2_patch1`
+- Menu used: `/dev/CMSSW_16_0_0/GRun/V30`
+- Dataset used: `/EGamma1/Run2025G-ZElectron-PromptReco-v1/RAW-RECO`
 - Difference between target and reference: Customization for `hltGetConfiguration` (See below)
-`--customise HLTrigger/Configuration/customizeHLTfor49800.customise_case1`
+```
+--customise HLTrigger/Configuration/customizeHLTfor49800.customise_case1
+```
+
 - GTs
 	- HLT: `160X_dataRun3_HLT_v1`
-	- Prompt: 160X_dataRun3_Prompt_v1
+	- Prompt: `160X_dataRun3_Prompt_v1`
 
-### Rucio rules for dataset not available on disk
+### Rucio rules for dataset if not available on disk
 ```
 source /cvmfs/cms.cern.ch/rucio/setup-py3.sh
 voms-proxy-init -voms cms
