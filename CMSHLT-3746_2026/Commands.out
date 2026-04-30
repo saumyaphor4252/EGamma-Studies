@@ -1,0 +1,1000 @@
+   96  cd Efficiencies/
+   97  ls
+   98  cd CMSSW_16_0_0_pre4/src
+   99  ls
+  100  cd HLTrigger/
+  101  git status .
+  102  git diff Configuration/python/HLT_75e33/modules/hltEle26WP70ClusterShapeSigmavvL1SeededFilter_cfi.py
+  103  git checkout Configuration/python/HLT_75e33/modules/hltEle26WP70ClusterShapeSigmavvL1SeededFilter_cfi.py
+  104  git checkout Configuration/python/HLT_75e33/modules/hltEle26WP70ClusterShapeSigmavvUnseededFilter_cfi.py
+  105  git checkout Configuration/python/HLT_75e33/modules/hltEle26WP70ClusterShapeSigmawwL1SeededFilter_cfi.py
+  106  git checkout Configuration/python/HLT_75e33/modules/hltEle26WP70ClusterShapeSigmawwUnseededFilter_cfi.py
+  107  git status .
+  108  cd .
+  109  cd ..
+  110  ls
+  111  git clone git@github.com:saumyaphor4252/EGamma-Workflow.git
+  112  cd EGamma-Workflow/
+  113  ls
+  114  ls config/
+  115  cd config/
+  116  ls
+  117  vi phase2_ZpToEE_HLTGenericFilterFix.yaml
+  118  pwd
+  119  vi phase2_ZpToEE_HLTGenericFilterFix.yaml
+  120  ls /eos/cms/store/group/phys_egamma/ssaumya/Phase2_Inefficiency/Efficinecy/ 
+  121  ls /eos/cms/store/group/phys_egamma/ssaumya/Phase2_Inefficiency/Efficinecy/ZprimeToEE
+  122   /eos/cms/store/group/phys_egamma/ssaumya/Phase2_Inefficiency/Efficinecy/ZprimeToE/*
+  123  vi phase2_ZpToEE_HLTGenericFilterFix.yaml
+  124  pwd
+  125  ls
+  126  cd ..
+  127  ls
+  128  voms-proxy-init --voms cms --valid 100:00
+  129  cp /tmp/x509up_u122184 /afs/cern.ch/user/s/ssaumya/private/x509up_u122184 
+  130  python3 submit_condor_MC.py --n 1 --config config/phase2_ZpToEE_HLTGenericFilterFix.yaml --proxy /afs/cern.ch/user/s/ssaumya/private/x509up_u122184 --farm Jobs_Efficinecy_Reference --nEvent 100
+  131  condor_submit Jobs_Efficinecy_Reference/condor_jobs.sub
+  132  condor_q
+  133  cmsenv
+  134  exit
+  135  cmsenv
+  136  ls -lart ResponseMatrices/
+  137  vimdiff responseMatrix.py responseMatrix_Test.py 
+  138  mkdir Response_Matrices
+  139  mv Response_Matrices Response_Matrices_06.04.2026
+  140  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2018_v9/jetpt0/rootFile/plots_WW2018_v9_jetpt0.root
+  141  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2018_v9/jetpt0/rootFile/plots_WW2018_v9_jetpt0.root --diffvar jetpt0 --nbins 6 --jetbins 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_jetpt0_2018
+  142  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2018_v9/jetpt0/rootFile/plots_WW2017_v9_jetpt0.root --diffvar jetpt0 --nbins 6 --jetbins 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_jetpt0_2017
+  143  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2017_v9/jetpt0/rootFile/plots_WW2017_v9_jetpt0.root --diffvar jetpt0 --nbins 6 --jetbins 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_jetpt0_2017
+  144  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_noHIPM_v9/jetpt0/rootFile/plots_WW2016_noHIPM_v9_jetpt0.root --diffvar jetpt0 --nbins 6 --jetbins 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_jetpt0_2016_noHIPM
+  145  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_HIPM_v9/jetpt0/rootFile/plots_WW2016_HIPM_v9_jetpt0.root --diffvar jetpt0 --nbins 6 --jetbins 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_jetpt0_2016_HIPM
+  146  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_HIPM_v9/jetpt0/rootFile/plots_WW2016_HIPM_v9_jetpt0.root --diffvar jetpt0 --nbins 6 --jetbins 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_jetpt0_2016_HIPM.pdf
+  147  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_HIPM_v9/jetpt0/rootFile/plots_WW2016_HIPM_v9_jetpt0.root --diffvar jetpt0 --nbins 6 --jetbins 1j -o Test.png
+  148  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_HIPM_v9/jetpt0/rootFile/plots_WW2016_HIPM_v9_jetpt0.root --diffvar jetpt0 --nbins 6 --jetbins 2j -o Test.png
+  149  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_HIPM_v9/jetpt0/rootFile/plots_WW2016_HIPM_v9_jetpt0.root --diffvar jetpt0 --nbins 6 --jetbins 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_jetpt0_2016_HIPM.png
+  150  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_HIPM_v9/jetpt0/rootFile/plots_WW2016_HIPM_v9_jetpt0.root --diffvar jetpt0 --nbins 6 --jetbins 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_jetpt0_2016_HIPM.pdf
+  151  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_HIPM_v9/jetpt0/rootFile/plots_WW2016_noHIPM_v9_jetpt0.root --diffvar jetpt0 --nbins 6 --jetbins 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_jetpt0_2016_noHIPM.pdf
+  152  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_noHIPM_v9/jetpt0/rootFile/plots_WW2016_noHIPM_v9_jetpt0.root --diffvar jetpt0 --nbins 6 --jetbins 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_jetpt0_2016_noHIPM.pdf
+  153  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_noHIPM_v9/jetpt0/rootFile/plots_WW2016_noHIPM_v9_jetpt0.root --diffvar jetpt0 --nbins 6 --jetbins 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_jetpt0_2016_noHIPM.png
+  154  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_noHIPM_v9/jetpt0/rootFile/plots_WW2017_v9_jetpt0.root --diffvar jetpt0 --nbins 6 --jetbins 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_jetpt0_2017.png
+  155  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2017_v9/jetpt0/rootFile/plots_WW2017_v9_jetpt0.root --diffvar jetpt0 --nbins 6 --jetbins 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_jetpt0_2017.png
+  156  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2017_v9/jetpt0/rootFile/plots_WW2017_v9_jetpt0.root --diffvar jetpt0 --nbins 6 --jetbins 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_jetpt0_2017.pdf
+  157  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_HIPM_v9/subleadinglepPT/rootFile/plots_WW2016_HIPM_v9_subleadinglepPT.root --diffvar subleadinglepPT --nbins 7 --jetbins 0j 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_subleadinglepPT_2016_HIPM.png
+  158  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_HIPM_v9/subleadinglepPT/rootFile/plots_WW2016_HIPM_v9_subleadinglepPT.root --diffvar subleadinglepPT --nbins 7 --jetbins 0j 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_subleadinglepPT_2016_HIPM.pdf
+  159  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_noHIPM_v9/subleadinglepPT/rootFile/plots_WW2016_noHIPM_v9_subleadinglepPT.root --diffvar subleadinglepPT --nbins 7 --jetbins 0j 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_subleadinglepPT_2016_noHIPM.pdf
+  160  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_noHIPM_v9/subleadinglepPT/rootFile/plots_WW2016_noHIPM_v9_subleadinglepPT.root --diffvar subleadinglepPT --nbins 7 --jetbins 0j 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_subleadinglepPT_2016_noHIPM.png
+  161  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2017_v9/subleadinglepPT/rootFile/plots_WW2017_v9_subleadinglepPT.root --diffvar subleadinglepPT --nbins 7 --jetbins 0j 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_subleadinglepPT_2017.png
+  162  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2017_v9/subleadinglepPT/rootFile/plots_WW2017_v9_subleadinglepPT.root --diffvar subleadinglepPT --nbins 7 --jetbins 0j 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_subleadinglepPT_2017.pdf
+  163  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2018_v9/subleadinglepPT/rootFile/plots_WW2018_v9_subleadinglepPT.root --diffvar subleadinglepPT --nbins 7 --jetbins 0j 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_subleadinglepPT_2018.pdf
+  164  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_HIPM_v9/ptll/rootFile/plots_WW2016_HIPM_v9_ptll.root --diffvar ptll --nbins 7 --jetbins 0j 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_ptll_2016_HIPM.png
+  165  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_HIPM_v9/ptll/rootFile/plots_WW2016_HIPM_v9_ptll.root --diffvar ptll --nbins 10 --jetbins 0j 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_ptll_2016_HIPM.png
+  166  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_HIPM_v9/ptll/rootFile/plots_WW2016_HIPM_v9_ptll.root --diffvar ptll --nbins 10 --jetbins 0j 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_ptll_2016_HIPM.pdf
+  167  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_HIPM_v9/ptll/rootFile/plots_WW2016_noHIPM_v9_ptll.root --diffvar ptll --nbins 10 --jetbins 0j 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_ptll_2016_noHIPM.pdf
+  168  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_noHIPM_v9/ptll/rootFile/plots_WW2016_noHIPM_v9_ptll.root --diffvar ptll --nbins 10 --jetbins 0j 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_ptll_2016_noHIPM.pdf
+  169  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_noHIPM_v9/ptll/rootFile/plots_WW2016_noHIPM_v9_ptll.root --diffvar ptll --nbins 10 --jetbins 0j 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_ptll_2016_noHIPM.png
+  170  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2017_v9/ptll/rootFile/plots_WW2017_v9_ptll.root --diffvar ptll --nbins 10 --jetbins 0j 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_ptll_2017.png
+  171  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2017_v9/ptll/rootFile/plots_WW2017_v9_ptll.root --diffvar ptll --nbins 10 --jetbins 0j 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_ptll_2017.pdf
+  172  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2018_v9/ptll/rootFile/plots_WW2018_v9_ptll.root --diffvar ptll --nbins 10 --jetbins 0j 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_ptll_2018.pdf
+  173  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2018_v9/ptll/rootFile/plots_WW2018_v9_ptll.root --diffvar ptll --nbins 10 --jetbins 0j 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_ptll_2018.png
+  174  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_noHIPM_v9/mll/rootFile/plots_WW2016_noHIPM_v9_mll.root --diffvar mll --nbins 12 --jetbins 0j 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_mll_2016_noHIPM.png
+  175  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_noHIPM_v9/mll/rootFile/plots_WW2016_noHIPM_v9_mll.root --diffvar mll --nbins 12 --jetbins 0j 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_mll_2016_noHIPM.pdf
+  176  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_HIPM_v9/mll/rootFile/plots_WW2016_HIPM_v9_mll.root --diffvar mll --nbins 12 --jetbins 0j 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_mll_2016_HIPM.pdf
+  177  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_HIPM_v9/mll/rootFile/plots_WW2016_HIPM_v9_mll.root --diffvar mll --nbins 12 --jetbins 0j 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_mll_2016_HIPM.png
+  178  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2017_v9/mll/rootFile/plots_WW2017_v9_mll.root --diffvar mll --nbins 12 --jetbins 0j 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_mll_2017.png
+  179  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2017_v9/mll/rootFile/plots_WW2017_v9_mll.root --diffvar mll --nbins 12 --jetbins 0j 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_mll_2017.pdf
+  180  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2018_v9/mll/rootFile/plots_WW2018_v9_mll.root --diffvar mll --nbins 12 --jetbins 0j 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_mll_2018.pdf
+  181  python responseMatrix.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2018_v9/mll/rootFile/plots_WW2018_v9_mll.root --diffvar mll --nbins 12 --jetbins 0j 1j 2j -o Response_Matrices_06.04.2026/ResponseMatrix_mll_2018.png
+  182  pwd
+  183  exit
+  184  cmsenv
+  185  makeCombinedPlots.py --help
+  186  python makeCombinedPlots.py --help
+  187  pwd
+  188  cd ..
+  189  ls
+  190  cd Tools/
+  191  ls
+  192  vi makeCombinedPlots.py
+  193  python makeCombinedPlots.py
+  194  vi makeCombinedPlots.py
+  195  python makeCombinedPlots.py
+  196  ls ../Full2016_noHIPM_v9/subleadinglepPT/plots_combined/cratio_weight_X_ww2l2v_13TeV_top_0j_BDTOutput_1j.root
+  197  ls plots_combined/subleadinglepPT/configuration.py
+  198  python makeCombinedPlots.py
+  199  vi /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/bin/slc7_amd64_gcc700/mkCombinedPlot.py
+  200  ls
+  201  ls plots_combined/
+  202  ls plots_combined/subleadinglepPT/
+  203  vi plots_combined/subleadinglepPT/configuration.py 
+  204  ls ../Full2018_v9/subleadinglepPT/variables_combined_plots.py
+  205  ls ../Full2018_v9/subleadinglepPT/cuts.py 
+  206  ls ../Full2018_v9/subleadinglepPT/samples.py 
+  207  vimdiff makeCombinedPlots.py makeCombinedPlots_ptwwReweighting.py
+  208  ls plots_combined/
+  209  pwd
+  210  python makeCombinedPlots.py
+  211  vi makeCombinedPlots.py
+  212  python makeCombinedPlots.py
+  213  vi makeCombinedPlots.py
+  214  python makeCombinedPlots.py
+  215  vi makeCombinedPlots.py
+  216  python makeCombinedPlots.py
+  217  ls plots_combined/subleadinglepPT/plot_combined_plots.py
+  218  vi makeCombinedPlots.py
+  219  ls plots_combined/subleadinglepPT/
+  220  ls plots_combined/subleadinglepPT/configuration.py 
+  221  vi plots_combined/subleadinglepPT/configuration.py 
+  222  ls ../Full2018_v9/subleadinglepPT/plot_combined_plots.py
+  223  vi makeCombinedPlots.py
+  224  cp ../Full2018_v9/subleadinglepPT/plot_combined_plots.py plots_combined/subleadinglepPT/
+  225  vi plots_combined/subleadinglepPT/plot_combined_plots.py
+  226  python makeCombinedPlots.py
+  227  vi ../Full2018_v9/subleadinglepPT/plot_combined_plots.py
+  228  python makeCombinedPlots.py
+  229  pwd
+  230  ls /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2018_v9/
+  231  ls /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2018_v9/jetpt0/rootFile/plots_WW2018_v9_jetpt0
+  232  ls /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2018_v9/jetpt0/rootFile/plots_WW2018_v9_jetpt0.root 
+  233  vi makeCombinedPlots.py
+  234  python makeCombinedPlots.py
+  235  cat plots_combined/mll/configuration.py
+  236  cp ../Full2018_v9/mll/plot_combined_plots.py lots_combined/mll/
+  237  cp ../Full2018_v9/mll/plot_combined_plots.py plots_combined/mll/
+  238  ls plots_combined/mll/
+  239  vi plots_combined/mll/plot_combined_plots.py 
+  240  python makeCombinedPlots.py
+  241  vi makeCombinedPlots.py
+  242  python makeCombinedPlots.py
+  243  pwd
+  244  exit
+  245  d /afs/cern.ch/work/s/ssaumya/private/Projects/HiggsCombine/CMSSW_10_2_13/src/HiggsAnalysis/CombinedLimit/MyScripts/31March2026
+  246  cd /afs/cern.ch/work/s/ssaumya/private/Projects/HiggsCombine/CMSSW_10_2_13/src/HiggsAnalysis/CombinedLimit/MyScripts/31March2026
+  247  ls
+  248  bash /afs/cern.ch/work/s/ssaumya/private/Projects/HiggsCombine/CMSSW_10_2_13/src/start_el7.sh 
+  249  cd ..
+  250  ls
+  251  cd /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/
+  252  cd Tools/
+  253  ls
+  254  vi makeCombinedPlots.py
+  255  ls plots_combined/
+  256  ls plots_combined/subleadinglepPT/
+  257  pwd
+  258  bash /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/start_el7.sh 
+  259  pwd
+  260  exit
+  261  ls
+  262  mkPlot.py --inputFile rootFile/plots_WW2016_HIPM_v9_leadinglepPT.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1 --plotFile=plot_combined_plots.py --variablesFile=variables_combined_plots.py --outputDirPlots=plots_combined
+  263  cmsenv
+  264  mkPlot.py --inputFile rootFile/plots_WW2016_HIPM_v9_leadinglepPT.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1 --plotFile=plot_combined_plots.py --variablesFile=variables_combined_plots.py --outputDirPlots=plots_combined
+  265  pwd
+  266  cd /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_HIPM_v9/subleadinglepPT
+  267  ls
+  268  ls rootFile/
+  269  mkPlot.py --inputFile rootFile/plots_WW2016_HIPM_v9_subleadinglepPT.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1 --plotFile=plot_combined_plots.py --variablesFile=variables_combined_plots.py --outputDirPlots=plots_combined
+  270  pwd
+  271  cd /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_HIPM_v9/mll
+  272  ls
+  273  ls rootFile/
+  274  mkPlot.py --inputFile rootFile/plots_WW2016_HIPM_v9_mll.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1 --plotFile=plot_combined_plots.py --variablesFile=variables_combined_plots.py --outputDirPlots=plots_combined
+  275  vi plot_combined_plots.py 
+  276  mkPlot.py --inputFile rootFile/plots_WW2016_HIPM_v9_mll.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1 --plotFile=plot_combined_plots.py --variablesFile=variables_combined_plots.py --outputDirPlots=plots_combined
+  277  pwd
+  278  cd /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_HIPM_v9/subleadinglepPT/
+  279  vi plot_combined_plots.py 
+  280  mkPlot.py --inputFile rootFile/plots_WW2016_HIPM_v9_subleadinglepPT.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1 --plotFile=plot_combined_plots.py --variablesFile=variables_combined_plots.py --outputDirPlots=plots_combined
+  281  pwd
+  282  cd /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_HIPM_v9/ptll/
+  283  ls
+  284  mkPlot.py --inputFile rootFile/plots_WW2016_HIPM_v9_ptll.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1 --plotFile=plot_combined_plots.py --variablesFile=variables_combined_plots.py --outputDirPlots=plots_combined
+  285  vi plot_combined_plots.py
+  286  mkPlot.py --inputFile rootFile/plots_WW2016_HIPM_v9_ptll.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1 --plotFile=plot_combined_plots.py --variablesFile=variables_combined_plots.py --outputDirPlots=plots_combined
+  287  exit
+  288  pwd
+  289  exit
+  290  cd /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/
+  291  ls
+  292  cd Full2018_v9/
+  293  ls
+  294  cd inclusive
+  295  ls
+  296  git status .
+  297  git diff aliases.py
+  298  cd ..
+  299  ls
+  300  pwd
+  301  ls 
+  302  cd inclusive
+  303  ls
+  304  ls -lart
+  305  ls rootFile_Backup/
+  306  cd ..
+  307  ls
+  308  cd ..
+  309  ls
+  310  ls Full2018_v9/
+  311  ls Full2018_v9/inclusive
+  312  ls Full2018_v9/inclusive/rootFile_Backup/
+  313  cp Full2018_v9/inclusive/rootFile_Backup/plots_WW2018_v9_incl.root /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2018_v9/inclusive
+  314  ls Full2017_v9/inclusive/
+  315  ls Full2017_v9/
+  316  ls Full2017_v9/inclusive
+  317  ls -lart Full2017_v9/inclusive/rootFile/
+  318  vimdiff Full2017_v9/inclusive/aliases.py Full2018_v9/inclusive/aliases.py
+  319  ls Full2017_v9/
+  320  cp Full2017_v9/inclusive/rootFile/plots_WW2017_v9_incl.root /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2017_v9/inclusive/
+  321  ls -lart  Full2018_v9/inclusive/rootFile_Backup/
+  322  ls -lart  Full2016_HIPM_v9/inclusive/rootFile/plots_WW2016_HIPM_v9_incl.root 
+  323  ls -lart  Full2016_HIPM_v9/inclusive/rootFile/plots_WW2016_noHIPM_v9_incl.root 
+  324  ls -lart  Full2016_HIPM_v9/inclusive/rootFile/plots_WW2016_HIPM_v9_incl.root 
+  325  cp Full2016_HIPM_v9/inclusive/rootFile/plots_WW2016_HIPM_v9_incl.root /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2016_HIPM_v9/inclusive/
+  326  cp Full2016_noHIPM_v9/inclusive/rootFile/plots_WW2016_noHIPM_v9_incl.root /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2016_noHIPM_v9/inclusive/
+  327  ls Full2016_HIPM_v9/inclusive_SF/rootFile/plots_WW2016_HIPM_v9_incl.root
+  328  ls Full2016_HIPM_v9/inclusive_SF/rootFile/plots_WW2016_HIPM_v9_incl_sf.root 
+  329  ls -lart Full2016_HIPM_v9/inclusive_SF/rootFile/plots_WW2016_HIPM_v9_incl_sf.root 
+  330  ls Full2016_HIPM_v9/inclusive_SF/
+  331  vi Full2016_HIPM_v9/inclusive_SF/aliases.py 
+  332  cp Full2016_HIPM_v9/inclusive_SF/rootFile/plots_WW2016_HIPM_v9_incl_sf.root /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2016_HIPM_v9/inclusive_SF/
+  333  ls /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2016_HIPM_v9/inclusive_SF/
+  334  vi Full2016_noHIPM_v9/inclusive_SF/aliases.py 
+  335  vi Full2017_v9/inclusive_SF/aliases.py 
+  336  vi Full2018_v9/inclusive_SF/aliases.py 
+  337  cp Full2016_noHIPM_v9/inclusive_SF/rootFile/plots_WW2016_noHIPM_v9_incl_sf.root /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2016_noHIPM_v9/inclusive_SF/
+  338  cp Full2017_v9/inclusive_SF/rootFile/plots_WW2017_v9_incl_sf.root /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2017_v9/inclusive_SF/
+  339  cp Full2018_v9/inclusive_SF/rootFile/plots_WW2018_v9_incl_sf.root /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2018_v9/inclusive_SF/
+  340  ls Full2018_v9/leadinglepPT/
+  341  cp -r Full2018_v9/leadinglepPT/* /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2018_v9/leadinglepPT/
+  342  cp -r Full2017_v9/leadinglepPT/* /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2017_v9/leadinglepPT/
+  343  ls /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2018_v9/leadinglepPT/
+  344  cd Full2017_v9/leadinglepPT/
+  345  ls
+  346  vi configuration.py 
+  347  pwd
+  348  ls
+  349  ls rootFile
+  350  ls rootFile_Backup/
+  351  ls
+  352  pwd
+  353  cd /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_HIPM_v9/leadinglepPT
+  354  ls
+  355  pwd
+  356  ls
+  357  bash /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/start_el7.sh 
+  358  exit
+  359  cmsenv
+  360  mkPlot.py --inputFile rootFile/plots_WW2016_noHIPM_v9_subleadinglepPT.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1 --plotFile=plot_combined_plots.py --variablesFile=variables_combined_plots.py --outputDirPlots=plots_combined
+  361  pwd
+  362  cd /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_noHIPM_v9/mll
+  363  ls rootFile/
+  364  mkPlot.py --inputFile rootFile/plots_WW2016_noHIPM_v9_mll.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1 --plotFile=plot_combined_plots.py --variablesFile=variables_combined_plots.py --outputDirPlots=plots_combined
+  365  vi plot_combined_plots.py 
+  366  mkPlot.py --inputFile rootFile/plots_WW2016_noHIPM_v9_mll.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1 --plotFile=plot_combined_plots.py --variablesFile=variables_combined_plots.py --outputDirPlots=plots_combined
+  367  pwd
+  368  cd /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_noHIPM_v9/subleadinglepPT/
+  369  ls
+  370  vi plot_combined_plots.py 
+  371  mkPlot.py --inputFile rootFile/plots_WW2016_noHIPM_v9_subleadinglepPT.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1 --plotFile=plot_combined_plots.py --variablesFile=variables_combined_plots.py --outputDirPlots=plots_combined
+  372  pwd
+  373  cd /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_noHIPM_v9/ptll
+  374  ls
+  375  mkPlot.py --inputFile rootFile/plots_WW2016_noHIPM_v9_ptll.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1 --plotFile=plot_combined_plots.py --variablesFile=variables_combined_plots.py --outputDirPlots=plots_combined
+  376  vi plot_combined_plots.py 
+  377  mkPlot.py --inputFile rootFile/plots_WW2016_noHIPM_v9_ptll.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1 --plotFile=plot_combined_plots.py --variablesFile=variables_combined_plots.py --outputDirPlots=plots_combined
+  378  pwd
+  379  exit
+  380  cd cd /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/
+  381  cd /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/
+  382  ls
+  383  cd WW/FullRunII/
+  384  ls
+  385  cd Tooo
+  386  cd Tools
+  387  ls
+  388  cd preFit_postFit_Plots/
+  389  ls
+  390  cd inclusive
+  391  ls
+  392  cd postFit_Plots/
+  393  ls
+  394  cd plot_combined_FullRunII
+  395  ls
+  396  cd ..
+  397  ls
+  398  cd ..
+  399  ls
+  400  cd ..
+  401  ls
+  402  ls plots_combined
+  403  ls -lart plots_combined
+  404  cd plots_combined/
+  405  ls -lart
+  406  cd inclusive
+  407  ls
+  408  ls dph
+  409  cd ..
+  410  ls
+  411  cd inclusive_SF/
+  412  ls
+  413  cd ..
+  414  ls
+  415  cd ..
+  416  ls
+  417  ls *.py
+  418  pwd
+  419  ls /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Tools
+  420  ls /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Tools/preFit_postFit_Plots/
+  421  ls /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Tools/preFit_postFit_Plots/dphijj/
+  422  du -sh /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Tools/preFit_postFit_Plots/
+  423  cp -r /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Tools/preFit_postFit_Plots/* /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRunII/preFit_postFit_Plots/  
+  424  ls
+  425  cd plots_combined/
+  426  ls
+  427  la leadinglepPT/
+  428  ls leadinglepPT/
+  429  ls
+  430  vi makeCombinedPlots_GEN_ptwwReweighting.py
+  431  cd ..
+  432  ls
+  433  makeCombinedPlots_GEN_ptwwReweighting.py
+  434  vi makeCombinedPlots_GEN_ptwwReweighting.py
+  435  vimdiff makeCombinedPlots.py makeCombinedPlots_GEN_ptwwReweighting.py
+  436  cd /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_noHIPM_v9/subleadinglepPT
+  437  ls
+  438  ls rootFile/
+  439  bash /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/start_el7.sh 
+  440  exit
+  441  cmsenv
+  442  mkPlot.py --inputFile rootFile/plots_WW2018_v9_leadinglepPT.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1
+  443  ls plots/
+  444  mkPlot.py --help
+  445  mkPlot.py --inputFile rootFile/plots_WW2018_v9_leadinglepPT.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1 --outputDirPlots=plots_combined
+  446  ls
+  447  pwd
+  448  cd /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2016_noHIPM_v9/leadinglepPT
+  449  ls
+  450  mkPlot.py --inputFile rootFile/plots_WW2016_noHIPM_v9_leadinglepPT.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1 --plotFile=plot_combined_plots.py --variablesFile=variables_combined_plots.py --outputDirPlots=plots_combined
+  451  vi configuration.py 
+  452  mkPlot.py --inputFile rootFile/plots_WW2018_v9_leadinglepPT.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1 --outputDirPlots=plots_combined
+  453  mkPlot.py --inputFile rootFile/plots_WW2016_noHIPM_v9_leadinglepPT.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1 --outputDirPlots=plots_combined
+  454  ls
+  455  pwd
+  456  cd /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2017_v9/leadinglepPT
+  457  ls
+  458  ls rootFile_Backup/ | wc -
+  459  ls rootFile_Backup/ | wc -l
+  460  ls rootFile/ | wc -l
+  461  cd cd /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2017_v9/subleadinglepPT
+  462  cd /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2017_v9/subleadinglepPT
+  463  ls
+  464  ls rootFile/
+  465  mkPlot.py --inputFile rootFile/plots_WW2017_v9_subleadinglepPT.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1 --plotFile=plot_combined_plots.py --variablesFile=variables_combined_plots.py --outputDirPlots=plots_combined
+  466  pwd
+  467  ls rootFile/
+  468  mkPlot.py --inputFile rootFile/plots_WW2017_v9_subleadinglepPT.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1 --plotFile=plot_combined_plots.py --variablesFile=variables_combined_plots.py --outputDirPlots=plots_combined
+  469  vi plot_combined_plots.py 
+  470  mkPlot.py --inputFile rootFile/plots_WW2017_v9_subleadinglepPT.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1 --plotFile=plot_combined_plots.py --variablesFile=variables_combined_plots.py --outputDirPlots=plots_combined
+  471  vi plot_combined_plots.py 
+  472  pwd
+  473  cd /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2017_v9/mll
+  474  ls
+  475  vi plot_combined_plots.py 
+  476  mkPlot.py --inputFile rootFile/plots_WW2017_v9_mll.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1 --plotFile=plot_combined_plots.py --variablesFile=variables_combined_plots.py --outputDirPlots=plots_combined
+  477  pwd
+  478  cd /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2017_v9/subleadinglepPT/
+  479  ls
+  480  vi plot_combined_plots.py 
+  481  ls plots_combined/
+  482  pw
+  483  pwd
+  484  cd /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2017_v9/ptll
+  485  ls
+  486  vi plot_combined_plots.py 
+  487  mkPlot.py --inputFile rootFile/plots_WW2017_v9_ptll.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1 --plotFile=plot_combined_plots.py --variablesFile=variables_combined_plots.py --outputDirPlots=plots_combined
+  488  vi plot_combined_plots.py 
+  489  mkPlot.py --inputFile rootFile/plots_WW2017_v9_ptll.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1 --plotFile=plot_combined_plots.py --variablesFile=variables_combined_plots.py --outputDirPlots=plots_combined
+  490  pwd
+  491  exit
+  492  cd cd /afs/cern.ch/work/s/ssaumya/private/Projects/
+  493  cd /afs/cern.ch/work/s/ssaumya/private/Projects/
+  494  cd WW_
+  495  cd WW_Analysis_Workls
+  496  ls
+  497  cd AN/AN-22-023/
+  498  ls
+  499  cd Figs/
+  500  ls
+  501  cd ..
+  502  ls
+  503  pwd
+  504  vi incl.tex
+  505  pwd
+  506  vi incl.tex
+  507  vi dfincl.tex
+  508  ls /eos/cms/user
+  509  ls /eos/cms/user/s/ssaumya
+  510  ls /eos/user/s/ssaumya
+  511  ls /eos/user/s/ssaumya/WW/
+  512  ls /eos/user/s/ssaumya/WW/Backup_30thDec2025/
+  513  ls /eos/user/s/ssaumya/WW/FullAnalysisResults
+  514  mkdir /eos/user/s/ssaumya/WW/FullAnalysisResults
+  515  mkdir /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRunII
+  516  mkdir /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRun2018_v9
+  517  mkdir /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRun2017_v9
+  518  mkdir /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRun2016_HIPM_v9
+  519  mkdir /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRun2016_noHIPM_v9
+  520  mkdir /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRunII/inclusive
+  521  mkdir /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRunII/inclusive_SF
+  522  mkdir /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRunII/leadinglepPT
+  523  mkdir /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRunII/subleadinglepPT
+  524  mkdir /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRunII/dphijj
+  525  mkdir /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRunII/mll
+  526  mkdir /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRunII/ptll
+  527  mkdir /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRunII/ptWW
+  528  mkdir /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRunII/jetpt0
+  529  mkdir /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRunII/jetpt1
+  530  ls  /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRunII
+  531  mkdir /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRunII/mjj
+  532  mkdir /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRunII/njets
+  533  cp -r /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRunII/* /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRun2018_v9/
+  534  cp -r /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRunII/* /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRun2017_v9/
+  535  cp -r /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRunII/* /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRun2016_HIPM_v9/
+  536  cp -r /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRunII/* /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRun2016_noHIPM_v9/
+  537  ls /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRun2018_v
+  538  ls /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRun2018_v9/
+  539  mv /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRun2018_v9/ /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2018_v9/
+  540  mv /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRun2017_v9/ /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2017_v9/
+  541  mv /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRun2016_HIPM_v9/ /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2016_HIPM_v9/
+  542  mv /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRun2016_noHIPM_v9/ /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2016_noHIPM_v9/
+  543  ls /eos/user/s/ssaumya/WW/FullAnalysisResults/
+  544  ls /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2018_v9/inclusive
+  545  ls /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2018_v9/inclusive/
+  546  ls /eos/user/s/ssaumya/WW/FullAnalysisResults/
+  547  ls /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2016_HIPM_v9
+  548  ls /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2016_HIPM_v9/inclusive
+  549  ls /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRun2018_v9/
+  550  ls /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2018_v9/
+  551  ls /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2018_v9/inclusive
+  552  mkdir /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2018_v9/inclusive/rootFile
+  553  mkdir /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2017_v9/inclusive/rootFile
+  554  mkdir /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2016_HIPM_v9/inclusive/rootFile
+  555  mkdir /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2016_noHIPM_v9/inclusive/rootFile
+  556  mkdir /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2016_HIPM_v9/inclusive_SF/rootFile
+  557  mkdir /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2016_noHIPM_v9/inclusive_SF/rootFile
+  558  mkdir /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2017_v9/inclusive_SF/rootFile
+  559  mkdir /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2018_v9/inclusive_SF/rootFile
+  560  ls /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2018_v9/inclusive/rootFile
+  561  ls /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2018_v9/inclusive/
+  562  mv /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2018_v9/inclusive/*.root /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2018_v9/inclusive//rootFile/
+  563  ls /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2018_v9/inclusive/rootFile/
+  564  ls /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2018_v9/inclusive/
+  565  ls
+  566  mkdir /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2018_v9/leadinglepPT/
+  567  mv /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2017_v9/inclusive/*.root /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2017_v9/inclusive//rootFile/
+  568  mv /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2016_HIPM_v9/inclusive/*.root /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2016_HIPM_v9/inclusive//rootFile/
+  569  mv /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2016_noHIPM_v9/inclusive/*.root /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2016_noHIPM_v9/inclusive//rootFile/
+  570  mv /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2018_v9/inclusive_SF/*.root /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2018_v9/inclusive_SF//rootFile/
+  571  ls /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2018_v9/inclusive_SF//rootFile/
+  572  mv /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2017_v9/inclusive_SF/*.root /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2017_v9/inclusive_SF//rootFile/
+  573  mv /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2016_HIPM_v9/inclusive_SF/*.root /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2016_HIPM_v9/inclusive_SF//rootFile/
+  574  mv /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2016_noHIPM_v9/inclusive_SF/*.root /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2016_noHIPM_v9/inclusive_SF//rootFile/
+  575  ls /eos/user/s/ssaumya/WW/FullAnalysisResults/Full2018_v9/leadinglepPT/
+  576  ls /eos/user/s/ssaumya/WW/FullAnalysisResults/
+  577  ls /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRunII/
+  578  ls /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRunII/inclusive
+  579  ls /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRunII/
+  580  mkdir /eos/user/s/ssaumya/WW/FullAnalysisResults/FullRunII/preFit_postFit_Plots
+  581  cd /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2018_v9
+  582  ls
+  583  cd leadinglepPT/
+  584  ls
+  585  vi configuration.py 
+  586  vi plot_combined_plots.py 
+  587  vi variables_combined_plots.py 
+  588  pwd
+  589  bash /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/start_el7.sh 
+  590  exit
+  591  cmsenv
+  592  mkPlot.py --inputFile rootFile/plots_WW2018_v9_subleadinglepPT.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1 --plotFile=plot_combined_plots.py --variablesFile=variables_combined_plots.py --outputDirPlots=plots_combined
+  593  pwd
+  594  cp /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2018_v9/subleadinglepPT/plot_combined_plots.py /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Tools/plots_combined/
+  595  mkPlot.py --inputFile rootFile/plots_WW2018_v9_subleadinglepPT.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1 --plotFile=plot_combined_plots.py --variablesFile=variables_combined_plots.py --outputDirPlots=plots_combined
+  596  pwd
+  597  cd /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2018_v9/mll
+  598  ls
+  599  ls rootFile/
+  600  mkPlot.py --inputFile rootFile/plots_WW2018_v9_mll.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1 --plotFile=plot_combined_plots.py --variablesFile=variables_combined_plots.py --outputDirPlots=plots_combined
+  601  vi plot_combined_plots.py 
+  602  mkPlot.py --inputFile rootFile/plots_WW2018_v9_mll.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1 --plotFile=plot_combined_plots.py --variablesFile=variables_combined_plots.py --outputDirPlots=plots_combined
+  603  pwd
+  604  cd /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2018_v9/subleadinglepPT/
+  605  ls
+  606  vi plot_combined_plots.py 
+  607  mkPlot.py --inputFile rootFile/plots_WW2018_v9_subleadinglepPT.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1 --plotFile=plot_combined_plots.py --variablesFile=variables_combined_plots.py --outputDirPlots=plots_combined
+  608  pwd
+  609  cd /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2018_v9/ptll/
+  610  ls
+  611  mkPlot.py --inputFile rootFile/plots_WW2018_v9_ptll.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1 --plotFile=plot_combined_plots.py --variablesFile=variables_combined_plots.py --outputDirPlots=plots_combined
+  612  vi plot_combined_plots.py
+  613  mkPlot.py --inputFile rootFile/plots_WW2018_v9_ptll.root --onlyPlot=cratio --fileFormats=root --removeWeight --showIntegralLegend=1 --plotFile=plot_combined_plots.py --variablesFile=variables_combined_plots.py --outputDirPlots=plots_combined
+  614  exit
+  615  pwd
+  616  exit
+  617  cd /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/AN/AN-22-023
+  618  ls
+  619  git status .
+  620  ls
+  621  vi signal_extraction.tex
+  622  cd /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/PlotsConfigurations/Configurations/WW/FullRunII/Full2018_v9/subleadinglepPT
+  623  ls rootFile/
+  624  ls 
+  625  pwd
+  626  bash /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/start_el7.sh 
+  627  pwd
+  628  exit
+  629  pwd
+  630  ls
+  631  cmsenc
+  632  cmsencv
+  633  cmsenv
+  634  pwd
+  635  bash /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/start_el7.sh 
+  636  cd PlotHists/
+  637  ls
+  638  python plotHist.py 
+  639  python3 plotHist.py 
+  640  root /eos/cms/store/group/phys_egamma/ssaumya/Phase2_Inefficiency/Efficinecy/tnpNtupler_ZprimeToEE_AllTriggerPaths.root
+  641  mv plots HLTGenericFix
+  642  python3 plotHist.py 
+  643  mv plots/* HLTGenericFix/
+  644  pwd
+  645  ls
+  646  pwd
+  647  python3 plotHist.py 
+  648  mv plots/* HLTGenericFix/
+  649  python3 plotHist.py 
+  650  mv plots/* HLTGenericFix/
+  651  pwd
+  652  cd ..
+  653  ls
+  654  pwd
+  655  ls
+  656  mkdir Regularization
+  657  cd Re
+  658  cd Regularization/
+  659  pwd
+  660  ls
+  661  ls ../
+  662  cp ../Differential_Xsec_Plots/*.py .
+  663  ls *.py
+  664  rm -rf *
+  665  cd ..
+  666  ls
+  667  cd Differential_Xsec_Plots/
+  668  mkdir 10thApril
+  669  cd 10thApril/
+  670  cp ../*.py .
+  671  ls
+  672  cp ../*.py .
+  673  python plot_hDWWNJET_normalized.py
+  674  pwd
+  675  bash /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/start_el7.sh 
+  676  pwd
+  677  ls
+  678  pwd
+  679  bash /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/start_el7.sh 
+  680  pwd
+  681  bash /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/start_el7.sh 
+  682  pwd
+  683  bash /afs/cern.ch/work/s/ssaumya/private/Projects/WW_Analysis_Work/CMSSW_10_6_39/src/start_el7.sh 
+  684  cmsenv
+  685  python plot_hDWWDPHIJJ_normalized.py  --help
+  686  python plot_hDWWDPHIJJ_normalized.py --help
+  687  cd Differential_Xsec_Plots/
+  688  python plot_hDWWDPHIJJ_normalized.py --help
+  689  python plot_hDWWDPHIJJ_normalized.py --overlay   --powheg-theory-envelope-hists hDWWDPHIJJ_PS,hDWWDPHIJJ_PDF,hDWWDPHIJJ_QCD   --minnlo-theory-envelope-hists hDWWDPHIJJ_PS,hDWWDPHIJJ_PDF,hDWWDPHIJJ_QCD   --data-add-minnlo-shape-unc   -o Overlay_DPHIJJ
+  690  python plot_hDWWDPHIJJ_normalized_logy.py --overlay   --powheg-theory-envelope-hists hDWWDPHIJJ_PS,hDWWDPHIJJ_PDF,hDWWDPHIJJ_QCD   --minnlo-theory-envelope-hists hDWWDPHIJJ_PS,hDWWDPHIJJ_PDF,hDWWDPHIJJ_QCD   --data-add-minnlo-shape-unc   -o Overlay_DPHIJJ_Logy
+  691  python plot_hDWWDPHIJJ_normalized.py --overlay   --powheg-theory-envelope-hists hDWWDPHIJJ_PS,hDWWDPHIJJ_PDF,hDWWDPHIJJ_QCD   --minnlo-theory-envelope-hists hDWWDPHIJJ_PS,hDWWDPHIJJ_PDF,hDWWDPHIJJ_QCD   --data-add-minnlo-shape-unc   -o Overlay_DPHIJJ
+  692  pwd
+  693  ls ../../
+  694  ls ../../CMSSW_16_0_2/src/
+  695  ls ../../
+  696  ls ../../Efficiencies/
+  697  ls ../../Efficiencies/CMSSW_16_0_0_pre4/src
+  698  cp -r ../../Efficiencies/CMSSW_16_0_0_pre4/src/PlotHists/ .
+  699  ls
+  700  cd PlotHists/
+  701  ls
+  702  rm -rf plots_v1
+  703  rm -rf plots_v2
+  704  rm -rf plots_Version*
+  705  ls
+  706  rm -rf Final_Cuts/
+  707  rm -rf plots
+  708  rm -rf RelVal_Plots/
+  709  rm -rf HLTGenericFix/
+  710  ls
+  711  pwd
+  712  python3 plotHist.py 
+  713  pw
+  714  pwd
+  715  ls
+  716  cd ..
+  717  ls
+  718  cd HLTrigger/
+  719  ;s
+  720  ls
+  721  cd Configuration/
+  722  ls
+  723  git status .
+  724  git log
+  725  cd ..
+  726  ls
+  727  cd PlotHists/
+  728  ls
+  729  cd plots/
+  730  cd ..
+  731  vi plotHist.py 
+  732  python3 plotHist.py 
+  733  pw
+  734  pwd
+  735  ls
+  736  cd ..
+  737  ls
+  738  cd ..
+  739  ls
+  740  cd Reference/
+  741  ls
+  742  cd CMSSW_16_0_5/src
+  743  ls
+  744  cd HLTrigger/
+  745  git log
+  746  git status .
+  747  git diff
+  748  cd ..
+  749  ls
+  750  cd EGamma-Workflow/
+  751  ls
+  752  rm -rf Jobs_Reference/
+  753  ls python/
+  754  ls config/
+  755  vi config/phase2_ZpToEE.yaml
+  756  pwd
+  757  vi config/phase2_ZpToEE.yaml
+  758  voms-proxy-init --voms cms --valid 100:00
+  759  cp /tmp/x509up_u122184 /afs/cern.ch/user/s/ssaumya/private/x509up_u122184 
+  760  python3 submit_condor_MC.py --n 1 --config config/phase2_ZpToEE.yaml --proxy /afs/cern.ch/user/s/ssaumya/private/x509up_u122184 --farm Jobs_Reference --nEvent 100
+  761  condor_submit Jobs_Reference/condor_jobs.sub
+  762  condor_q
+  763  pwd
+  764  exit
+  765  . "\afs\cern.ch\user\s\ssaumya\.cursor-server\bin\linux-x64\7150844152b426ed50d2b68dd6b33b5c5beb73c0/out/vs/workbench/contrib/terminal/common/scripts/shellIntegration-bash.sh"
+  766  pwd
+  767  cmsenv
+  768  python3 plotHist.py 
+  769  pwd
+  770  ls
+  771  rm -rf sigma_per_filter
+  772  python3 extractSigma2vvSigma2ww_PerFilter.py --input-file /eos/cms/store/group/phys_egamma/ssaumya/Phase2_Inefficiency/sigma_per_filter_Target.root --max-events -1
+  773  cmsenv
+  774  python3 extractSigma2vvSigma2ww_PerFilter.py --input-file /eos/cms/store/group/phys_egamma/ssaumya/Phase2_Inefficiency/sigma_per_filter_Target.root --max-events -1
+  775  python3 plotSigma2vvSigma2ww_PerFilter.py  --input-file /eos/cms/store/group/phys_egamma/ssaumya/Phase2_Inefficiency/sigma_per_filter_Target.root 
+  776  rm -rf SigmaPlots/
+  777  python3 plotSigma2vvSigma2ww_PerFilter.py  --input-file /eos/cms/store/group/phys_egamma/ssaumya/Phase2_Inefficiency/sigma_per_filter_Reference.root 
+  778  pwd
+  779  cd /afs/cern.ch/work/s/ssaumya/private/Egamma/Upgrade/InefficiencyChecls/3rdFeb_2026/Reference/CMSSW_16_0_5/src
+  780  cmsenv
+  781  runTheMatrix.py -l 34434.0 --what upgrade
+  782  ls
+  783  rm -rf 34434.0_TTbar_14TeV+Run4D121
+  784  pwd
+  785  cmsenv
+  786  runTheMatrix.py -l 34434.0 --what upgrade
+  787  ls
+  788  pwd
+  789  rm -rf 34434.0_TTbar_14TeV+Run4D121
+  790  pwd
+  791  exit
+  792  cd /afs/cern.ch/work/s/ssaumya/private/Egamma/CMSHLT-3764/CMSSW_16_0_5/src/
+  793  ls ../../../
+  794  ls ../../../Test_Seeding/
+  795  ls ../../../Upgrade/
+  796  ls ../../../Upgrade/CheckMissingCollection/
+  797  ls ../../../Upgrade/CheckMissingCollection/CMSSW_16_0_5/src
+  798  cp ../../../Upgrade/CheckMissingCollection/CMSSW_16_0_5/src/check_collection_FWLite.py.
+  799  cp ../../../Upgrade/CheckMissingCollection/CMSSW_16_0_5/src/check_collection_FWLite.py .
+  800  ls
+  801  cd /afs/cern.ch/work/s/ssaumya/private/Egamma/CMSHLT-3764/
+  802  ls
+  803  ls /eos/cms
+  804  ls /eos/cms/store/
+  805  ls /eos/cms/store/data/
+  806  ls /eos/cms/store/data/Run2026C
+  807  ls /eos/cms/store/data/Run2026C/EGamma0/
+  808  ls /eos/cms/store/data/Run2026B/EGamma0/
+  809  ls /eos/cms/store/data/Run2026B/EGamma0/RAW-RECO/
+  810  ls /eos/cms/store/data/Run2026B/EGamma0/RAW-RECO/ZElectron-PromptReco-v1/
+  811  ls /eos/cms/store/data/Run2026B/EGamma0/RAW-RECO/ZElectron-PromptReco-v1/000/
+  812  ls /eos/cms/store/data/Run2026B/EGamma0/RAW-RECO/ZElectron-PromptReco-v1/000/402/
+  813  ls /eos/cms/store/data/Run2026B/EGamma0/RAW-RECO/ZElectron-PromptReco-v1/000/402/424
+  814  ls /eos/cms/store/data/Run2026B/EGamma0/RAW-RECO/ZElectron-PromptReco-v1/000/402/424/00000/
+  815  ls /eos/cms/store/data/Run2026B/EGamma0/RAW-RECO/ZElectron-PromptReco-v1/000/402/424/00000/f883bc6c-0415-4f5a-aaa4-7833de6d12a0.root
+  816  cmsDriver.py --conditions 160X_dataRun3_HLT_v1 --data --datatier RECO --era Run3_2026 --eventcontent RECO --filein file:/eos/cms/store/data/Run2026B/EGamma0/RAW-RECO/ZElectron-PromptReco-v1/000/402/424/00000/f883bc6c-0415-4f5a-aaa4-7833de6d12a0.root --fileout file:hltOutput_RECO_Reference.root -n 100 --process MYHLT --python_filename hlt_ReRun_Config_Reference.py --scenario pp --step HLT:2026C_Reference
+  817  cmsenv
+  818  ls
+  819  cd CMSSW_16_0_5/src
+  820  ls
+  821  cmsDriver.py --conditions 160X_dataRun3_HLT_v1 --data --datatier RECO --era Run3_2026 --eventcontent RECO --filein file:/eos/cms/store/data/Run2026B/EGamma0/RAW-RECO/ZElectron-PromptReco-v1/000/402/424/00000/f883bc6c-0415-4f5a-aaa4-7833de6d12a0.root --fileout file:hltOutput_RECO_Reference.root -n 100 --process MYHLT --python_filename hlt_ReRun_Config_Reference.py --scenario pp --step HLT:2026C_Reference
+  822  cmsenv
+  823  cmsDriver.py --conditions 160X_dataRun3_HLT_v1 --data --datatier RECO --era Run3_2026 --eventcontent RECO --filein file:/eos/cms/store/data/Run2026B/EGamma0/RAW-RECO/ZElectron-PromptReco-v1/000/402/424/00000/f883bc6c-0415-4f5a-aaa4-7833de6d12a0.root --fileout file:hltOutput_RECO_Reference.root -n 100 --process MYHLT --python_filename hlt_ReRun_Config_Reference.py --scenario pp --step HLT:2026C_Reference
+  824  ls
+  825  edmDumpEventContent hltOutput_RECO_Reference.root > EventContent_hltOutput_RECO.root
+  826  vi EventContent_hltOutput_RECO.root
+  827  edmDumpEventContent /eos/cms/store/data/Run2026B/EGamma0/RAW-RECO/ZElectron-PromptReco-v1/000/402/424/00000/f883bc6c-0415-4f5a-aaa4-7833de6d12a0.root > EventContent_RAWRECO.out
+  828  vi EventContent_RAWRECO.out
+  829  pwd
+  830  history 1--
+  831  history 100
+  832  hltGetConfiguration /users/STORM/CMSSW_16_0_0/etc/testFromPy/V1 --output minimal --data --process MYHLT --type GRun --globaltag 160X_dataRun3_HLT_v1 --max-events 100 --unprescale --eras Run3_2026 --customise HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaMenuDev --cff > "${CMSSW_BASE}"/src/HLTrigger/Configuration/python/HLT_2026C_Reference_Customized_cff.py
+  833  cmsDriver.py --conditions 160X_dataRun3_HLT_v1 --data --datatier RECO --era Run3_2026 --eventcontent RECO --filein file:/eos/cms/store/data/Run2026B/EGamma0/RAW-RECO/ZElectron-PromptReco-v1/000/402/424/00000/f883bc6c-0415-4f5a-aaa4-7833de6d12a0.root --fileout file:hltOutput_RECO_Reference_Customized.root -n 100 --process MYHLT --python_filename hlt_ReRun_Config_Reference_Customized.py --scenario pp --step HLT:2026C_Reference_Customized
+  834  ls
+  835  hltGetConfiguration /users/STORM/CMSSW_16_0_0/etc/testFromPy/V1 --output minimal --data --process MYHLT --type GRun --globaltag 160X_dataRun3_HLT_v1 --max-events 100 --unprescale --eras Run3_2026 --customise HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaMenuDev --inputFile file:/eos/cms/store/data/Run2026B/EGamma0/RAW-RECO/ZElectron-PromptReco-v1/000/402/424/00000/f883bc6c-0415-4f5a-aaa4-7833de6d12a0.root > hlt_Reference_Customized.py
+  836  hltGetConfiguration /users/STORM/CMSSW_16_0_0/etc/testFromPy/V1 --output minimal --data --process MYHLT --type GRun --globaltag 160X_dataRun3_HLT_v1 --max-events 100 --unprescale --eras Run3_2026 --customise HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaMenuDev --input file:/eos/cms/store/data/Run2026B/EGamma0/RAW-RECO/ZElectron-PromptReco-v1/000/402/424/00000/f883bc6c-0415-4f5a-aaa4-7833de6d12a0.root > hlt_Reference_Customized.py
+  837  cmsRun hlt_Reference_Customized.py 
+  838  cmsRun hlt_Reference_Customized.py > hlt_Reference_Customized.log 2>&1
+  839  ls -lart
+  840  edmDumpEventContent output.root > EventContent_hlt_Reference_Customized.out
+  841  vi EventContent_hlt_Reference_Customized.out
+  842  mv EventContent_hltOutput_RECO.root  EventContent_hltOutput_RECO.out
+  843  vimdiff  EventContent_hltOutput_RECO.out EventContent_hlt_Reference_Customized.out
+  844  vi EventContent_hlt_Reference_Customized.out
+  845  ls
+  846  ls ../
+  847  ls ../../
+  848  ls ../../../
+  849  ls ../
+  850  ls
+  851  vi check_collection_FWLite.py
+  852  python3i check_collection_FWLite.py
+  853  python3 check_collection_FWLite.py
+  854  vi check_collection_FWLite.py
+  855  python3 check_collection_FWLite.py
+  856  ls
+  857  vi EventContent_hlt_Reference_Customized.out
+  858  pwd
+  859  cmsenv
+  860  ls
+  861  python3 Analysis/HLTAnalyserPy/test/makeRun3Ntup.py -o ntup.root output.root
+  862  ls Analysis/HLTAnalyserPy/
+  863  ls Analysis/HLTAnalyserPy/test
+  864  ls Analysis/HLTAnalyserPy/python
+  865  ls Analysis/HLTAnalyserPy/test
+  866  ls Analysis/HLTAnalyserPy/test/examples/
+  867  ls Analysis/HLTAnalyserPy/test/ntup/
+  868  ls Analysis/HLTAnalyserPy/test/ntup/makeRun3Ntup.py  -o ntup.root output.root
+  869  python3 Analysis/HLTAnalyserPy/test/ntup/makeRun3Ntup.py  -o ntup.root output.root
+  870  ls ntup.root 
+  871  du -sh ntup.root 
+  872  pwd
+  873  exit
+  874  cd /afs/cern.ch/work/s/ssaumya/private/Egamma/CMSHLT-3764/CMSSW_
+  875  cd /afs/cern.ch/work/s/ssaumya/private/Egamma/CMSHLT-3764/
+  876  pwd
+  877  ls
+  878  cd CMSSW_16_0_5/src
+  879  ls
+  880  pwd
+  881  exit
+  882  pwd
+  883  exit
+  884  cd /afs/cern.ch/work/s/ssaumya/private/Egamma/
+  885  ls
+  886  cd Test_Seeding/
+  887  ls
+  888  cd CMSSW_16_0_4/src
+  889  ls
+  890  cd ..
+  891  ls
+  892  cd ..
+  893  ls
+  894  pwd
+  895  ls
+  896  cd ..
+  897  ls
+  898  cd Upgrade/
+  899  ls
+  900  cd CheckMissingCollection/
+  901  ls
+  902  cd CMSSW_16_0_5/
+  903  cd src
+  904  ls
+  905  git diff RecoEgamma/
+  906  git diff
+  907  git status .
+  908  cd HLTrigger/
+  909  git status .
+  910  cd ..
+  911  ls
+  912  cd RecoEgamma/
+  913  ls
+  914  git status .
+  915  git log
+  916  pwd
+  917  ls
+  918  cd ..
+  919  ls
+  920  ls RecoEgamma/EgammaHLTProducers/
+  921  ls RecoEgamma/EgammaHLTProducers/p
+  922  ls RecoEgamma/EgammaHLTProducers/python/
+  923  ls RecoEgamma/EgammaHLTProducers/python/hltEgammaHLTExtra_cfi.py 
+  924  vi RecoEgamma/EgammaHLTProducers/python/hltEgammaHLTExtra_cfi.py 
+  925  ls
+  926  pwd
+  927  vi rerunHLT_cfg_ConfigDump_Updated.py
+  928  vimdiff rerunHLT_cfg_ConfigDump.py rerunHLT_cfg_ConfigDump_Updated.py
+  929  edmConfigDump rerunHLT_cfg.py > rerunHLT_cfg_ConfigDump_TestPhase2Modifier.py
+  930  cmsenv
+  931  edmConfigDump rerunHLT_cfg.py > rerunHLT_cfg_ConfigDump_TestPhase2Modifier.py
+  932  vimdiff rerunHLT_cfg_ConfigDump.py rerunHLT_cfg_ConfigDump_TestPhase2Modifier.py
+  933  scram b 0j 10
+  934  scram b -j 10
+  935  edmConfigDump rerunHLT_cfg.py > rerunHLT_cfg_ConfigDump_TestPhase2Modifier.py
+  936  vimdiff rerunHLT_cfg_ConfigDump.py rerunHLT_cfg_ConfigDump_TestPhase2Modifier.py
+  937  ls
+  938  vimdiff rerunHLT_cfg_ConfigDump_TestPhase2Modifier.py rerunHLT_cfg_ConfigDump_Updated.py
+  939  pwd
+  940  ls /afs/cern.ch/work/s/ssaumya/private/Egamma/
+  941  ls /afs/cern.ch/work/s/ssaumya/private/Egamma/Test_Seeding/
+  942  ls /afs/cern.ch/work/s/ssaumya/private/Egamma/Test_Seeding/CMSSW_16_0_4/src
+  943  ls /afs/cern.ch/work/s/ssaumya/private/Egamma/CMSHLT-3764/
+  944  ls /afs/cern.ch/work/s/ssaumya/private/Egamma/CMSHLT-3764/CMSSW_16_0_5/src
+  945  vi /afs/cern.ch/work/s/ssaumya/private/Egamma/CMSHLT-3764/CMSSW_16_0_5/src/EventContent_hlt_Reference_Customized.out
+  946  pwd
+  947  ls
+  948  vi EventContent_Phase2_HLT_Updated.out 
+  949  pwd
+  950  exit
+  951  cd /afs/cern.ch/work/s/ssaumya/private/Egamma/Upgrade/CheckMissingCollection/
+  952  ls
+  953  cd CMSSW_17_0_X_2026-04-08-2300
+  954  ls
+  955  cd src
+  956  ls
+  957  git branch
+  958  git log
+  959  pwd
+  960  cd ..
+  961  ls
+  962  cd ..
+  963  ls
+  964  cd PR/
+  965  ls
+  966  cd CMSSW_17_0_X_2026-04-08-2300/src
+  967  ls
+  968  cmsenv
+  969  git status .,
+  970  git status .
+  971  pwd
+  972  cd ..
+  973  ls
+  974  cd ..
+  975  ls
+  976  cd ..
+  977  ls
+  978  cd PR/
+  979  ls
+  980  cd CMSSW_17_0_X_2026-04-08-2300/
+  981  ls
+  982  git log
+  983  cd src
+  984  ls
+  985  git status .
+  986  git log
+  987  pwd
+  988  git status .
+  989  git diff RecoEgamma/EgammaHLTProducers/python/hltEgammaHLTExtra_cfi.py
+  990  vi RecoEgamma/EgammaHLTProducers/python/hltEgammaHLTExtra_cfi.py
+  991  git diff RecoEgamma/EgammaHLTProducers/python/hltEgammaHLTExtra_cfi.py
+  992  vi RecoEgamma/EgammaHLTProducers/python/hltEgammaHLTExtra_cfi.py
+  993  git diff RecoEgamma/EgammaHLTProducers/python/hltEgammaHLTExtra_cfi.py
+  994  git statu s.
+  995  git status .
+  996  git add  RecoEgamma/EgammaHLTProducers/python/hltEgammaHLTExtra_cfi.py
+  997  git add RecoEgamma/EgammaHLTProducers/python/hltEgammaHLTExtra_cfi.py
+  998  pwd
+  999  eixt
+ 1000  exit
+ 1001  pwd
+ 1002  mkdir /eos/cms/store/group/phys_egamma/ssaumya/CMSHLT-3746/
+ 1003  mkdir /eos/cms/store/group/phys_egamma/ssaumya/CMSHLT-3746/HLTstep_RootFiles_Reference
+ 1004  ls
+ 1005  cd /afs/cern.ch/work/s/ssaumya/private/Egamma/CMSHLT-3764/CMSSW_16_0_5/src/EGamma-Studies/CMSHLT-3746_2026
+ 1006  ls
+ 1007  cmsenv
+ 1008  vi hlt_Reference_Customized.py
+ 1009  vi cmsCondor.py 
+ 1010  pwd
+ 1011  ls
+ 1012  voms-proxy-init --valid 100:00
+ 1013  cp /tmp/x509up_u122184 /afs/cern.ch/user/s/ssaumya/private/x509up_u122184 
+ 1014  pwd
+ 1015  ls
+ 1016  mkdir /eos/cms/store/group/phys_egamma/ssaumya/CMSHLT-3746/HLTstep_RootFiles_Target
+ 1017  python3 cmsCondor.py hlt_Reference_Customized.py /afs/cern.ch/work/s/ssaumya/private/Egamma/CMSHLT-3764/CMSSW_16_0_5/src/ /eos/cms/store/group/phys_egamma/ssaumya/CMSHLT-3746/HLTstep_RootFiles_Reference -n 10 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184 
+ 1018  voms-proxy-init
+ 1019  vi /afs/cern.ch/work/s/ssaumya/private/Egamma/CMSHLT-3764/CMSSW_16_0_5/src/EGamma-Studies/CMSHLT-3746_2026/cmsCondor.py
+ 1020  python cmsCondor.py hlt_Reference_Customized.py /afs/cern.ch/work/s/ssaumya/private/Egamma/CMSHLT-3764/CMSSW_16_0_5/src/ /eos/cms/store/group/phys_egamma/ssaumya/CMSHLT-3746/HLTstep_RootFiles_Reference -n 10 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184 
+ 1021  cmsenv
+ 1022  python3 cmsCondor.py hlt_Reference_Customized.py /afs/cern.ch/work/s/ssaumya/private/Egamma/CMSHLT-3764/CMSSW_16_0_5/src/ /eos/cms/store/group/phys_egamma/ssaumya/CMSHLT-3746/HLTstep_RootFiles_Reference -n 10 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184 
+ 1023  vi /afs/cern.ch/work/s/ssaumya/private/Egamma/CMSHLT-3764/CMSSW_16_0_5/src/HLTrigger/Configuration/python/customizeHLTforALL.py
+ 1024  ls
+ 1025  edmConfigDump hlt_Reference_Customized.py > hlt_Reference_Customized_ConfigDump.py
+ 1026  python3 cmsCondor.py hlt_Reference_Customized_ConfigDump.py /afs/cern.ch/work/s/ssaumya/private/Egamma/CMSHLT-3764/CMSSW_16_0_5/src/ /eos/cms/store/group/phys_egamma/ssaumya/CMSHLT-3746/HLTstep_RootFiles_Reference -n 10 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184 
+ 1027  ./sub_total.jobb
+ 1028  condor_q
+ 1029  pwd
+ 1030  ls
+ 1031  edmConfigDump hlt_Target_Customized.py > hlt_Target_Customized_ConfigDump.py
+ 1032  pwd
+ 1033  ls
+ 1034  mkdir Target
+ 1035  cd Target/
+ 1036  ls
+ 1037  cp ../hlt_Target_Customized*.py .
+ 1038  cp ../List_cff.py .
+ 1039  cp ../cmsCondor.py .
+ 1040  ls
+ 1041  python3 cmsCondor.py hlt_Target_Customized_ConfigDump.py /afs/cern.ch/work/s/ssaumya/private/Egamma/CMSHLT-3764/CMSSW_16_0_5/src/ /eos/cms/store/group/phys_egamma/ssaumya/CMSHLT-3746/HLTstep_RootFiles_Target -n 10 -q tomorrow -p /afs/cern.ch/user/s/ssaumya/private/x509up_u122184 
+ 1042  ./sub_total.jobb 
+ 1043  condor_q
+ 1044  history 1000 > Commands.out
+ 1045  ls /eos/cms/store/group/phys_egamma/ssaumya/CMSHLT-3746/
+ 1046  ls /eos/cms/store/group/phys_egamma/ssaumya/CMSHLT-3746/HLTstep_RootFiles_Reference/
+ 1047  ls /eos/cms/store/group/phys_egamma/ssaumya/CMSHLT-3746/HLTstep_RootFiles_Reference/ | wc -l
+ 1048  ls /eos/cms/store/group/phys_egamma/ssaumya/CMSHLT-3746/HLTstep_RootFiles_Target/ | wc -l
+ 1049  cd ..
+ 1050  ls
+ 1051  cd ..
+ 1052  ls
+ 1053  cd ..
+ 1054  ls
+ 1055  pwd
+ 1056  ls
+ 1057  python3 Analysis/HLTAnalyserPy/test/ntup/makeRun3Ntup.py  -o ntup_Reference.root /eos/cms/store/group/phys_egamma/ssaumya/CMSHLT-3746/HLTstep_RootFiles_Reference/*.root
+ 1058  ls
+ 1059  du -sh ntup_Reference.root 
+ 1060  edmDumpEventContent /eos/cms/store/group/phys_egamma/ssaumya/CMSHLT-3746/HLTstep_RootFiles_Reference/stepHLT_0.root > EventContent_stepHLT.out
+ 1061  vi EventContent_stepHLT.out 
+ 1062  python3 Analysis/HLTAnalyserPy/test/ntup/makeRun3Ntup.py  -o ntup_Reference.root /eos/cms/store/group/phys_egamma/ssaumya/CMSHLT-3746/HLTstep_RootFiles_Reference/stepHLT_0.root
+ 1063  ls
+ 1064  du -sh *.root
+ 1065  du -sh /eos/cms/store/group/phys_egamma/ssaumya/CMSHLT-3746/HLTstep_RootFiles_Reference/
+ 1066  du -sh /eos/cms/store/group/phys_egamma/ssaumya/CMSHLT-3746/HLTstep_RootFiles_Reference/stepHLT_0.root 
+ 1067  root /eos/cms/store/group/phys_egamma/ssaumya/CMSHLT-3746/HLTstep_RootFiles_Reference/stepHLT_0.root 
+ 1068  python3 Analysis/HLTAnalyserPy/test/ntup/makeRun3Ntup.py --help
+ 1069  python3 Analysis/HLTAnalyserPy/test/ntup/makeRun3Ntup.py  -o ntup_Reference.root /eos/cms/store/group/phys_egamma/ssaumya/CMSHLT-3746/HLTstep_RootFiles_Reference/stepHLT_0.root
+ 1070  vimdiff EventContent_hlt_Reference_Customized.out EventContent_stepHLT.out 
+ 1071  ls
+ 1072  du -sh output.root 
+ 1073  du -sh /eos/cms/store/group/phys_egamma/ssaumya/CMSHLT-3746/HLTstep_RootFiles_Reference/stepHLT_0.root
+ 1074  root /eos/cms/store/group/phys_egamma/ssaumya/CMSHLT-3746/HLTstep_RootFiles_Reference/stepHLT_0.root
+ 1075  ls
+ 1076  condor_q
+ 1077  ls
+ 1078  ls EGamma-Studies
+ 1079  ls EGamma-Studies/CMSHLT-3746_2026
+ 1080  cd EGamma-Studies/CMSHLT-3746_2026/
+ 1081  ls
+ 1082  cmsRun hlt_Target_Customized_ConfigDump.py
+ 1083  ls
+ 1084  root output.root 
+ 1085  pwd
+ 1086  ls
+ 1087  root /eos/cms/store/group/phys_egamma/ssaumya/CMSHLT-3746/HLTstep_RootFiles_Reference/stepHLT_1.root
+ 1088  pwd
+ 1089  ls
+ 1090  cd Jobs/
+ 1091  ls
+ 1092  cd Job_0/
+ 1093  ls
+ 1094  vi hlt.stderr
+ 1095  history 1000 > Commands.out
