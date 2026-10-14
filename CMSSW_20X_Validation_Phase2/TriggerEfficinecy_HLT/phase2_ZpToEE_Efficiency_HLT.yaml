@@ -1,0 +1,28 @@
+cmssw-dir: /afs/cern.ch/work/s/ssaumya/private/Egamma/STEAM_4thSeptember/CMSSW_20_0_0/src/
+eos-dir: /eos/cms/store/group/phys_egamma/ssaumya/Phase2_Efficinecy_Checks/
+
+project:
+
+  Reference:
+    dataset:
+      - /RelValZpToEE_m6000_14TeV/CMSSW_20_0_0-PU_150X_mcRun4_realistic_v1_STD_D121_RegeneratedGS_PU_16Aug26-v6/GEN-SIM-DIGI-RAW
+    GT: auto:phase2_realistic_T35
+    process:
+      - cmsDriver.py Phase2 -s L1P2GT,HLT:75e33 --processName=HLTX --conditions auto:phase2_realistic_T35 --geometry ExtendedRun4D121 --era Phase2C22I13M9 --eventcontent FEVTDEBUGHLT --customise SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000,HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaMenuDev --inputCommands='keep *, drop *_hlt*_*_HLT, drop triggerTriggerFilterObjectWithRefs_l1t*_*_HLT' --mc --no_exec --python_filename rerun_L1P2GT_HLT_cfg.py --fileout file:output_Phase2_L1P2GT_HLT.root
+      - cmsRun rerun_L1P2GT_HLT_cfg.py
+      - python3 /afs/cern.ch/work/s/ssaumya/private/Egamma/STEAM_4thSeptember/CMSSW_20_0_0/src/EGamma-Studies/CMSSW_20X_Validation_Phase2/makeNtuples_Phase2_HLT.py output_Phase2_L1P2GT_HLT.root --max-events 100000 -o tnpNtupler.root
+
+    storefile:
+      - tnpNtupler.root
+
+  Target:
+    dataset:
+      - /RelValZpToEE_m6000_14TeV/CMSSW_20_0_0-PU_150X_mcRun4_realistic_v1_STD_D127_RegeneratedGS_PU_16Aug26-v2/GEN-SIM-DIGI-RAW
+    GT: auto:phase2_realistic_T35
+    process:
+      - cmsDriver.py Phase2 -s L1P2GT,HLT:75e33 --processName=HLTX --conditions auto:phase2_realistic_T35 --geometry ExtendedRun4D127 --era Phase2C26I13M9 --eventcontent FEVTDEBUGHLT --customise SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000,HLTrigger/Configuration/customizeHLTforEGamma.customiseEGammaMenuDev --inputCommands='keep *, drop *_hlt*_*_HLT, drop triggerTriggerFilterObjectWithRefs_l1t*_*_HLT' --mc --no_exec --python_filename rerun_L1P2GT_HLT_cfg.py --fileout file:output_Phase2_L1P2GT_HLT.root
+      - cmsRun rerun_L1P2GT_HLT_cfg.py
+      - python3 /afs/cern.ch/work/s/ssaumya/private/Egamma/STEAM_4thSeptember/CMSSW_20_0_0/src/EGamma-Studies/CMSSW_20X_Validation_Phase2/makeNtuples_Phase2_HLT.py output_Phase2_L1P2GT_HLT.root --max-events 100000 -o tnpNtupler.root
+
+    storefile:
+      - tnpNtupler.root        
